@@ -4,15 +4,10 @@ import { CustomInput } from "../../components/CustomInput/CustomInput";
 import { GridItem } from "../../components/style/GridItem/GridItem";
 import { ItemAddBoardBtn } from "../../components/style/styles/styles";
 import { Grid, Container, Box } from "@mui/material";
-
-import useMediaQuery from "@mui/material/useMediaQuery";
 import { BoardItem, CardItem } from "../../interfaces/DataTypes";
-
-import imageBg from "../../image/2.png";
 import TaskService from "../../services/TaskService";
 import { Progress } from "../../components/Progress/Progress";
 import { Error } from "../../components/Error/Error";
-import { AxiosError } from "axios";
 
 export const TaskBoard = ({ mode, theme }: any) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -22,7 +17,6 @@ export const TaskBoard = ({ mode, theme }: any) => {
     boardId: 0,
     cardId: 0,
   });
-  // const matches = useMediaQuery("(min-width:600px)");
 
   useEffect(() => {
     (async () => {
@@ -38,13 +32,6 @@ export const TaskBoard = ({ mode, theme }: any) => {
       }
     })();
   }, []);
-
-  // function update({ boardId, board }: any) {
-  //   TaskService.updateBoard({
-  //     boardId: boardId,
-  //     board: board,
-  //   });
-  // }
 
   // adding new board
   const addBoardHandler = async (boardTitle: string) => {
@@ -246,11 +233,7 @@ export const TaskBoard = ({ mode, theme }: any) => {
       maxWidth="xl"
       sx={{
         padding: "20px 30px",
-        position: "relative",
         margin: "0 auto",
-        // backgroundImage: `url(${imageBg})`,
-        // backgroundRepeat: "no-repeat",
-        // backgroundSize: "cover",
       }}
     >
       <Grid container spacing={2}>
@@ -277,7 +260,6 @@ export const TaskBoard = ({ mode, theme }: any) => {
       <Box sx={{}}>
         <ItemAddBoardBtn>
           <CustomInput
-            // text="Add Board"
             placeholder="Enter Board Title"
             onClickAddBtn={addBoardHandler}
             padding="20px"
