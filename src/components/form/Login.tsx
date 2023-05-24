@@ -17,25 +17,25 @@ import SendIcon from "@mui/icons-material/Send";
 import { Visibility, VisibilityOff } from "@mui/icons-material/";
 import { Link, useNavigate } from "react-router-dom";
 import AuthService from "../../services/AuthService";
-import { ItemCardInfo } from "../style/styles/styles";
-import todolist from "../../image/todolist.jpeg";
+import { ItemCardInfo } from "../../components/style/styles/styles";
+// import todolist from "../../image/todolist.jpeg";
 
 export const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
-  const handleMouseDownPassword = (e) => {
+  const handleMouseDownPassword = (e: any) => {
     e.preventDefault();
   };
 
   const validationSchema = Yup.object({
-    email: Yup.string("Enter your email")
+    email: Yup.string()
       .email("Enter a valid email")
       .required("Email is required"),
-    password: Yup.string("Enter your password")
+    password: Yup.string()
       .min(8, "Password should be a minimum 8 characters length")
       .required("Password is required"),
   });
@@ -61,7 +61,7 @@ export const LoginForm = () => {
           localStorage.setItem("token", data.token);
           navigate("/");
           setLoading(false);
-        } catch (e) {
+        } catch (e: any) {
           setLoading(false);
           setError(e?.response?.data?.message || "Your network error");
         }
@@ -104,11 +104,11 @@ export const LoginForm = () => {
               marginBottom: "20px",
             }}
           >
-            <img
+            {/* <img
               src={todolist}
               alt="Screen Saver"
               sx={{ height: "100%", weight: "auto" }}
-            />
+            /> */}
           </ImageListItem>
 
           <TextField
@@ -148,7 +148,7 @@ export const LoginForm = () => {
               value={formik.values.password}
               onChange={formik.handleChange}
               error={formik.touched.password && Boolean(formik.errors.password)}
-              helperText={formik.touched.password && formik.errors.password}
+              // helperText={formik.touched.password && formik.errors.password}
               autoComplete="off"
               sx={{ marginBottom: "20px", backgroundColor: "inherit" }}
             />

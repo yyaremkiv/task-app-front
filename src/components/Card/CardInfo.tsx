@@ -25,7 +25,7 @@ import {
 import { DateCalendar } from "../Calendar/Calendar";
 import { colorList } from "../../data/dataUtility";
 import { CustomInput } from "../CustomInput/CustomInput";
-import { Chip } from "../Common/Chip";
+import { Chipp } from "../Common/Chipp";
 import { ItemCardInfo } from "../style/styles/styles";
 import { grey, deepOrange } from "@mui/material/colors";
 
@@ -258,7 +258,7 @@ export const CardInfo: React.FC<CardInfoProps> = (props: CardInfoProps) => {
 
               <Box width="fit-content" display="flex" gap="7px">
                 {cardValues.labels?.map((el, index) => (
-                  <Chip key={index} el={el} removeLabel={removeLabel} />
+                  <Chipp key={index} el={el} removeLabel={removeLabel} />
                 ))}
               </Box>
             </Box>

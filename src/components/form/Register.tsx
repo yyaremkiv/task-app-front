@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import {
@@ -17,17 +17,17 @@ import SendIcon from "@mui/icons-material/Send";
 import { Visibility, VisibilityOff } from "@mui/icons-material/";
 import { Link, useNavigate } from "react-router-dom";
 import AuthService from "../../services/AuthService";
-import { ItemCardInfo } from "../style/styles/styles";
-import todolist from "../../image/todolist.jpeg";
+import { ItemCardInfo } from "../../components/style/styles/styles";
+// import todolist from "../../image/todolist.jpeg";
 
 export const RegisterForm = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
-  const handleMouseDownPassword = (e) => {
+  const handleMouseDownPassword = (e: any) => {
     e.preventDefault();
   };
 
@@ -39,7 +39,7 @@ export const RegisterForm = () => {
       .required("Required"),
 
     email: Yup.string().email("Invalid email address").required("Required"),
-    password: Yup.string("Enter your password")
+    password: Yup.string()
       .max(20, "Must be 20 characters or less")
       .min(8, "Password should be a minimum 8 characters length")
       .required("Required"),
@@ -48,9 +48,7 @@ export const RegisterForm = () => {
   const formik = useFormik({
     initialValues: { userName: "", email: "", password: "" },
     validationSchema: validationSchema,
-    onSubmit: (values) => {
-      console.log(JSON.stringify(values, null, 2));
-
+    onSubmit: (values: any) => {
       async function fetchAuth() {
         try {
           setError(null);
@@ -64,7 +62,7 @@ export const RegisterForm = () => {
           localStorage.setItem("token", data.token);
           navigate("/");
           setLoading(false);
-        } catch (e) {
+        } catch (e: any) {
           setLoading(false);
           setError(e?.response?.data?.message || "Your network error");
         }
@@ -108,11 +106,11 @@ export const RegisterForm = () => {
               marginBottom: "20px",
             }}
           >
-            <img
+            {/* <img
               src={todolist}
               alt="Screen Saver"
               sx={{ height: "100%", weight: "auto" }}
-            />
+            /> */}
           </ImageListItem>
           <TextField
             sx={{ paddingBottom: "20px" }}
@@ -162,7 +160,7 @@ export const RegisterForm = () => {
               value={formik.values.password}
               onChange={formik.handleChange}
               error={formik.touched.password && Boolean(formik.errors.password)}
-              helperText={formik.touched.password && formik.errors.password}
+              // helperText={formik.touched.password && formik.errors.password}
               autoComplete="off"
               sx={{ marginBottom: "20px", backgroundColor: "inherit" }}
             />
@@ -182,7 +180,7 @@ export const RegisterForm = () => {
 
           <Typography
             variant="subtitle1"
-            component="p1"
+            component="p"
             width="100%"
             sx={{ flexGrow: 1, padding: "20px" }}
           >

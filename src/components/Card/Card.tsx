@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { CardItem } from "../../interfaces/DataTypes";
 import { CardInfo } from "./CardInfo";
 import { Dropdown } from "../Dropdown/Dropdown";
-import { Chip } from "../Common/Chip";
+import { Chipp } from "../Common/Chipp";
 import {
   Box,
   Paper,
@@ -18,7 +18,6 @@ import {
   CalendarMonthOutlined as CalendarMonthOutlinedIcon,
 } from "@mui/icons-material";
 import { TitleBgCard } from "../style/styles/styles";
-// import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
 
 interface CardProps {
   card: CardItem;
@@ -85,7 +84,7 @@ export const Card: React.FC<CardProps> = (props: CardProps) => {
           }}
         >
           {labels?.map((el, index: number) => (
-            <Chip key={index} el={el} />
+            <Chipp key={index} el={el} />
           ))}
         </Box>
 
@@ -102,14 +101,14 @@ export const Card: React.FC<CardProps> = (props: CardProps) => {
             display="flex"
             justifyContent="space-between"
             alignItems="center"
+            flexWrap="wrap"
             gap={1}
             sx={{
-              // border: "1px solid green",
               padding: "2px 6px",
             }}
           >
             <NoteRoundedIcon color="inherit" fontSize="small" />
-            <Typography variant="h6" gutterBottom margin="0">
+            <Typography variant="h6" gutterBottom margin="0" fontSize="16px">
               {title}
             </Typography>
           </Box>
@@ -119,6 +118,7 @@ export const Card: React.FC<CardProps> = (props: CardProps) => {
               e.stopPropagation();
               setShowDropdown(true);
             }}
+            sx={{ position: "relative" }}
           >
             <IconButton aria-label="menu" color="inherit">
               <DragHandleRoundedIcon fontSize="inherit" />
@@ -129,9 +129,14 @@ export const Card: React.FC<CardProps> = (props: CardProps) => {
                   setShowDropdown(false);
                 }}
               >
-                <Box onClick={() => removeCard(boardId, id)}>
-                  <Button variant="contained">Delete Card</Button>
-                </Box>
+                <TitleBgCard
+                  onClick={() => removeCard(boardId, id)}
+                  sx={{ border: "none" }}
+                >
+                  <Button variant="text" color="inherit">
+                    Delete
+                  </Button>
+                </TitleBgCard>
               </Dropdown>
             )}
           </Box>
@@ -142,7 +147,6 @@ export const Card: React.FC<CardProps> = (props: CardProps) => {
           gap={1}
           sx={{
             borderBottom: "1px solid #009688",
-            // borderRadius: "3px",
           }}
         >
           {" "}
@@ -165,7 +169,7 @@ export const Card: React.FC<CardProps> = (props: CardProps) => {
         <Box display="flex" gap="10px" justifyContent="center" width="100%">
           <PlaylistAddCheckSharp color="primary" fontSize="medium" />
           {tasks && tasks?.length > 0 ? (
-            <Typography variant="subtitle1" gutterBottom>
+            <Typography variant="subtitle1" gutterBottom color="primary">
               {`${tasks?.filter((el) => el.completed)?.length}/${
                 tasks?.length
               } tasks`}
@@ -174,6 +178,7 @@ export const Card: React.FC<CardProps> = (props: CardProps) => {
             <Typography
               variant="subtitle1"
               gutterBottom
+              color="primary"
             >{`${tasks?.length} tasks`}</Typography>
           )}
         </Box>

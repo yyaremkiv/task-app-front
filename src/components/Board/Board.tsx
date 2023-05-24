@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { Paper, Box, Typography, IconButton, Button } from "@mui/material";
-// import LinearScaleIcon from "@mui/icons-material/LinearScale";
+import { Box, Typography, IconButton, Button } from "@mui/material";
 import DragHandleRoundedIcon from "@mui/icons-material/DragHandleRounded";
 import NoteRoundedIcon from "@mui/icons-material/NoteRounded";
 import NoteAltRoundedIcon from "@mui/icons-material/NoteAltRounded";
@@ -9,7 +8,7 @@ import { CustomInput } from "../CustomInput/CustomInput";
 import { Card } from "../Card/Card";
 import { Dropdown } from "../Dropdown/Dropdown";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { grey, deepOrange } from "@mui/material/colors";
+import { deepOrange } from "@mui/material/colors";
 import { ItemAddCardBtn, TitleBgBoard } from "../style/styles/styles";
 
 interface BoardProps {
@@ -33,34 +32,18 @@ export const Board: React.FC<BoardProps> = (props: BoardProps) => {
     onDragEnter,
   } = props;
   const [showDropdown, setShowDropdown] = useState(false);
-  // const matches = useMediaQuery("(min-width:600px)");
+  const matches = useMediaQuery("(min-width:600px)");
 
   return (
-    <Box
-      sx={
-        {
-          // width: matches ? "fit-content" : "100%",
-          // display: "flex",
-          // flexDirection: "column",
-          // justifyContent: "space-between",
-          // backgroundColor: "inherit",
-        }
-      }
-    >
-      <Box
-        sx={
-          {
-            // border: "1px solid red",
-          }
-        }
-      >
+    <Box>
+      <Box>
         <TitleBgBoard
           display="flex"
           justifyContent="space-between"
           alignItems="center"
           marginBottom="12px"
+          flexWrap="wrap"
           sx={{
-            // border: "1px solid blue",
             padding: "7px 10px",
             borderRadius: "7px 7px 0px 0px ",
           }}
@@ -71,8 +54,13 @@ export const Board: React.FC<BoardProps> = (props: BoardProps) => {
             alignItems="center"
             gap={1}
           >
-            <NoteAltRoundedIcon color="secondary" fontSize="medium" />
-            <Typography variant="h5" gutterBottom sx={{ margin: "0" }}>
+            <NoteAltRoundedIcon color="inherit" fontSize="medium" />
+            <Typography
+              variant="h5"
+              gutterBottom
+              sx={{ margin: "0" }}
+              fontSize="20px"
+            >
               {board.title}
             </Typography>
           </Box>
@@ -82,7 +70,6 @@ export const Board: React.FC<BoardProps> = (props: BoardProps) => {
               variant="h6"
               gutterBottom
               sx={{
-                // border: "1px solid red",
                 padding: "6px",
                 borderRadius: "5px",
                 margin: "0",
@@ -90,13 +77,13 @@ export const Board: React.FC<BoardProps> = (props: BoardProps) => {
             >
               {board?.cards?.length || 0}
             </Typography>
-            <NoteRoundedIcon color="secondary" fontSize="medium" />
+            <NoteRoundedIcon color="inherit" fontSize="medium" />
           </Box>
 
-          <Box sx={{ zIndex: 5 }}>
+          <Box sx={{ zIndex: 5, position: "relative" }}>
             <IconButton
               size="large"
-              color="secondary"
+              color="inherit"
               aria-label="menu"
               onClick={() => {
                 setShowDropdown(!showDropdown);
@@ -107,13 +94,16 @@ export const Board: React.FC<BoardProps> = (props: BoardProps) => {
 
             {showDropdown && (
               <Dropdown onClose={() => setShowDropdown(false)}>
-                <Box
+                <TitleBgBoard
+                  sx={{ border: "none" }}
                   onClick={() => {
                     removeBoard(board?.id);
                   }}
                 >
-                  <Button variant="contained">Delete Board</Button>
-                </Box>
+                  <Button variant="text" color="inherit">
+                    Delete Board
+                  </Button>
+                </TitleBgBoard>
               </Dropdown>
             )}
           </Box>
@@ -124,6 +114,7 @@ export const Board: React.FC<BoardProps> = (props: BoardProps) => {
             marginBottom: "12px",
             maxHeight: "450px",
             overflow: "hidden",
+            overflowY: matches ? "none" : "scroll",
             "&:hover": { overflowY: "scroll" },
             "&::-webkit-scrollbar": {
               width: "7px",
@@ -151,7 +142,6 @@ export const Board: React.FC<BoardProps> = (props: BoardProps) => {
         </Box>
       </Box>
 
-      {/* <Box> */}
       <ItemAddCardBtn>
         <CustomInput
           text="Add Card"
@@ -162,7 +152,6 @@ export const Board: React.FC<BoardProps> = (props: BoardProps) => {
           directionBtn="row"
         />
       </ItemAddCardBtn>
-      {/* </Box> */}
     </Box>
   );
 };
