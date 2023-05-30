@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Board } from "../components/Board";
 import { CustomInput } from "../components/CustomInput";
 import { GridItem } from "../components/GridItem";

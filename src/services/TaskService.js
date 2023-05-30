@@ -1,4 +1,4 @@
-import API from "../http";
+import API from "../config/axios.config";
 
 class TaskService {
   static async getBoards() {

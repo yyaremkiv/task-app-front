@@ -1,9 +1,8 @@
-import React, { useState } from "react";
-import { BrowserRouter, Routes, Route, redirect } from "react-router-dom";
+import { useState } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import { Header } from "./components/Header";
 import { TaskBoard } from "./pages/Taskboard";
-import { Box, createTheme } from "@mui/material";
+import { createTheme } from "@mui/material";
 import { ThemeProvider } from "@emotion/react";
 import { AuthPage } from "./pages/Auth";
 import { NotFoundPage } from "./pages/NotFoundPage";
@@ -11,6 +10,10 @@ import { PublicRoute } from "./components/PublicRoute";
 import { LoginForm } from "./components/Login";
 import { RegisterForm } from "./components/Register";
 import { PrivateRoute } from "./components/PrivateRoute";
+import { Layout } from "./pages/Layout";
+import { PageAuth } from "./pages/PageAuth";
+import { FormLogin } from "./components/FormLogin";
+import { FormRegister } from "./components/FormRegister";
 
 function App() {
   const [mode, setMode] = useState<"light" | "dark">("light");
@@ -36,21 +39,16 @@ function App() {
   return (
     <BrowserRouter>
       <ThemeProvider theme={theme}>
-        <Box
-          bgcolor={"background.default"}
-          color={"text.primary"}
-          minHeight="100vh"
-          className="App"
-          position="relative"
-        >
-          <Header setMode={setMode} mode={mode} />
-          <Routes>
+        <Routes>
+          <Route path="/" element={<Layout setMode={setMode} mode={mode} />}>
             <Route
-              path="/auth"
-              element={<PublicRoute redirectTo="/" component={<AuthPage />} />}
+              path="/"
+              element={
+                <PublicRoute redirectTo="/home" component={<PageAuth />} />
+              }
             >
-              <Route path="/auth" element={<LoginForm />} />
-              <Route path="/auth/register" element={<RegisterForm />} />
+              <Route path="/" element={<FormLogin />} />
+              <Route path="register" element={<FormRegister />} />
             </Route>
 
             <Route
@@ -60,8 +58,8 @@ function App() {
               }
             />
             <Route path="*" element={<NotFoundPage />} />
-          </Routes>
-        </Box>
+          </Route>
+        </Routes>
       </ThemeProvider>
     </BrowserRouter>
   );

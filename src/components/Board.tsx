@@ -35,24 +35,26 @@ export const Board: React.FC<BoardProps> = (props: BoardProps) => {
   const matches = useMediaQuery("(min-width:600px)");
 
   return (
-    <Box>
+    <Box sx={{ border: "1px solid red" }}>
       <Box>
         <TitleBgBoard
-          display="flex"
-          justifyContent="space-between"
-          alignItems="center"
-          marginBottom="12px"
-          flexWrap="wrap"
           sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            flexWrap: "wrap",
+            marginBottom: "12px",
             padding: "7px 10px",
             borderRadius: "7px 7px 0px 0px ",
           }}
         >
           <Box
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            gap={1}
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              gap: 1,
+            }}
           >
             <NoteAltRoundedIcon color="inherit" fontSize="medium" />
             <Typography
@@ -65,7 +67,13 @@ export const Board: React.FC<BoardProps> = (props: BoardProps) => {
             </Typography>
           </Box>
 
-          <Box display="flex" justifyContent="center" alignItems="center">
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
             <Typography
               variant="h6"
               gutterBottom
