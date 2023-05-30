@@ -1,44 +1,12 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import AuthService from "../../services/AuthService";
+import TaskService from "../../services/TaskService";
 
-class AuthOperations {
-  static signin = createAsyncThunk(
-    "auth/signin",
-    async ({ email, password }, { rejectWithValue }) => {
-      try {
-        const { data } = await AuthService.signin({ email, password });
-        return data;
-      } catch (err) {
-        return rejectWithValue(
-          err?.response?.data?.message || "An error occurred with the network"
-        );
-      }
-    }
-  );
-
-  static signup = createAsyncThunk(
-    "auth/signup ",
-    async ({ username, email, password }, { rejectWithValue }) => {
-      try {
-        const { data } = await AuthService.signup({
-          username,
-          email,
-          password,
-        });
-        return data;
-      } catch (err) {
-        return rejectWithValue(
-          err?.response?.data?.message || "An error occurred with the network"
-        );
-      }
-    }
-  );
-
-  static logout = createAsyncThunk(
-    "auth/logout",
+class TaskOperations {
+  static getBoards = createAsyncThunk(
+    "task/getBoards",
     async (_, { rejectWithValue }) => {
       try {
-        const { data } = await AuthService.logout();
+        const { data } = await TaskService.getBoards();
         return data;
       } catch (err) {
         return rejectWithValue(
@@ -48,11 +16,39 @@ class AuthOperations {
     }
   );
 
-  static refresh = createAsyncThunk(
-    "auth/refresh",
-    async (_, { rejectWithValue }) => {
+  static addBoard = createAsyncThunk(
+    "task/addBoard",
+    async ({ title, cards }, { rejectWithValue }) => {
       try {
-        const { data } = await AuthService.refresh();
+        const { data } = await TaskService.addBoard({ title, cards });
+        return data;
+      } catch (err) {
+        return rejectWithValue(
+          err?.response?.data?.message || "An error occurred with the network"
+        );
+      }
+    }
+  );
+
+  static updateBoard = createAsyncThunk(
+    "task/updateBoard",
+    async ({ boardId, board }, { rejectWithValue }) => {
+      try {
+        const { data } = await TaskService.updateBoard({ boardId, board });
+        return data;
+      } catch (err) {
+        return rejectWithValue(
+          err?.response?.data?.message || "An error occurred with the network"
+        );
+      }
+    }
+  );
+
+  static removeBoard = createAsyncThunk(
+    "task/removeBoard",
+    async ({ boardId }, { rejectWithValue }) => {
+      try {
+        const { data } = await TaskService.removeBoard({ boardId });
         return data;
       } catch (err) {
         return rejectWithValue(
@@ -63,4 +59,4 @@ class AuthOperations {
   );
 }
 
-export default AuthOperations;
+export default TaskOperations;

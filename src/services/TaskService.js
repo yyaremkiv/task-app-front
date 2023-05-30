@@ -5,15 +5,15 @@ class TaskService {
     return API.get("/board");
   }
 
-  static async addBoard(board) {
-    return API.post("/board", board);
+  static async addBoard({ title, cards }) {
+    return API.post("/board", { title, cards });
   }
 
   static async updateBoard({ boardId, board }) {
     return API.patch(`/board/${boardId}`, board);
   }
 
-  static async deleteBoard(boardId) {
+  static async removeBoard({ boardId }) {
     return API.delete(`/board/${boardId}`);
   }
 }

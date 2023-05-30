@@ -1,14 +1,10 @@
 import { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-
-import { TaskBoard } from "./pages/Taskboard";
+import { PageTask } from "./pages/PageTask";
 import { createTheme } from "@mui/material";
 import { ThemeProvider } from "@emotion/react";
-import { AuthPage } from "./pages/Auth";
 import { NotFoundPage } from "./pages/NotFoundPage";
 import { PublicRoute } from "./components/PublicRoute";
-import { LoginForm } from "./components/Login";
-import { RegisterForm } from "./components/Register";
 import { PrivateRoute } from "./components/PrivateRoute";
 import { Layout } from "./pages/Layout";
 import { PageAuth } from "./pages/PageAuth";
@@ -52,10 +48,8 @@ function App() {
             </Route>
 
             <Route
-              path="/"
-              element={
-                <PrivateRoute redirectTo="/auth" component={<TaskBoard />} />
-              }
+              path="/home"
+              element={<PrivateRoute redirectTo="/" component={<PageTask />} />}
             />
             <Route path="*" element={<NotFoundPage />} />
           </Route>

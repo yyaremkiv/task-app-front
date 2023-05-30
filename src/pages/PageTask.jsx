@@ -1,73 +1,45 @@
-import { useEffect, useState } from "react";
-import { Board } from "../components/Board";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { CustomInput } from "../components/CustomInput";
-import { GridItem } from "../components/GridItem";
 import { ItemAddBoardBtn } from "../components/styles";
-import { Grid, Container, Box } from "@mui/material";
-import { BoardItem, CardItem } from "../interfaces/DataTypes";
+import { Container, Box } from "@mui/material";
 import TaskService from "../services/TaskService";
-import { Progress } from "../components/Progress";
-import { Error } from "../components/Error";
+import { Filter } from "../components/Filter";
+import { ListBoards } from "../components/ListBoards";
+import TaskOperations from "../redux/task/taskOperations";
+import BoardCreate from "../config/boardClass";
 
-export const TaskBoard = ({ mode, theme }: any) => {
+export const PageTask = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [boards, setBoards] = useState<BoardItem[]>([]);
+  const [boards, setBoards] = useState([]);
   const [targetCard, setTargetCard] = useState({
     boardId: 0,
     cardId: 0,
   });
+  const dispatch = useDispatch();
 
-  useEffect(() => {
-    (async () => {
-      try {
-        setIsLoading(true);
-        const { data } = await TaskService.getBoards();
+  const handleAddBoard = (title) =>
+    dispatch(TaskOperations.addBoard(new BoardCreate({ title })));
 
-        if (data) setBoards(data[0]?.boards);
-      } catch (e: any) {
-        setError(e.response?.data?.message || "Network Error");
-      } finally {
-        setIsLoading(false);
-      }
-    })();
-  }, []);
-
-  // adding new board
-  const addBoardHandler = async (boardTitle: string) => {
-    try {
-      setIsLoading(true);
-      const { data } = await TaskService.addBoard({
-        title: boardTitle,
-        cards: [],
-      });
-      if (data) setBoards([...boards, data]);
-    } catch (e: any) {
-      setError(e.response?.data?.message || "Network Error");
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  // remove current board
-  const removeBoard = async (boardId: number) => {
-    setIsLoading(true);
-    try {
-      const { data } = await TaskService.deleteBoard(boardId);
-      const updatedBoardList = boards.filter((board) => board.id !== data);
-      setBoards(updatedBoardList);
-    } catch (err: any) {
-      setError(err.message);
-      console.log(err);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  // // remove current board
+  // const removeBoard = async (boardId) => {
+  //   setIsLoading(true);
+  //   try {
+  //     const { data } = await TaskService.deleteBoard(boardId);
+  //     const updatedBoardList = boards.filter((board) => board.id !== data);
+  //     setBoards(updatedBoardList);
+  //   } catch (err) {
+  //     setError(err.message);
+  //     console.log(err);
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
 
   // adding new card to current board
-  const addCardHandler = async (boardId: number, cardTitle: string) => {
+  const addCardHandler = async (boardId, cardTitle) => {
     setIsLoading(true);
-    const boardIndex = boards.findIndex((el: BoardItem) => el.id === boardId);
+    const boardIndex = boards.findIndex((el) => el.id === boardId);
     if (boardIndex === -1) return;
 
     const tempBoardList = [...boards];
@@ -95,9 +67,9 @@ export const TaskBoard = ({ mode, theme }: any) => {
   };
 
   // remove current card
-  const removeCard = async (boardId: number, cardId: number) => {
+  const removeCard = async (boardId, cardId) => {
     setIsLoading(true);
-    const boardIndex = boards.findIndex((el: BoardItem) => {
+    const boardIndex = boards.findIndex((el) => {
       return el.id === boardId;
     });
     if (boardIndex === -1) return;
@@ -124,11 +96,7 @@ export const TaskBoard = ({ mode, theme }: any) => {
   };
 
   // update current card
-  const updateCard = async (
-    boardId: number,
-    cardId: number,
-    card: CardItem
-  ) => {
+  const updateCard = async (boardId, cardId, card) => {
     setIsLoading(true);
     const boardIndex = boards.findIndex((el) => {
       return el.id === boardId;
@@ -159,28 +127,26 @@ export const TaskBoard = ({ mode, theme }: any) => {
   };
 
   // drag&drop cards
-  const onDragEnd = async (boardId: number, cardId: number) => {
+  const onDragEnd = async (boardId, cardId) => {
     setIsLoading(true);
-    const sourceBoardIndex = boards.findIndex((el: BoardItem) => {
+    const sourceBoardIndex = boards.findIndex((el) => {
       return el.id === boardId;
     });
     if (sourceBoardIndex === -1) return;
 
-    const sourceCardIndex = boards[sourceBoardIndex].cards?.findIndex(
-      (el: CardItem) => {
-        return el.id === cardId;
-      }
-    );
+    const sourceCardIndex = boards[sourceBoardIndex].cards?.findIndex((el) => {
+      return el.id === cardId;
+    });
     if (sourceCardIndex === -1) return;
 
     const targetBoardIndex = boards.findIndex(
-      (el: BoardItem) => el.id === targetCard.boardId
+      (el) => el.id === targetCard.boardId
     );
 
     if (targetBoardIndex === -1) return;
 
     const targetCardIndex = boards[targetBoardIndex].cards?.findIndex(
-      (el: CardItem) => el.id === targetCard.cardId
+      (el) => el.id === targetCard.cardId
     );
     if (targetCardIndex === -1) return;
 
@@ -223,7 +189,7 @@ export const TaskBoard = ({ mode, theme }: any) => {
     setIsLoading(false);
   };
 
-  const onDragEnter = (boardId: number, cardId: number) => {
+  const onDragEnter = (boardId, cardId) => {
     if (targetCard.cardId === cardId) return;
     setTargetCard({ boardId: boardId, cardId: cardId });
   };
@@ -236,7 +202,9 @@ export const TaskBoard = ({ mode, theme }: any) => {
         margin: "0 auto",
       }}
     >
-      <Grid container spacing={2}>
+      <Filter />
+      <ListBoards />
+      {/* <Grid container spacing={2}>
         {isLoading ? <Progress /> : null}
         {error ? <Error error={error} /> : null}
         {boards?.length > 0 &&
@@ -255,13 +223,13 @@ export const TaskBoard = ({ mode, theme }: any) => {
               </GridItem>
             </Grid>
           ))}
-      </Grid>
+      </Grid> */}
 
       <Box sx={{}}>
         <ItemAddBoardBtn>
           <CustomInput
             placeholder="Enter Board Title"
-            onClickAddBtn={addBoardHandler}
+            onClickAddBtn={handleAddBoard}
             padding="20px"
             bdRadius="50%"
           />

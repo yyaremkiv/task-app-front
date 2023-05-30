@@ -11,28 +11,34 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { deepOrange } from "@mui/material/colors";
 import { ItemAddCardBtn, TitleBgBoard } from "./styles";
 
-interface BoardProps {
-  board: BoardItem;
-  addCard: (boardId: number, cardTitle: string) => void;
-  removeBoard: (boardId: number) => void;
-  removeCard: (boardId: number, cardId: number) => void;
-  updateCard: (boardId: number, cardId: number, card: CardItem) => void;
-  onDragEnd: (boardId: number, cardId: number) => void;
-  onDragEnter: (boardId: number, cardId: number) => void;
-}
+import TaskOperations from "../redux/task/taskOperations";
+import { useDispatch } from "react-redux";
 
-export const Board: React.FC<BoardProps> = (props: BoardProps) => {
-  const {
-    board,
-    addCard,
-    removeBoard,
-    removeCard,
-    updateCard,
-    onDragEnd,
-    onDragEnter,
-  } = props;
+// interface BoardProps {
+//   board: BoardItem;
+//   addCard: (boardId: number, cardTitle: string) => void;
+//   removeBoard: (boardId: number) => void;
+//   removeCard: (boardId: number, cardId: number) => void;
+//   updateCard: (boardId: number, cardId: number, card: CardItem) => void;
+//   onDragEnd: (boardId: number, cardId: number) => void;
+//   onDragEnter: (boardId: number, cardId: number) => void;
+// }
+
+export const Board = ({
+  board,
+  addCard,
+  removeCard,
+  updateCard,
+  onDragEnd,
+  onDragEnter,
+}) => {
   const [showDropdown, setShowDropdown] = useState(false);
   const matches = useMediaQuery("(min-width:600px)");
+  const dispatch = useDispatch();
+
+  const handleRemoveBoard = (boardId) => {
+    dispatch(TaskOperations.removeBoard({ boardId }));
+  };
 
   return (
     <Box sx={{ border: "1px solid red" }}>
@@ -103,10 +109,8 @@ export const Board: React.FC<BoardProps> = (props: BoardProps) => {
             {showDropdown && (
               <Dropdown onClose={() => setShowDropdown(false)}>
                 <TitleBgBoard
+                  onClick={() => handleRemoveBoard(board.id)}
                   sx={{ border: "none" }}
-                  onClick={() => {
-                    removeBoard(board?.id);
-                  }}
                 >
                   <Button variant="text" color="inherit">
                     Delete Board
@@ -154,9 +158,9 @@ export const Board: React.FC<BoardProps> = (props: BoardProps) => {
         <CustomInput
           text="Add Card"
           placeholder="Enter Card Title"
-          onClickAddBtn={(value: string) => {
-            addCard(board.id, value);
-          }}
+          onClickAddBtn={(value) =>
+            addCard({ boardId: board.id, titleCard: value })
+          }
           directionBtn="row"
         />
       </ItemAddCardBtn>

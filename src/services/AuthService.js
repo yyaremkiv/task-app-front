@@ -1,20 +1,20 @@
 import API from "../config/axios.config";
 
 class AuthService {
-  static login({ email, password }) {
-    return API.post("/auth/login", { email, password });
+  static async signup({ username, email, password }) {
+    return API.post("/auth/signup", { username, email, password });
   }
 
-  static register({ userName, email, password }) {
-    return API.post("/auth/register", { userName, email, password });
+  static async signin({ email, password }) {
+    return API.post("/auth/signin", { email, password });
   }
 
   static async logout() {
-    return API.post("auth/logout");
+    return API.get("/auth/logout");
   }
 
   static async refresh() {
-    return API.get("auth/refresh", { withCredentials: true });
+    return API.get("/auth/refresh", { withCredentials: true });
   }
 }
 

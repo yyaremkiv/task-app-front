@@ -6,8 +6,7 @@ export const FormConfig = {
     password: "",
   },
   initialValuesRegister: {
-    firstName: "",
-    lastName: "",
+    username: "",
     email: "",
     password: "",
   },
@@ -25,16 +24,10 @@ export const FormConfig = {
       .required("Password is required."),
   }),
   registerSchema: Yup.object().shape({
-    firstName: Yup.string()
-      .matches(/^[^\s]+$/, "Enter a value without spaces")
-      .min(3, "First name must be at least 3 characters long.")
-      .max(50, "First name cannot be longer than 50 characters.")
-      .required("First name is required."),
-    lastName: Yup.string()
-      .matches(/^[^\s]+$/, "Enter a value without spaces")
-      .min(3, "Last name must be at least 3 characters long.")
-      .max(50, "Last name cannot be longer than 50 characters.")
-      .required("Last name is required."),
+    username: Yup.string()
+      .min(3, "User Name must be at least 3 characters long.")
+      .max(50, "User Name cannot be longer than 50 characters.")
+      .required("User Name is required."),
     email: Yup.string()
       .matches(/^[^\s]+$/, "Enter a value without spaces")
       .email("Please enter a valid email address.")
