@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { LabelItem } from "../../interfaces/DataTypes";
+import { LabelItem } from "../interfaces/DataTypes";
 import { Chip, IconButton } from "@mui/material";
 import Stack from "@mui/material/Stack";
 

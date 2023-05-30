@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Board } from "../../components/Board/Board";
-import { CustomInput } from "../../components/CustomInput/CustomInput";
-import { GridItem } from "../../components/style/GridItem/GridItem";
-import { ItemAddBoardBtn } from "../../components/style/styles/styles";
+import { Board } from "../components/Board";
+import { CustomInput } from "../components/CustomInput";
+import { GridItem } from "../components/GridItem";
+import { ItemAddBoardBtn } from "../components/styles";
 import { Grid, Container, Box } from "@mui/material";
-import { BoardItem, CardItem } from "../../interfaces/DataTypes";
-import TaskService from "../../services/TaskService";
-import { Progress } from "../../components/Progress/Progress";
-import { Error } from "../../components/Error/Error";
+import { BoardItem, CardItem } from "../interfaces/DataTypes";
+import TaskService from "../services/TaskService";
+import { Progress } from "../components/Progress";
+import { Error } from "../components/Error";
 
 export const TaskBoard = ({ mode, theme }: any) => {
   const [isLoading, setIsLoading] = useState(false);

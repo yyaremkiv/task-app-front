@@ -3,13 +3,13 @@ import { Box, Typography, IconButton, Button } from "@mui/material";
 import DragHandleRoundedIcon from "@mui/icons-material/DragHandleRounded";
 import NoteRoundedIcon from "@mui/icons-material/NoteRounded";
 import NoteAltRoundedIcon from "@mui/icons-material/NoteAltRounded";
-import { BoardItem, CardItem } from "../../interfaces/DataTypes";
-import { CustomInput } from "../CustomInput/CustomInput";
-import { Card } from "../Card/Card";
-import { Dropdown } from "../Dropdown/Dropdown";
+import { BoardItem, CardItem } from "../interfaces/DataTypes";
+import { CustomInput } from "./CustomInput";
+import { Card } from "./Card";
+import { Dropdown } from "./Dropdown";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { deepOrange } from "@mui/material/colors";
-import { ItemAddCardBtn, TitleBgBoard } from "../style/styles/styles";
+import { ItemAddCardBtn, TitleBgBoard } from "./styles";
 
 interface BoardProps {
   board: BoardItem;

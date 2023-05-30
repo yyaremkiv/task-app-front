@@ -1,6 +1,6 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
-import { Progress } from "../../components/Progress/Progress";
+import { Progress } from "../components/Progress";
 
 export const AuthPage = () => {
   return (

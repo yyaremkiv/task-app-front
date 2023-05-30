@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Paper } from "@mui/material";
-import { ItemCardInfoBG } from "../style/styles/styles";
+import { ItemCardInfoBG } from "./styles";
 
 export const Modal = (props: any) => {
   return (

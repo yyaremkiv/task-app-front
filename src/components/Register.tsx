@@ -16,11 +16,11 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import SendIcon from "@mui/icons-material/Send";
 import { Visibility, VisibilityOff } from "@mui/icons-material/";
 import { Link, useNavigate } from "react-router-dom";
-import AuthService from "../../services/AuthService";
-import { ItemCardInfo } from "../../components/style/styles/styles";
+import AuthService from "../services/AuthService";
+import { ItemCardInfo } from "./styles";
 // import todolist from "../../image/todolist.jpeg";
 
-export const LoginForm = () => {
+export const RegisterForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -31,29 +31,30 @@ export const LoginForm = () => {
     e.preventDefault();
   };
 
-  const validationSchema = Yup.object({
-    email: Yup.string()
-      .email("Enter a valid email")
-      .required("Email is required"),
+  const validationSchema = Yup.object().shape({
+    userName: Yup.string()
+      .matches(/^[A-Za-zА-Яа-я]+$/, "Only letters are allowed")
+      .min(2, "Too short!")
+      .max(15, "Must be 15 characters or less")
+      .required("Required"),
+
+    email: Yup.string().email("Invalid email address").required("Required"),
     password: Yup.string()
+      .max(20, "Must be 20 characters or less")
       .min(8, "Password should be a minimum 8 characters length")
-      .required("Password is required"),
+      .required("Required"),
   });
 
   const formik = useFormik({
-    initialValues: {
-      email: "",
-      password: "",
-    },
+    initialValues: { userName: "", email: "", password: "" },
     validationSchema: validationSchema,
-    onSubmit: (values) => {
-      console.log(JSON.stringify(values, null, 2));
-
-      async function fetchLogin() {
+    onSubmit: (values: any) => {
+      async function fetchAuth() {
         try {
           setError(null);
           setLoading(true);
-          const { data } = await AuthService.login({
+          const { data } = await AuthService.register({
+            userName: values.firstName,
             email: values.email,
             password: values.password,
           });
@@ -67,21 +68,22 @@ export const LoginForm = () => {
         }
       }
 
-      fetchLogin();
+      fetchAuth();
     },
   });
+
   return (
     <Box
       sx={{
-        paddingTop: "30px",
+        paddingTop: "20px",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
       }}
     >
       <form
-        autoComplete="off"
         onSubmit={formik.handleSubmit}
+        autoComplete="off"
         style={{
           maxWidth: "500px",
         }}
@@ -92,7 +94,7 @@ export const LoginForm = () => {
             component="h5"
             sx={{ flexGrow: 1, padding: "20px" }}
           >
-            Login
+            Create an Account
           </Typography>
 
           <ImageListItem
@@ -110,10 +112,20 @@ export const LoginForm = () => {
               sx={{ height: "100%", weight: "auto" }}
             /> */}
           </ImageListItem>
-
           <TextField
             sx={{ paddingBottom: "20px" }}
+            fullWidth
+            id="userName"
+            name="userName"
+            label="User Name"
+            value={formik.values.userName}
+            onChange={formik.handleChange}
+            error={formik.touched.userName && Boolean(formik.errors.userName)}
+            helperText={formik.touched.userName && formik.errors.userName}
             autoComplete="off"
+          />
+          <TextField
+            sx={{ paddingBottom: "20px" }}
             fullWidth
             id="email"
             name="email"
@@ -122,8 +134,8 @@ export const LoginForm = () => {
             onChange={formik.handleChange}
             error={formik.touched.email && Boolean(formik.errors.email)}
             helperText={formik.touched.email && formik.errors.email}
+            autoComplete="off"
           />
-
           <FormControl variant="outlined" fullWidth>
             <InputLabel htmlFor="outlined-adornment-password">
               Password
@@ -154,17 +166,6 @@ export const LoginForm = () => {
             />
           </FormControl>
 
-          <Typography
-            variant="subtitle2"
-            textAlign="left"
-            component="div"
-            width="100%"
-          >
-            User for test: <br />
-            e-mail: tester@gmail.com <br />
-            password: tester123
-          </Typography>
-
           <LoadingButton
             color="primary"
             variant="contained"
@@ -180,13 +181,15 @@ export const LoginForm = () => {
           <Typography
             variant="subtitle1"
             component="p"
+            width="100%"
             sx={{ flexGrow: 1, padding: "20px" }}
           >
-            Don't have an account yet?{" "}
-            <Link to="/auth/register" style={{ color: "#00838f" }}>
-              Create an account
+            Have already an account?{" "}
+            <Link to="/auth" style={{ color: "#00838f" }}>
+              Log in
             </Link>
           </Typography>
+
           {error ? (
             <Typography
               variant="subtitle1"

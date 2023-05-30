@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { CardItem } from "../../interfaces/DataTypes";
+import { CardItem } from "../interfaces/DataTypes";
 import { CardInfo } from "./CardInfo";
-import { Dropdown } from "../Dropdown/Dropdown";
-import { Chipp } from "../Common/Chipp";
+import { Dropdown } from "./Dropdown";
+import { Chipp } from "./Chipp";
 import {
   Box,
   Paper,
@@ -17,7 +17,7 @@ import {
   DragHandleRounded as DragHandleRoundedIcon,
   CalendarMonthOutlined as CalendarMonthOutlinedIcon,
 } from "@mui/icons-material";
-import { TitleBgCard } from "../style/styles/styles";
+import { TitleBgCard } from "./styles";
 
 interface CardProps {
   card: CardItem;

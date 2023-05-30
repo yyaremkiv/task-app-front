@@ -1,17 +1,16 @@
 import React, { useState } from "react";
 import { BrowserRouter, Routes, Route, redirect } from "react-router-dom";
 
-import "./App.css";
-import { Header } from "./components/Header/Header";
-import { TaskBoard } from "./pages/Taskboard/Taskboard";
+import { Header } from "./components/Header";
+import { TaskBoard } from "./pages/Taskboard";
 import { Box, createTheme } from "@mui/material";
 import { ThemeProvider } from "@emotion/react";
-import { AuthPage } from "./pages/Register/Auth";
-import { NotFoundPage } from "./pages/NotFoundPage/NotFoundPage";
-import { PublicRoute } from "./components/UserMenu/PublicRoute";
-import { LoginForm } from "./components/form/Login";
-import { RegisterForm } from "./components/form/Register";
-import { PrivateRoute } from "./components/UserMenu/PrivateRoute";
+import { AuthPage } from "./pages/Auth";
+import { NotFoundPage } from "./pages/NotFoundPage";
+import { PublicRoute } from "./components/PublicRoute";
+import { LoginForm } from "./components/Login";
+import { RegisterForm } from "./components/Register";
+import { PrivateRoute } from "./components/PrivateRoute";
 
 function App() {
   const [mode, setMode] = useState<"light" | "dark">("light");

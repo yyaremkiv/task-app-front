@@ -1,7 +1,7 @@
 import { styled } from "@mui/material/styles";
 import { Paper, Box } from "@mui/material";
 import { Theme } from "@mui/material/styles";
-import { shadow } from "../GridItem/GridItem";
+import { shadow } from "./GridItem";
 import { blueGrey } from "@mui/material/colors";
 
 export const ItemAddBoardBtn = styled(Paper)(({ theme }: { theme: Theme }) => ({
