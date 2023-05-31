@@ -31,7 +31,10 @@ export const ListBoards = () => {
   };
 
   const handelUpdateCard = ({ boardId, cardId, updatedCard }) => {
-    return null;
+    const newBoard = new BoardHandler(boards);
+    const updatedBoard = newBoard.updateCard({ boardId, cardId, updatedCard });
+
+    dispatch(TaskOperations.updateBoard({ boardId, board: updatedBoard }));
   };
 
   return (

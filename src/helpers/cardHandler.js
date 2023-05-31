@@ -1,5 +1,7 @@
 class CardHandler {
-  constructor() {}
+  constructor(card) {
+    this.card = card;
+  }
 }
 
 export default CardHandler;

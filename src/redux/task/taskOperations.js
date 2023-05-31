@@ -33,7 +33,6 @@ class TaskOperations {
   static updateBoard = createAsyncThunk(
     "task/updateBoard",
     async ({ boardId, board }, { rejectWithValue }) => {
-      console.log("this is console", boardId, board);
       try {
         const { data } = await TaskService.updateBoard({ boardId, board });
         return data;

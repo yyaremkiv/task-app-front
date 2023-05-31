@@ -18,6 +18,7 @@ import {
   CalendarMonthOutlined as CalendarMonthOutlinedIcon,
 } from "@mui/icons-material";
 import { TitleBgCard } from "./styles";
+import { ModalCardInfo } from "./ModalCardInfo";
 
 // interface CardProps {
 //   card: CardItem;

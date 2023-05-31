@@ -5,6 +5,16 @@ class BoardHandler {
     this.boards = boards;
   }
 
+  updateTitleBoard({ boardId, titleBoard }) {
+    const boardIndex = this.boards.findIndex((board) => board.id === boardId);
+    if (boardIndex === -1) return;
+
+    let board = JSON.parse(JSON.stringify(this.boards[boardIndex]));
+    board.title = titleBoard;
+
+    return board;
+  }
+
   addCard({ boardId, titleCard }) {
     const boardIndex = this.boards.findIndex((board) => board.id === boardId);
     if (boardIndex === -1) return;
@@ -21,6 +31,22 @@ class BoardHandler {
 
     const board = JSON.parse(JSON.stringify(this.boards[boardIndex]));
     board.cards = board.cards.filter((card) => card.id !== cardId);
+
+    return board;
+  }
+
+  updateCard({ boardId, cardId, updatedCard }) {
+    const boardIndex = this.boards.findIndex((board) => board.id === boardId);
+    if (boardIndex === -1) return;
+
+    let board = JSON.parse(JSON.stringify(this.boards[boardIndex]));
+    let cards = board.cards;
+    for (let i = 0; i < cards.length; i++) {
+      if (cards[i].id === cardId) {
+        cards[i] = updatedCard;
+        break;
+      }
+    }
 
     return board;
   }

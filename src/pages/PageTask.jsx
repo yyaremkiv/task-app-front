@@ -21,37 +21,6 @@ export const PageTask = () => {
   const handleAddBoard = (title) =>
     dispatch(TaskOperations.addBoard(new BoardCreate({ title })));
 
-  // update current card
-  const updateCard = async (boardId, cardId, card) => {
-    setIsLoading(true);
-    const boardIndex = boards.findIndex((el) => {
-      return el.id === boardId;
-    });
-    if (boardIndex === -1) return;
-
-    const updatedBoard = { ...boards[boardIndex] };
-    const cards = updatedBoard.cards;
-    const cardIndex = cards.findIndex((el) => {
-      return el.id === cardId;
-    });
-    if (cardIndex === -1) return;
-
-    updatedBoard.cards[cardIndex] = card;
-
-    const { data } = await TaskService.updateBoard({
-      boardId,
-      board: updatedBoard,
-    });
-    const updatedListBoard = boards.map((el) => {
-      if (el.id === data.id) {
-        el = data;
-      }
-      return el;
-    });
-    setBoards(updatedListBoard);
-    setIsLoading(false);
-  };
-
   // drag&drop cards
   const onDragEnd = async (boardId, cardId) => {
     setIsLoading(true);
@@ -129,29 +98,10 @@ export const PageTask = () => {
       }}
     >
       <Filter />
-      <ListBoards />
-      {/* <Grid container spacing={2}>
-        {isLoading ? <Progress /> : null}
-        {error ? <Error error={error} /> : null}
-        {boards?.length > 0 &&
-          boards.map((board) => (
-            <Grid item xs={12} sm={6} md={4} lg={3} xl={3} key={board.id}>
-              <GridItem>
-                <Board
-                  board={board}
-                  addCard={addCardHandler}
-                  removeBoard={() => removeBoard(board.id)}
-                  removeCard={removeCard}
-                  updateCard={updateCard}
-                  onDragEnd={onDragEnd}
-                  onDragEnter={onDragEnter}
-                />
-              </GridItem>
-            </Grid>
-          ))}
-      </Grid> */}
 
-      <Box sx={{}}>
+      <ListBoards />
+
+      <Box>
         <ItemAddBoardBtn>
           <CustomInput
             placeholder="Enter Board Title"

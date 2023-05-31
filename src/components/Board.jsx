@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import { Box, Typography, IconButton, Button } from "@mui/material";
+import { Box, Typography, IconButton, Button, TextField } from "@mui/material";
 import DragHandleRoundedIcon from "@mui/icons-material/DragHandleRounded";
 import NoteRoundedIcon from "@mui/icons-material/NoteRounded";
 import NoteAltRoundedIcon from "@mui/icons-material/NoteAltRounded";
-import { BoardItem, CardItem } from "../interfaces/DataTypes";
 import { CustomInput } from "./CustomInput";
 import { Card } from "./Card";
 import { Dropdown } from "./Dropdown";
@@ -13,16 +12,11 @@ import { ItemAddCardBtn, TitleBgBoard } from "./styles";
 
 import TaskOperations from "../redux/task/taskOperations";
 import { useDispatch } from "react-redux";
-
-// interface BoardProps {
-//   board: BoardItem;
-//   addCard: (boardId: number, cardTitle: string) => void;
-//   removeBoard: (boardId: number) => void;
-//   removeCard: (boardId: number, cardId: number) => void;
-//   updateCard: (boardId: number, cardId: number, card: CardItem) => void;
-//   onDragEnd: (boardId: number, cardId: number) => void;
-//   onDragEnter: (boardId: number, cardId: number) => void;
-// }
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import DoneIcon from "@mui/icons-material/Done";
+import CloseIcon from "@mui/icons-material/Close";
+import BoardHandler from "../helpers/boardHandler";
 
 export const Board = ({
   board,
@@ -32,6 +26,8 @@ export const Board = ({
   onDragEnd,
   onDragEnter,
 }) => {
+  const [showTitleChange, setShowTitleChange] = useState(false);
+  const [titleBoard, setTitleBoard] = useState(board.title || "title");
   const [showDropdown, setShowDropdown] = useState(false);
   const matches = useMediaQuery("(min-width:600px)");
   const dispatch = useDispatch();
@@ -40,8 +36,21 @@ export const Board = ({
     dispatch(TaskOperations.removeBoard({ boardId }));
   };
 
+  const handleChangeTitle = () => {
+    const newBoard = new BoardHandler([board]);
+
+    const updatedBoard = newBoard.updateTitleBoard({
+      boardId: board.id,
+      titleBoard,
+    });
+    dispatch(
+      TaskOperations.updateBoard({ boardId: board.id, board: updatedBoard })
+    );
+    setShowTitleChange(false);
+  };
+
   return (
-    <Box sx={{ border: "1px solid red" }}>
+    <Box>
       <Box>
         <TitleBgBoard
           sx={{
@@ -63,14 +72,35 @@ export const Board = ({
             }}
           >
             <NoteAltRoundedIcon color="inherit" fontSize="medium" />
-            <Typography
-              variant="h5"
-              gutterBottom
-              sx={{ margin: "0" }}
-              fontSize="20px"
-            >
-              {board.title}
-            </Typography>
+
+            {showTitleChange ? (
+              <Box
+                sx={{ display: "flex", alignItems: "center", gap: "0.5rem" }}
+              >
+                <TextField
+                  size="small"
+                  label="Title"
+                  multiline
+                  value={titleBoard}
+                  onChange={(e) => setTitleBoard(e.target.value)}
+                />
+                <IconButton onClick={handleChangeTitle}>
+                  <DoneIcon />
+                </IconButton>
+                <IconButton onClick={() => setShowTitleChange(false)}>
+                  <CloseIcon />
+                </IconButton>
+              </Box>
+            ) : (
+              <Typography
+                variant="h5"
+                gutterBottom
+                sx={{ margin: "0" }}
+                fontSize="20px"
+              >
+                {board.title}
+              </Typography>
+            )}
           </Box>
 
           <Box
@@ -108,14 +138,17 @@ export const Board = ({
 
             {showDropdown && (
               <Dropdown onClose={() => setShowDropdown(false)}>
-                <TitleBgBoard
-                  onClick={() => handleRemoveBoard(board.id)}
-                  sx={{ border: "none" }}
+                <IconButton
+                  onClick={() => {
+                    setShowDropdown(false);
+                    setShowTitleChange(!showTitleChange);
+                  }}
                 >
-                  <Button variant="text" color="inherit">
-                    Delete Board
-                  </Button>
-                </TitleBgBoard>
+                  <EditIcon />
+                </IconButton>
+                <IconButton onClick={() => handleRemoveBoard(board.id)}>
+                  <DeleteIcon />
+                </IconButton>
               </Dropdown>
             )}
           </Box>
