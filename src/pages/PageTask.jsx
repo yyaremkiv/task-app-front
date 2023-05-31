@@ -2,14 +2,20 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { CustomInput } from "../components/CustomInput";
 import { ItemAddBoardBtn } from "../components/styles";
-import { Container, Box } from "@mui/material";
+import { Container, Box, Modal, Button, IconButton } from "@mui/material";
 import TaskService from "../services/TaskService";
 import { Filter } from "../components/Filter";
 import { ListBoards } from "../components/ListBoards";
 import TaskOperations from "../redux/task/taskOperations";
-import BoardCreate from "../config/boardClass";
+import BoardCreate from "../config/boardCreate";
+import { ModalBoardCreate } from "../components/ModalBoardCreate";
+import AddIcon from "@mui/icons-material/Add";
 
 export const PageTask = () => {
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   const [isLoading, setIsLoading] = useState(false);
   const [boards, setBoards] = useState([]);
   const [targetCard, setTargetCard] = useState({
@@ -101,6 +107,15 @@ export const PageTask = () => {
 
       <ListBoards />
 
+      <Box
+        onClick={handleOpen}
+        sx={{ position: "absolute", right: "8rem", bottom: "3rem" }}
+      >
+        <IconButton sx={{ backgroundColor: "tomato", fontSize: "3rem" }}>
+          <AddIcon sx={{ fontSize: 80, color: "white" }} />
+        </IconButton>
+      </Box>
+
       <Box>
         <ItemAddBoardBtn>
           <CustomInput
@@ -111,6 +126,23 @@ export const PageTask = () => {
           />
         </ItemAddBoardBtn>
       </Box>
+
+      <Modal open={open} onClose={handleClose}>
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            p: "2rem 1rem",
+            width: 400,
+            bgcolor: "background.paper",
+            borderRadius: "0.5rem",
+            transform: "translate(-50%, -50%)",
+          }}
+        >
+          <ModalBoardCreate handleClose={handleClose} />
+        </Box>
+      </Modal>
     </Container>
   );
 };

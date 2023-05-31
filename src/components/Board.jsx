@@ -17,6 +17,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import DoneIcon from "@mui/icons-material/Done";
 import CloseIcon from "@mui/icons-material/Close";
 import BoardHandler from "../helpers/boardHandler";
+import { Chipp } from "./Chipp";
 
 export const Board = ({
   board,
@@ -123,7 +124,6 @@ export const Board = ({
             </Typography>
             <NoteRoundedIcon color="inherit" fontSize="medium" />
           </Box>
-
           <Box sx={{ zIndex: 5, position: "relative" }}>
             <IconButton
               size="large"
@@ -173,6 +173,23 @@ export const Board = ({
             },
           }}
         >
+          <Box
+            sx={{
+              display: "flex",
+              width: "100%",
+              justifyContent: "start",
+              alignItems: "center",
+              flexWrap: "wrap",
+              gap: "3px",
+            }}
+          >
+            {board?.labels?.map((label, index) => (
+              <Box>
+                <Chipp key={index} el={label} />
+              </Box>
+            ))}
+          </Box>
+
           {board?.cards?.map((card) => (
             <Card
               card={card}

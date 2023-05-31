@@ -1,6 +1,7 @@
 class BoardCreate {
-  constructor({ title }) {
+  constructor({ title, labels }) {
     this.title = title;
+    this.labels = labels;
     this.cards = [];
   }
 }
