@@ -19,16 +19,16 @@ import {
 } from "@mui/icons-material";
 import { TitleBgCard } from "./styles";
 
-interface CardProps {
-  card: CardItem;
-  boardId: number;
-  removeCard: (boardId: number, cardId: number) => void;
-  updateCard: (boardId: number, cardId: number, card: CardItem) => void;
-  onDragEnd: (boardId: number, cardId: number) => void;
-  onDragEnter: (boardId: number, cardId: number) => void;
-}
+// interface CardProps {
+//   card: CardItem;
+//   boardId: number;
+//   removeCard: (boardId: number, cardId: number) => void;
+//   updateCard: (boardId: number, cardId: number, card: CardItem) => void;
+//   onDragEnd: (boardId: number, cardId: number) => void;
+//   onDragEnter: (boardId: number, cardId: number) => void;
+// }
 
-export const Card: React.FC<CardProps> = (props: CardProps) => {
+export const Card = (props) => {
   const { card, boardId, removeCard, updateCard, onDragEnd, onDragEnter } =
     props;
   const { id, title, date, tasks, labels, desc } = card;
@@ -83,7 +83,7 @@ export const Card: React.FC<CardProps> = (props: CardProps) => {
             gap: "3px",
           }}
         >
-          {labels?.map((el, index: number) => (
+          {labels?.map((el, index) => (
             <Chipp key={index} el={el} />
           ))}
         </Box>
@@ -130,7 +130,7 @@ export const Card: React.FC<CardProps> = (props: CardProps) => {
                 }}
               >
                 <TitleBgCard
-                  onClick={() => removeCard(boardId, id)}
+                  onClick={() => removeCard({ boardId, cardId: id })}
                   sx={{ border: "none" }}
                 >
                   <Button variant="text" color="inherit">

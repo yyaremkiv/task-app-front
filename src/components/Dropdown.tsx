@@ -4,7 +4,6 @@ import { Box } from "@mui/material";
 export const Dropdown = (props: any) => {
   const dropdownRef: any = useRef(null);
 
-  console.log("props", props);
   const handleClick = (e: any) => {
     if (
       dropdownRef &&

@@ -26,30 +26,32 @@ import { Chipp } from "./Chipp";
 import { ItemAddCardBtn, ItemCardInfo } from "./styles";
 import { deepOrange } from "@mui/material/colors";
 
-interface CardInfoProps {
-  card: CardItem;
-  boardId: number;
-  onCLose: () => void;
-  updateCard: (boardId: number, cardId: number, card: CardItem) => void;
-}
+import CardHandler from "../helpers/cardHandler";
 
-export const CardInfo: React.FC<CardInfoProps> = (props: CardInfoProps) => {
+// interface CardInfoProps {
+//   card: CardItem;
+//   boardId: number;
+//   onCLose: () => void;
+//   updateCard: (boardId: number, cardId: number, card: CardItem) => void;
+// }
+
+export const CardInfo = (props) => {
   const { card, boardId, onCLose, updateCard } = props;
   const [selectedColor, setSelectedColor] = useState("#00796b");
-  const [cardValues, setCardValues] = useState<CardItem>({
+  const [cardValues, setCardValues] = useState({
     ...card,
   });
 
-  const updateTitle = (value: string) => {
+  const updateTitle = (value) => {
     setCardValues({ ...cardValues, title: value });
   };
 
-  const updateDescript = (value: string) => {
+  const updateDescript = (value) => {
     setCardValues({ ...cardValues, desc: value });
   };
 
   //--------------- add and remove label
-  const addLabel = (label: LabelItem) => {
+  const addLabel = (label) => {
     const { labels } = cardValues;
 
     const index = labels.findIndex((el) => el.text === label.text);
@@ -64,14 +66,14 @@ export const CardInfo: React.FC<CardInfoProps> = (props: CardInfoProps) => {
     }));
   };
 
-  const removeLabel = (label: LabelItem) => {
+  const removeLabel = (label) => {
     const tempLabels = cardValues.labels.filter((el) => el.text !== label.text);
     setCardValues({ ...cardValues, labels: tempLabels });
   };
 
   //--------------------- add, remove & update new task
-  const addTask = (value: string) => {
-    const task: TaskItem = {
+  const addTask = (value) => {
+    const task = {
       id: Date.now() + Math.random() * 2,
       completed: false,
       text: value,
@@ -79,7 +81,7 @@ export const CardInfo: React.FC<CardInfoProps> = (props: CardInfoProps) => {
     setCardValues({ ...cardValues, tasks: [...cardValues.tasks, task] });
   };
 
-  const removeTask = (id: number) => {
+  const removeTask = (id) => {
     const tasks = [...cardValues.tasks];
 
     const tempTasks = tasks.filter((el) => {
@@ -88,7 +90,7 @@ export const CardInfo: React.FC<CardInfoProps> = (props: CardInfoProps) => {
     setCardValues({ ...cardValues, tasks: tempTasks });
   };
 
-  const checkDoneTask = (id: number, value: boolean) => {
+  const checkDoneTask = (id, value) => {
     const tasks = [...cardValues.tasks];
 
     const index = tasks.findIndex((el) => {
@@ -102,7 +104,7 @@ export const CardInfo: React.FC<CardInfoProps> = (props: CardInfoProps) => {
   };
 
   // ------------ update date
-  const updateDate = (date: string) => {
+  const updateDate = (date) => {
     if (!date) {
       return;
     }
@@ -330,7 +332,7 @@ export const CardInfo: React.FC<CardInfoProps> = (props: CardInfoProps) => {
                     directionBtn={"row"}
                     text="Add Label"
                     placeholder="Enter label text"
-                    onClickAddBtn={(value: string) =>
+                    onClickAddBtn={(value) =>
                       addLabel({ color: selectedColor, text: value })
                     }
                   />

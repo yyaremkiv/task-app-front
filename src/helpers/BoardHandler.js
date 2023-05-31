@@ -15,6 +15,16 @@ class BoardHandler {
     return board;
   }
 
+  removeCard({ boardId, cardId }) {
+    const boardIndex = this.boards.findIndex((board) => board.id === boardId);
+    if (boardIndex === -1) return;
+
+    const board = JSON.parse(JSON.stringify(this.boards[boardIndex]));
+    board.cards = board.cards.filter((card) => card.id !== cardId);
+
+    return board;
+  }
+
   createNewCard(title) {
     return {
       id: uuidv4(),

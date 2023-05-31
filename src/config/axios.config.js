@@ -34,7 +34,6 @@ API.interceptors.response.use(
           store.dispatch({ type: "auth/incrementRefreshAttempts" });
 
           await store.dispatch(AuthOperations.refresh());
-          await store.dispatch(TaskOperations.getBoards());
 
           return API(originalRequest);
         } else {
