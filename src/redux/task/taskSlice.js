@@ -3,6 +3,7 @@ import TaskOperations from "./taskOperations";
 
 const initialState = {
   data: [],
+  totalBoards: 1,
   isLoading: false,
   error: null,
 };
@@ -16,7 +17,8 @@ export const taskSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(TaskOperations.getBoards.fulfilled, (state, action) => {
-      state.data = action.payload;
+      state.data = action.payload.boards;
+      state.totalBords = action.payload.totalBoards;
       state.isLoading = false;
     });
     builder.addCase(TaskOperations.getBoards.rejected, (state, action) => {
@@ -28,7 +30,8 @@ export const taskSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(TaskOperations.addBoard.fulfilled, (state, action) => {
-      state.data = action.payload;
+      state.data = action.payload.boards;
+      state.totalBords = action.payload.totalBoards;
       state.isLoading = false;
     });
     builder.addCase(TaskOperations.addBoard.rejected, (state, action) => {
@@ -40,7 +43,8 @@ export const taskSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(TaskOperations.removeBoard.fulfilled, (state, action) => {
-      state.data = action.payload;
+      state.data = action.payload.boards;
+      state.totalBords = action.payload.totalBoards;
       state.isLoading = false;
     });
     builder.addCase(TaskOperations.removeBoard.rejected, (state, action) => {
@@ -52,7 +56,8 @@ export const taskSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(TaskOperations.updateBoard.fulfilled, (state, action) => {
-      state.data = action.payload;
+      state.data = action.payload.boards;
+      state.totalBords = action.payload.totalBoards;
       state.isLoading = false;
     });
     builder.addCase(TaskOperations.updateBoard.rejected, (state, action) => {

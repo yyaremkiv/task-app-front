@@ -1,12 +1,12 @@
 import API from "../config/axios.config";
 
 class TaskService {
-  static async getBoards() {
-    return API.get("/board");
+  static async getBoards({ params }) {
+    return API.get("/board", { params });
   }
 
-  static async addBoard({ title, cards, labels, color }) {
-    return API.post("/board", { title, cards, labels, color });
+  static async addBoard({ body }) {
+    return API.post("/board", body);
   }
 
   static async updateBoard({ boardId, board }) {

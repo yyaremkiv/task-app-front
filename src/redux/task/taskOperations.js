@@ -4,9 +4,9 @@ import TaskService from "../../services/TaskService";
 class TaskOperations {
   static getBoards = createAsyncThunk(
     "task/getBoards",
-    async (_, { rejectWithValue }) => {
+    async ({ params }, { rejectWithValue }) => {
       try {
-        const { data } = await TaskService.getBoards();
+        const { data } = await TaskService.getBoards({ params });
         return data;
       } catch (err) {
         return rejectWithValue(
@@ -21,10 +21,12 @@ class TaskOperations {
     async ({ title, cards, labels, color }, { rejectWithValue }) => {
       try {
         const { data } = await TaskService.addBoard({
-          title,
-          cards,
-          labels,
-          color,
+          body: {
+            title,
+            cards,
+            labels,
+            color,
+          },
         });
         return data;
       } catch (err) {

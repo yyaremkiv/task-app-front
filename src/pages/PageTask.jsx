@@ -4,7 +4,7 @@ import { CustomInput } from "../components/CustomInput";
 import { ItemAddBoardBtn } from "../components/styles";
 import { Container, Box, Modal, Button, IconButton } from "@mui/material";
 import TaskService from "../services/TaskService";
-import { Filter } from "../components/Filter";
+import { Filter } from "../components/FilterBoards";
 import { ListBoards } from "../components/ListBoards";
 import TaskOperations from "../redux/task/taskOperations";
 import BoardCreate from "../config/boardCreate";
@@ -103,8 +103,6 @@ export const PageTask = () => {
         margin: "0 auto",
       }}
     >
-      <Filter />
-
       <ListBoards />
 
       <Box
