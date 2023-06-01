@@ -4,7 +4,7 @@ import TaskOperations from "../redux/task/taskOperations";
 import { Grid } from "@mui/material";
 import { GridItem } from "./GridItem";
 import { Board } from "./Board";
-import BoardHandler from "../helpers/boardHandler";
+import BoardHandler from "../helpers/boardHandler.js";
 
 export const ListBoards = () => {
   const boards = useSelector((state) => state.task.data);
