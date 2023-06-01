@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { Box, Typography, IconButton, Button, TextField } from "@mui/material";
+import {
+  Box,
+  Typography,
+  IconButton,
+  Button,
+  TextField,
+  Autocomplete,
+} from "@mui/material";
 import DragHandleRoundedIcon from "@mui/icons-material/DragHandleRounded";
 import NoteRoundedIcon from "@mui/icons-material/NoteRounded";
 import NoteAltRoundedIcon from "@mui/icons-material/NoteAltRounded";
@@ -16,8 +23,12 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import DoneIcon from "@mui/icons-material/Done";
 import CloseIcon from "@mui/icons-material/Close";
-import BoardHandler from "../helpers/boardHandler";
+import BoardHandler from "../helpers/boardHandler.js";
 import { Chipp } from "./Chipp";
+import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
+import PaletteIcon from "@mui/icons-material/Palette";
+
+import DataConfigInformation from "../data/DataConfigInformation";
 
 export const Board = ({
   board,
@@ -28,10 +39,18 @@ export const Board = ({
   onDragEnter,
 }) => {
   const [showTitleChange, setShowTitleChange] = useState(false);
+  const [showLabelsChange, setShowLabelsChange] = useState(false);
+  const [showColorChange, setShowColorChange] = useState(false);
+
   const [titleBoard, setTitleBoard] = useState(board.title || "title");
   const [showDropdown, setShowDropdown] = useState(false);
   const matches = useMediaQuery("(min-width:600px)");
   const dispatch = useDispatch();
+
+  const [labels, setLabels] = useState(board.labels || []);
+  const [color, setColor] = useState(
+    DataConfigInformation.colors.find((el) => el.color === board.color)
+  );
 
   const handleRemoveBoard = (boardId) => {
     dispatch(TaskOperations.removeBoard({ boardId }));
@@ -48,6 +67,32 @@ export const Board = ({
       TaskOperations.updateBoard({ boardId: board.id, board: updatedBoard })
     );
     setShowTitleChange(false);
+  };
+
+  const handleChangeLable = () => {
+    const newBoard = new BoardHandler([board]);
+
+    const updatedBoard = newBoard.updateLabeleBoard({
+      boardId: board.id,
+      labels,
+    });
+    dispatch(
+      TaskOperations.updateBoard({ boardId: board.id, board: updatedBoard })
+    );
+    setShowLabelsChange(false);
+  };
+
+  const handleChangeColor = () => {
+    const newBoard = new BoardHandler([board]);
+
+    const updatedBoard = newBoard.updateColorBoard({
+      boardId: board.id,
+      color: color?.color || "",
+    });
+    dispatch(
+      TaskOperations.updateBoard({ boardId: board.id, board: updatedBoard })
+    );
+    setShowColorChange(false);
   };
 
   return (
@@ -138,17 +183,43 @@ export const Board = ({
 
             {showDropdown && (
               <Dropdown onClose={() => setShowDropdown(false)}>
-                <IconButton
+                <Button
+                  startIcon={<EditIcon />}
                   onClick={() => {
                     setShowDropdown(false);
                     setShowTitleChange(!showTitleChange);
                   }}
+                  style={{ whiteSpace: "nowrap", justifyContent: "flex-start" }}
                 >
-                  <EditIcon />
-                </IconButton>
-                <IconButton onClick={() => handleRemoveBoard(board.id)}>
-                  <DeleteIcon />
-                </IconButton>
+                  Edit title
+                </Button>
+                <Button
+                  startIcon={<BookmarkBorderIcon />}
+                  onClick={() => {
+                    setShowDropdown(false);
+                    setShowLabelsChange(true);
+                  }}
+                  style={{ whiteSpace: "nowrap", justifyContent: "flex-start" }}
+                >
+                  Edit Labels
+                </Button>
+                <Button
+                  startIcon={<PaletteIcon />}
+                  onClick={() => {
+                    setShowDropdown(false);
+                    setShowColorChange(true);
+                  }}
+                  style={{ whiteSpace: "nowrap", justifyContent: "flex-start" }}
+                >
+                  Edit Color
+                </Button>
+                <Button
+                  startIcon={<DeleteIcon />}
+                  onClick={() => handleRemoveBoard(board.id)}
+                  style={{ whiteSpace: "nowrap", justifyContent: "flex-start" }}
+                >
+                  Delete Board
+                </Button>
               </Dropdown>
             )}
           </Box>
@@ -173,22 +244,121 @@ export const Board = ({
             },
           }}
         >
-          <Box
-            sx={{
-              display: "flex",
-              width: "100%",
-              justifyContent: "start",
-              alignItems: "center",
-              flexWrap: "wrap",
-              gap: "3px",
-            }}
-          >
-            {board?.labels?.map((label, index) => (
-              <Box>
-                <Chipp key={index} el={label} />
+          {/* Start change labels */}
+          <Box sx={{ border: "1px solid gray" }}>
+            {showLabelsChange ? (
+              <Box
+                sx={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}
+              >
+                <Autocomplete
+                  id="size-small-outlined-multi"
+                  multiple
+                  fullWidth
+                  isOptionEqualToValue={(option, value) =>
+                    option.text === value.text && option.color === value.color
+                  }
+                  options={DataConfigInformation.labelCategories}
+                  getOptionLabel={(option) => option.text}
+                  value={labels}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Set Label"
+                      placeholder="Add more"
+                    />
+                  )}
+                  onChange={(_, values) => {
+                    setLabels(values);
+                  }}
+                />
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    gap: "1rem",
+                  }}
+                >
+                  <IconButton onClick={handleChangeLable}>
+                    <DoneIcon />
+                  </IconButton>
+                  <IconButton onClick={() => setShowLabelsChange(false)}>
+                    <CloseIcon />
+                  </IconButton>
+                </Box>
               </Box>
-            ))}
+            ) : (
+              <Box
+                sx={{
+                  display: "flex",
+                  width: "100%",
+                  justifyContent: "start",
+                  alignItems: "center",
+                  flexWrap: "wrap",
+                  gap: "3px",
+                }}
+              >
+                {board?.labels?.map((label, index) => (
+                  <Chipp key={index} el={label} />
+                ))}
+              </Box>
+            )}
           </Box>
+
+          {/* Start color changer */}
+          <Box>
+            {showColorChange ? (
+              <Box>
+                <Autocomplete
+                  fullWidth
+                  disablePortal
+                  id="combo-box-demo"
+                  value={color}
+                  options={DataConfigInformation.colors}
+                  getOptionLabel={(option) => option.label}
+                  onChange={(_, selectedValues) => {
+                    setColor(selectedValues);
+                  }}
+                  renderInput={(params) => (
+                    <TextField {...params} label="Set Color Of Border" />
+                  )}
+                  renderOption={(props, option) => (
+                    <Box
+                      {...props}
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "1rem",
+                      }}
+                    >
+                      <Box
+                        sx={{
+                          width: "2rem",
+                          height: "1rem",
+                          backgroundColor: option.color,
+                        }}
+                      ></Box>
+                      <Typography>{option.label}</Typography>
+                    </Box>
+                  )}
+                />
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    gap: "1rem",
+                  }}
+                >
+                  <IconButton onClick={handleChangeColor}>
+                    <DoneIcon />
+                  </IconButton>
+                  <IconButton onClick={() => setShowColorChange(false)}>
+                    <CloseIcon />
+                  </IconButton>
+                </Box>
+              </Box>
+            ) : null}
+          </Box>
+          {/* End color changer */}
 
           {board?.cards?.map((card) => (
             <Card
@@ -203,7 +373,6 @@ export const Board = ({
           ))}
         </Box>
       </Box>
-
       <ItemAddCardBtn>
         <CustomInput
           text="Add Card"

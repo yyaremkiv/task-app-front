@@ -109,22 +109,11 @@ export const PageTask = () => {
 
       <Box
         onClick={handleOpen}
-        sx={{ position: "absolute", right: "8rem", bottom: "3rem" }}
+        sx={{ position: "absolute", right: "4rem", bottom: "3rem" }}
       >
         <IconButton sx={{ backgroundColor: "tomato", fontSize: "3rem" }}>
           <AddIcon sx={{ fontSize: 80, color: "white" }} />
         </IconButton>
-      </Box>
-
-      <Box>
-        <ItemAddBoardBtn>
-          <CustomInput
-            placeholder="Enter Board Title"
-            onClickAddBtn={handleAddBoard}
-            padding="20px"
-            bdRadius="50%"
-          />
-        </ItemAddBoardBtn>
       </Box>
 
       <Modal open={open} onClose={handleClose}>

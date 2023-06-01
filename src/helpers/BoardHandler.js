@@ -15,6 +15,26 @@ class BoardHandler {
     return board;
   }
 
+  updateLabeleBoard({ boardId, labels }) {
+    const boardIndex = this.boards.findIndex((board) => board.id === boardId);
+    if (boardIndex === -1) return;
+
+    let board = JSON.parse(JSON.stringify(this.boards[boardIndex]));
+    board.labels = labels;
+
+    return board;
+  }
+
+  updateColorBoard({ boardId, color }) {
+    const boardIndex = this.boards.findIndex((board) => board.id === boardId);
+    if (boardIndex === -1) return;
+
+    let board = JSON.parse(JSON.stringify(this.boards[boardIndex]));
+    board.color = color;
+
+    return board;
+  }
+
   addCard({ boardId, titleCard }) {
     const boardIndex = this.boards.findIndex((board) => board.id === boardId);
     if (boardIndex === -1) return;

@@ -1,16 +1,28 @@
 import { Formik } from "formik";
 import * as Yup from "yup";
-import { Autocomplete, Box, IconButton, TextField } from "@mui/material";
+import {
+  Autocomplete,
+  Box,
+  FormControl,
+  IconButton,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { Title, BookmarkBorder } from "@mui/icons-material/";
 import DoneIcon from "@mui/icons-material/Done";
 import CloseIcon from "@mui/icons-material/Close";
 import { useDispatch } from "react-redux";
 import TaskOperations from "../redux/task/taskOperations";
 import BoardCreate from "../config/boardCreate";
+import PaletteIcon from "@mui/icons-material/Palette";
 
 const initialValuesBoard = {
   title: "",
   labels: [],
+  color: "",
 };
 
 const boardSchema = Yup.object().shape({
@@ -31,16 +43,31 @@ const labelCategories = [
   { text: "status: wont do/fix", color: "#eeeeee" },
 ];
 
+const colors = [
+  { label: "Red", color: "#f44336" },
+  { label: "Pink", color: "#e91e63" },
+  { label: "Purple", color: "#9c27b0" },
+  { label: "Blue", color: "#2196f3" },
+  { label: "Green", color: "#4caf50" },
+  { label: "Yellow", color: "#ffeb3b" },
+  { label: "Orange", color: "#ff9800" },
+  { label: "Grey", color: "#9e9e9e" },
+];
+
 export const ModalBoardCreate = ({ handleClose }) => {
   const dispatch = useDispatch();
   const isLoading = false;
 
   return (
     <Formik
-      onSubmit={(values) => {
+      onSubmit={({ title, labels, color }) => {
         dispatch(
           TaskOperations.addBoard(
-            new BoardCreate({ title: values.title, labels: values.labels })
+            new BoardCreate({
+              title,
+              labels,
+              color,
+            })
           )
         );
 
@@ -100,6 +127,39 @@ export const ModalBoardCreate = ({ handleClose }) => {
               onChange={(_, selectedValues) => {
                 setFieldValue("labels", selectedValues);
               }}
+            />
+          </Box>
+
+          <Box sx={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+            <PaletteIcon color="primary" fontSize="large" />
+
+            <Autocomplete
+              fullWidth
+              disablePortal
+              id="combo-box-demo"
+              options={colors}
+              getOptionLabel={(option) => option.label}
+              onChange={(_, selectedValues) => {
+                setFieldValue("color", selectedValues.color);
+              }}
+              renderInput={(params) => (
+                <TextField {...params} label="Set Color Of Border" />
+              )}
+              renderOption={(props, option) => (
+                <Box
+                  {...props}
+                  sx={{ display: "flex", alignItems: "center", gap: "1rem" }}
+                >
+                  <Box
+                    sx={{
+                      width: "2rem",
+                      height: "1rem",
+                      backgroundColor: option.color,
+                    }}
+                  ></Box>
+                  <Typography>{option.label}</Typography>
+                </Box>
+              )}
             />
           </Box>
 

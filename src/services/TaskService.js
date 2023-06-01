@@ -5,8 +5,8 @@ class TaskService {
     return API.get("/board");
   }
 
-  static async addBoard({ title, cards, labels }) {
-    return API.post("/board", { title, cards, labels });
+  static async addBoard({ title, cards, labels, color }) {
+    return API.post("/board", { title, cards, labels, color });
   }
 
   static async updateBoard({ boardId, board }) {

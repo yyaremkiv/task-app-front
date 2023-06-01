@@ -18,9 +18,14 @@ class TaskOperations {
 
   static addBoard = createAsyncThunk(
     "task/addBoard",
-    async ({ title, cards, labels }, { rejectWithValue }) => {
+    async ({ title, cards, labels, color }, { rejectWithValue }) => {
       try {
-        const { data } = await TaskService.addBoard({ title, cards, labels });
+        const { data } = await TaskService.addBoard({
+          title,
+          cards,
+          labels,
+          color,
+        });
         return data;
       } catch (err) {
         return rejectWithValue(

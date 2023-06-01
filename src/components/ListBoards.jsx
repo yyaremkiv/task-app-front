@@ -41,7 +41,11 @@ export const ListBoards = () => {
     <Grid container spacing={2}>
       {boards?.map((board) => (
         <Grid item xs={12} sm={6} md={4} lg={3} xl={3} key={board.id}>
-          <GridItem>
+          <GridItem
+            sx={{
+              border: `2px solid ${board.color || "gray"}`,
+            }}
+          >
             <Board
               board={board}
               addCard={handleAddCardToBoard}
