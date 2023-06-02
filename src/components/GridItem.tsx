@@ -8,7 +8,6 @@ export const shadow = {
 };
 
 export const GridItem = styled(Paper)(({ theme }: { theme: Theme }) => ({
-  // boxShadow: theme.palette.mode === "dark" ? shadow[1] : shadow[2],
   ...theme.typography.body2,
   padding: theme.spacing(2),
   textAlign: "center",

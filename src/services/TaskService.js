@@ -6,7 +6,7 @@ class TaskService {
   }
 
   static async addBoard({ body }) {
-    return API.post("/board", body);
+    return API.post("sdfsdfdsf/board", body);
   }
 
   static async updateBoard({ boardId, board }) {

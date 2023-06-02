@@ -25,12 +25,9 @@ import EditIcon from "@mui/icons-material/Edit";
 import DoneIcon from "@mui/icons-material/Done";
 import CloseIcon from "@mui/icons-material/Close";
 import BoardHandler from "../helpers/boardHandler.js";
-import { Chipp } from "./Chipp";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import PaletteIcon from "@mui/icons-material/Palette";
-
 import DataConfigInformation from "../data/DataConfigInformation";
-import { CustomAutocomplete } from "./CustomAutocomplete";
 
 export const Board = ({
   board,

@@ -1,8 +1,14 @@
 import { TextField } from "@mui/material";
 
-export const CustomTextField = ({ label, name, formikFunc, isLoading }) => {
+export const CustomTextField = ({
+  label,
+  name,
+  formikFunc,
+  isLoading = false,
+}) => {
   return (
     <TextField
+      fullWidth
       label={label}
       name={name}
       onBlur={formikFunc.handleBlur}

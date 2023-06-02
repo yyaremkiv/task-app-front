@@ -15,7 +15,7 @@ const initialValues = {
 
 const filterSchema = Yup.object().shape({
   query: Yup.string()
-    .max(20, "Query cannot be longer than 20 characters.")
+    .max(40, "Query cannot be longer than 40 characters.")
     .test(
       "isEmpty",
       "Select at least one parameter to search",
@@ -71,7 +71,7 @@ export const FilterBoards = ({ page = 1, limit = 10, isLoading = false }) => {
           style={{
             display: "flex",
             flexDirection: "column",
-            gap: "0.5rem",
+            gap: "0.75rem",
           }}
         >
           <CustomTextField

@@ -1,4 +1,3 @@
-import React from "react";
 import { BoardItem } from "../interfaces/DataTypes";
 
 export const ApiTask: BoardItem[] = [

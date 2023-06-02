@@ -1,18 +1,15 @@
 import { Autocomplete, Box, Chip, TextField, Typography } from "@mui/material";
 
-export const CustomAutocomplete = ({
+export const CustomAutocompleteSingle = ({
   label,
   options,
   changeFieldName,
   changeFieldFunction,
-  value,
   isLoading = false,
 }) => {
   return (
     <Autocomplete
       fullWidth
-      multiple
-      value={value}
       options={options}
       disabled={isLoading}
       getOptionLabel={(option) => option.label}
@@ -46,6 +43,9 @@ export const CustomAutocomplete = ({
               marginRight: "5px",
             }}
             {...getTagProps({ index })}
+            onDelete={() => {
+              changeFieldFunction(changeFieldName, null);
+            }}
           />
         ))
       }

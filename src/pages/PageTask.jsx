@@ -1,111 +1,90 @@
-import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { CustomInput } from "../components/CustomInput";
-import { ItemAddBoardBtn } from "../components/styles";
-import { Container, Box, Modal, Button, IconButton } from "@mui/material";
-import TaskService from "../services/TaskService";
-import { Filter } from "../components/FilterBoards";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { FilterListOption } from "../components/FilterListOption";
+import { FilterBoards } from "../components/FilterBoards";
 import { ListBoards } from "../components/ListBoards";
-import TaskOperations from "../redux/task/taskOperations";
-import BoardCreate from "../config/boardCreate";
 import { ModalBoardCreate } from "../components/ModalBoardCreate";
+import { Container, Box, Modal, IconButton, Pagination } from "@mui/material";
+import TaskOperations from "../redux/task/taskOperations";
 import AddIcon from "@mui/icons-material/Add";
 
 export const PageTask = () => {
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-
-  const [isLoading, setIsLoading] = useState(false);
-  const [boards, setBoards] = useState([]);
-  const [targetCard, setTargetCard] = useState({
-    boardId: 0,
-    cardId: 0,
-  });
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(5);
+  const [openModal, setOpenModal] = useState(false);
+  const [openFilter, setOpenFilter] = useState(false);
+  const boards = useSelector((state) => state.task.data);
+  const totalBoards = useSelector((state) => state.task.totalBords);
+  const isLoading = useSelector((state) => state.task.isLoading);
+  const error = useSelector((state) => state.task.error);
   const dispatch = useDispatch();
 
-  const handleAddBoard = (title) =>
-    dispatch(TaskOperations.addBoard(new BoardCreate({ title })));
+  const handleOpen = () => setOpenModal(true);
+  const handleClose = () => setOpenModal(false);
 
-  // drag&drop cards
-  const onDragEnd = async (boardId, cardId) => {
-    setIsLoading(true);
-    const sourceBoardIndex = boards.findIndex((el) => {
-      return el.id === boardId;
-    });
-    if (sourceBoardIndex === -1) return;
+  useEffect(() => {
+    dispatch(TaskOperations.getBoards({ params: { page, limit } }));
+  }, [dispatch, page, limit]);
 
-    const sourceCardIndex = boards[sourceBoardIndex].cards?.findIndex((el) => {
-      return el.id === cardId;
-    });
-    if (sourceCardIndex === -1) return;
-
-    const targetBoardIndex = boards.findIndex(
-      (el) => el.id === targetCard.boardId
-    );
-
-    if (targetBoardIndex === -1) return;
-
-    const targetCardIndex = boards[targetBoardIndex].cards?.findIndex(
-      (el) => el.id === targetCard.cardId
-    );
-    if (targetCardIndex === -1) return;
-
-    const tempBoardList = [...boards];
-
-    const sourceCard = tempBoardList[sourceBoardIndex].cards[sourceCardIndex];
-    tempBoardList[sourceBoardIndex].cards.splice(sourceCardIndex, 1);
-    tempBoardList[targetBoardIndex].cards.splice(
-      targetCardIndex,
-      0,
-      sourceCard
-    );
-
-    const boardDel = tempBoardList[sourceBoardIndex];
-    const boardAdded = tempBoardList[targetBoardIndex];
-
-    const [board1, board2] = await Promise.all([
-      TaskService.updateBoard({
-        boardId: boardDel.id,
-        board: boardDel,
-      }),
-      TaskService.updateBoard({
-        boardId: boardAdded.id,
-        board: boardAdded,
-      }),
-    ]);
-
-    const updateBoardList = boards.map((board) => {
-      if (board.id === board1.data.id) {
-        return board1.data;
-      }
-      if (board.id === board2.data.id) {
-        return board2.data;
-      }
-      return board;
-    });
-
-    setBoards(updateBoardList);
-    setTargetCard({ boardId: 0, cardId: 0 });
-    setIsLoading(false);
+  const handleChangePage = (_, newPageValue) => {
+    setPage(newPageValue);
   };
 
-  const onDragEnter = (boardId, cardId) => {
-    if (targetCard.cardId === cardId) return;
-    setTargetCard({ boardId: boardId, cardId: cardId });
+  const handleChangeLimit = (value) => {
+    setPage(1);
+    setLimit(value);
   };
 
   return (
     <Container
-      // maxWidth="xl"
       sx={{
-        padding: "20px 30px",
-        margin: "0 auto",
+        padding: "1rem 2rem",
+        border: "1px solid green",
       }}
     >
-      <Box>
-        <ListBoards />
+      <FilterListOption
+        showFilter={openFilter}
+        showFilterFunc={setOpenFilter}
+        limit={limit}
+        changeLimit={handleChangeLimit}
+        shown={boards.length}
+        total={totalBoards}
+      />
+
+      <Box sx={{ display: "flex" }}>
+        <Box>
+          {openFilter ? (
+            <FilterBoards page={page} limit={limit} isLoading={isLoading} />
+          ) : null}
+        </Box>
+
+        <Box sx={{ border: "1px solid gray" }}>
+          <ListBoards
+            boards={boards}
+            page={page}
+            limit={limit}
+            isLoading={isLoading}
+          />
+        </Box>
       </Box>
+
+      {boards.length < totalBoards && (
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            padding: "1rem",
+          }}
+        >
+          <Pagination
+            page={page}
+            disabled={isLoading}
+            count={Math.ceil((totalBoards || 1) / limit)}
+            onChange={handleChangePage}
+          />
+        </Box>
+      )}
 
       <Box
         onClick={handleOpen}
@@ -116,7 +95,7 @@ export const PageTask = () => {
         </IconButton>
       </Box>
 
-      <Modal open={open} onClose={handleClose}>
+      <Modal open={openModal} onClose={handleClose}>
         <Box
           sx={{
             position: "absolute",
@@ -129,7 +108,11 @@ export const PageTask = () => {
             transform: "translate(-50%, -50%)",
           }}
         >
-          <ModalBoardCreate handleClose={handleClose} />
+          <ModalBoardCreate
+            handleClose={handleClose}
+            isLoading={isLoading}
+            error={error}
+          />
         </Box>
       </Modal>
     </Container>

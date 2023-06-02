@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import { CardItem } from "../interfaces/DataTypes";
 import { CardInfo } from "./CardInfo";
 import { Dropdown } from "./Dropdown";
-import { Chipp } from "./Chipp";
+// import { Chipp } from "./Chippdfdsfd";
 import {
   Box,
   Paper,
@@ -10,6 +9,7 @@ import {
   Typography,
   IconButton,
   Button,
+  Chip,
 } from "@mui/material";
 import {
   PlaylistAddCheck as PlaylistAddCheckSharp,
@@ -18,20 +18,15 @@ import {
   CalendarMonthOutlined as CalendarMonthOutlinedIcon,
 } from "@mui/icons-material";
 import { TitleBgCard } from "./styles";
-import { ModalCardInfo } from "./ModalCardInfo";
 
-// interface CardProps {
-//   card: CardItem;
-//   boardId: number;
-//   removeCard: (boardId: number, cardId: number) => void;
-//   updateCard: (boardId: number, cardId: number, card: CardItem) => void;
-//   onDragEnd: (boardId: number, cardId: number) => void;
-//   onDragEnter: (boardId: number, cardId: number) => void;
-// }
-
-export const Card = (props) => {
-  const { card, boardId, removeCard, updateCard, onDragEnd, onDragEnter } =
-    props;
+export const Card = ({
+  card,
+  boardId,
+  removeCard,
+  updateCard,
+  onDragEnd,
+  onDragEnter,
+}) => {
   const { id, title, date, tasks, labels, desc } = card;
 
   const [showDropdown, setShowDropdown] = useState(false);
@@ -84,8 +79,15 @@ export const Card = (props) => {
             gap: "3px",
           }}
         >
-          {labels?.map((el, index) => (
-            <Chipp key={index} el={el} />
+          {labels?.map((item, index) => (
+            <Chip
+              key={index}
+              label={item.text}
+              style={{
+                color: "white",
+                backgroundColor: item.color,
+              }}
+            />
           ))}
         </Box>
 
