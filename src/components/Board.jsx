@@ -6,6 +6,7 @@ import {
   Button,
   TextField,
   Autocomplete,
+  Chip,
 } from "@mui/material";
 import DragHandleRoundedIcon from "@mui/icons-material/DragHandleRounded";
 import NoteRoundedIcon from "@mui/icons-material/NoteRounded";
@@ -29,6 +30,7 @@ import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import PaletteIcon from "@mui/icons-material/Palette";
 
 import DataConfigInformation from "../data/DataConfigInformation";
+import { CustomAutocomplete } from "./CustomAutocomplete";
 
 export const Board = ({
   board,
@@ -255,10 +257,10 @@ export const Board = ({
                   multiple
                   fullWidth
                   isOptionEqualToValue={(option, value) =>
-                    option.text === value.text && option.color === value.color
+                    option.label === value.label && option.color === value.color
                   }
                   options={DataConfigInformation.labelCategories}
-                  getOptionLabel={(option) => option.text}
+                  getOptionLabel={(option) => option.label}
                   value={labels}
                   renderInput={(params) => (
                     <TextField
@@ -270,6 +272,20 @@ export const Board = ({
                   onChange={(_, values) => {
                     setLabels(values);
                   }}
+                  renderTags={(value, getTagProps) =>
+                    value.map((option, index) => (
+                      <Chip
+                        key={index}
+                        label={option.label}
+                        style={{
+                          color: "white",
+                          backgroundColor: option.color,
+                          marginRight: "5px",
+                        }}
+                        {...getTagProps({ index })}
+                      />
+                    ))
+                  }
                 />
                 <Box
                   sx={{
@@ -297,13 +313,19 @@ export const Board = ({
                   gap: "3px",
                 }}
               >
-                {board?.labels?.map((label, index) => (
-                  <Chipp key={index} el={label} />
+                {board?.labels?.map((item) => (
+                  <Chip
+                    key={item.label}
+                    label={item.label}
+                    style={{
+                      color: "white",
+                      backgroundColor: item.color,
+                    }}
+                  />
                 ))}
               </Box>
             )}
           </Box>
-
           {/* Start color changer */}
           <Box>
             {showColorChange ? (
@@ -359,7 +381,6 @@ export const Board = ({
             ) : null}
           </Box>
           {/* End color changer */}
-
           {board?.cards?.map((card) => (
             <Card
               card={card}

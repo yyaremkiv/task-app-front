@@ -5,17 +5,18 @@ export const CustomAutocomplete = ({
   options,
   changeFieldName,
   changeFieldFunction,
+  value,
   isLoading = false,
 }) => {
   return (
     <Autocomplete
       fullWidth
       multiple
+      value={value}
       options={options}
       disabled={isLoading}
       getOptionLabel={(option) => option.label}
       onChange={(_, selectedValues) => {
-        console.log("this is console", selectedValues);
         changeFieldFunction(changeFieldName, selectedValues);
       }}
       renderInput={(params) => <TextField {...params} label={label} />}

@@ -10,7 +10,7 @@ export const useDataUser = () => {
 
   useEffect(() => {
     dispatch(UserOperations.getUserById());
-  }, []);
+  }, [dispatch]);
 
   return [user, isLoading, error];
 };

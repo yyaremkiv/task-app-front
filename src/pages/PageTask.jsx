@@ -97,13 +97,15 @@ export const PageTask = () => {
 
   return (
     <Container
-      maxWidth="xl"
+      // maxWidth="xl"
       sx={{
         padding: "20px 30px",
         margin: "0 auto",
       }}
     >
-      <ListBoards />
+      <Box>
+        <ListBoards />
+      </Box>
 
       <Box
         onClick={handleOpen}

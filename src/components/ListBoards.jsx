@@ -61,7 +61,10 @@ export const ListBoards = () => {
 
   return (
     <Box sx={{ display: "flex" }}>
-      <FilterBoards page={page} limit={limit} isLoading={isLoading} />
+      <Box sx={{ padding: "0 1rem" }}>
+        <Typography sx={{ paddingBottom: "0.5rem" }}>This is filter</Typography>
+        <FilterBoards page={page} limit={limit} isLoading={isLoading} />
+      </Box>
 
       <Box>
         <Box
