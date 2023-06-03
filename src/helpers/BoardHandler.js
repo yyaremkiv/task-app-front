@@ -48,7 +48,6 @@ class BoardHandler {
   static makeCopyObject = ({ boards, boardId }) => {
     const boardIndex = boards.findIndex((board) => board.id === boardId);
     if (boardIndex === -1) return;
-
     return JSON.parse(JSON.stringify(boards[boardIndex]));
   };
 

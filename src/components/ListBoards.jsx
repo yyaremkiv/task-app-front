@@ -14,48 +14,27 @@ export const ListBoards = ({ boards, page, limit, isLoading, view }) => {
   }, [dispatch, page, limit]);
 
   const handleBoardUpdate = ({ boards, boardId, payload }) => {
-    const updatedBoard = BoardHandler.updateBoardProperty(
+    const updatedBoard = BoardHandler.updateBoard({
       boards,
       boardId,
-      payload
-    );
+      payload,
+    });
     if (!updatedBoard) return;
     dispatch(TaskOperations.updateBoard({ boardId, board: updatedBoard }));
   };
 
   const handleChangeTitleBoard = ({ boardId, titleBoard }) => {
-    const updatedBoard = BoardHandler.updateBoard({
-      boards,
-      boardId,
-      payload: { title: titleBoard },
-    });
-    if (!updatedBoard) return;
-    dispatch(TaskOperations.updateBoard({ boardId, board: updatedBoard }));
+    handleBoardUpdate({ boards, boardId, payload: { title: titleBoard } });
   };
 
-  const handleChangeLabelBoard = ({ boardId, labels }) => {
-    const updatedBoard = BoardHandler.updateBoard({
-      boards,
-      boardId,
-      payload: { labels },
-    });
-    if (!updatedBoard) return;
-    dispatch(TaskOperations.updateBoard({ boardId, board: updatedBoard }));
-  };
+  const handleChangeLabelBoard = ({ boardId, labels }) =>
+    handleBoardUpdate({ boards, boardId, payload: { labels } });
 
-  const handleChangeColorBoard = ({ boardId, color }) => {
-    const updatedBoard = BoardHandler.updateBoard({
-      boards,
-      boardId,
-      payload: { color },
-    });
-    if (!updatedBoard) return;
-    dispatch(TaskOperations.updateBoard({ boardId, board: updatedBoard }));
-  };
+  const handleChangeColorBoard = ({ boardId, color }) =>
+    handleBoardUpdate({ boards, boardId, payload: { color } });
 
-  const handleRemoveBoard = ({ boardId }) => {
+  const handleRemoveBoard = ({ boardId }) =>
     dispatch(TaskOperations.removeBoard({ boardId }));
-  };
 
   const handleAddCardToBoard = ({ boardId, titleCard }) => {
     const updatedBoard = BoardHandler.addCard({ boards, boardId, titleCard });

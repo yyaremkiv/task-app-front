@@ -1,4 +1,9 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import { CustomInput } from "./CustomInput";
+import { Card } from "./Card";
+import { Dropdown } from "./Dropdown";
+import { deepOrange } from "@mui/material/colors";
+import { ItemAddCardBtn, TitleBgBoard } from "./styles";
 import {
   Box,
   Typography,
@@ -11,23 +16,15 @@ import {
 import DragHandleRoundedIcon from "@mui/icons-material/DragHandleRounded";
 import NoteRoundedIcon from "@mui/icons-material/NoteRounded";
 import NoteAltRoundedIcon from "@mui/icons-material/NoteAltRounded";
-import { CustomInput } from "./CustomInput";
-import { Card } from "./Card";
-import { Dropdown } from "./Dropdown";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { deepOrange } from "@mui/material/colors";
-import { ItemAddCardBtn, TitleBgBoard } from "./styles";
-
-import TaskOperations from "../redux/task/taskOperations";
-import { useDispatch } from "react-redux";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import DoneIcon from "@mui/icons-material/Done";
 import CloseIcon from "@mui/icons-material/Close";
-import BoardHandler from "../helpers/boardHandler.js";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import PaletteIcon from "@mui/icons-material/Palette";
 import DataConfigInformation from "../data/DataConfigInformation";
+import { CustomAutocomplete } from "./CustomAutocomplete";
 
 export const Board = ({
   board,
@@ -44,16 +41,19 @@ export const Board = ({
   const [showTitleChange, setShowTitleChange] = useState(false);
   const [showLabelsChange, setShowLabelsChange] = useState(false);
   const [showColorChange, setShowColorChange] = useState(false);
-
   const [titleBoard, setTitleBoard] = useState(board.title || "title");
   const [showDropdown, setShowDropdown] = useState(false);
-  const matches = useMediaQuery("(min-width:600px)");
-  const dispatch = useDispatch();
-
   const [labels, setLabels] = useState(board.labels || []);
   const [color, setColor] = useState(
     DataConfigInformation.colors.find((el) => el.color === board.color)
   );
+  const matches = useMediaQuery("(min-width:600px)");
+
+  console.log("this is console", labels);
+
+  const handleChangeLabels = (_, labels) => {
+    setLabels(labels);
+  };
 
   return (
     <Box>
@@ -250,6 +250,15 @@ export const Board = ({
                     ))
                   }
                 />
+
+                <CustomAutocomplete
+                  label="Set Labels of Board"
+                  changeFieldName="labels"
+                  value={labels}
+                  changeFieldFunction={handleChangeLabels}
+                  options={DataConfigInformation.labelCategories}
+                />
+
                 <Box
                   sx={{
                     display: "flex",
@@ -294,6 +303,7 @@ export const Board = ({
               </Box>
             )}
           </Box>
+
           {/* Start color changer */}
           <Box>
             {showColorChange ? (

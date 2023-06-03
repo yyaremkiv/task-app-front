@@ -16,6 +16,9 @@ export const CustomAutocomplete = ({
       options={options}
       disabled={isLoading}
       getOptionLabel={(option) => option.label}
+      isOptionEqualToValue={(option, value) =>
+        option.label === value.label && option.color === value.color
+      }
       onChange={(_, selectedValues) => {
         changeFieldFunction(changeFieldName, selectedValues);
       }}
