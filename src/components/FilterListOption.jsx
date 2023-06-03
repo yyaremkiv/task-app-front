@@ -5,14 +5,21 @@ import {
   InputLabel,
   MenuItem,
   Select,
+  ToggleButton,
+  ToggleButtonGroup,
   Typography,
 } from "@mui/material";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import FilterListOffIcon from "@mui/icons-material/FilterListOff";
+import LooksTwoIcon from "@mui/icons-material/LooksTwo";
+import Looks3Icon from "@mui/icons-material/Looks3";
+import Looks4Icon from "@mui/icons-material/Looks4";
 
 export const FilterListOption = ({
   showFilter,
   showFilterFunc,
+  view,
+  viewChangeFunc,
   limit,
   changeLimit,
   shown,
@@ -30,6 +37,24 @@ export const FilterListOption = ({
       <IconButton onClick={() => showFilterFunc(!showFilter)}>
         {showFilter ? <FilterListOffIcon /> : <FilterListIcon />}
       </IconButton>
+
+      <ToggleButtonGroup
+        orientation="horizontal"
+        value={+view}
+        exclusive
+        onChange={(_, value) => viewChangeFunc(value)}
+      >
+        <ToggleButton value={6}>
+          <LooksTwoIcon />
+        </ToggleButton>
+        <ToggleButton value={4}>
+          <Looks3Icon />
+        </ToggleButton>
+        <ToggleButton value={3}>
+          <Looks4Icon />
+        </ToggleButton>
+      </ToggleButtonGroup>
+
       <Box sx={{ display: "flex", alignItems: "center", gap: "1rem" }}>
         <Typography>All Boards: {total}</Typography>
         <Typography>Display: {shown}</Typography>

@@ -5,80 +5,55 @@ class BoardHandler {
     this.boards = boards;
   }
 
-  updateTitleBoard({ boardId, titleBoard }) {
-    const boardIndex = this.boards.findIndex((board) => board.id === boardId);
-    if (boardIndex === -1) return;
+  static updateBoard({ boards, boardId, payload }) {
+    let copyOfBoards = this.makeCopyObject({ boards, boardId });
+    if (!copyOfBoards) return;
 
-    let board = JSON.parse(JSON.stringify(this.boards[boardIndex]));
-    board.title = titleBoard;
-
-    return board;
+    const updatedBoard = { ...copyOfBoards, ...payload };
+    return updatedBoard;
   }
 
-  updateLabeleBoard({ boardId, labels }) {
-    const boardIndex = this.boards.findIndex((board) => board.id === boardId);
-    if (boardIndex === -1) return;
+  static addCard({ boards, boardId, titleCard }) {
+    let copyOfBoards = this.makeCopyObject({ boards, boardId });
+    if (!copyOfBoards) return;
 
-    let board = JSON.parse(JSON.stringify(this.boards[boardIndex]));
-    board.labels = labels;
-
-    return board;
+    copyOfBoards.cards.push(this.createNewCard({ title: titleCard }));
+    return copyOfBoards;
   }
 
-  updateColorBoard({ boardId, color }) {
-    const boardIndex = this.boards.findIndex((board) => board.id === boardId);
-    if (boardIndex === -1) return;
+  static removeCard({ boards, boardId, cardId }) {
+    let copyOfBoards = this.makeCopyObject({ boards, boardId });
+    if (!copyOfBoards) return;
 
-    let board = JSON.parse(JSON.stringify(this.boards[boardIndex]));
-    board.color = color;
-
-    return board;
+    copyOfBoards.cards = copyOfBoards.cards.filter(
+      (card) => card.id !== cardId
+    );
+    return copyOfBoards;
   }
 
-  addCard({ boardId, titleCard }) {
-    const boardIndex = this.boards.findIndex((board) => board.id === boardId);
-    if (boardIndex === -1) return;
+  static updateCard({ boards, boardId, cardId, updatedCard }) {
+    let copyOfBoards = this.makeCopyObject({ boards, boardId });
+    if (!copyOfBoards) return;
 
-    const board = JSON.parse(JSON.stringify(this.boards[boardIndex]));
-    board.cards.push(this.createNewCard(titleCard));
-
-    return board;
-  }
-
-  removeCard({ boardId, cardId }) {
-    const boardIndex = this.boards.findIndex((board) => board.id === boardId);
-    if (boardIndex === -1) return;
-
-    const board = JSON.parse(JSON.stringify(this.boards[boardIndex]));
-    board.cards = board.cards.filter((card) => card.id !== cardId);
-
-    return board;
-  }
-
-  updateCard({ boardId, cardId, updatedCard }) {
-    const boardIndex = this.boards.findIndex((board) => board.id === boardId);
-    if (boardIndex === -1) return;
-
-    let board = JSON.parse(JSON.stringify(this.boards[boardIndex]));
-    let cards = board.cards;
+    let cards = copyOfBoards.cards;
     for (let i = 0; i < cards.length; i++) {
       if (cards[i].id === cardId) {
         cards[i] = updatedCard;
         break;
       }
     }
-
-    return board;
+    return copyOfBoards;
   }
 
-  createNewCard(title) {
-    return {
-      id: uuidv4(),
-      title,
-      labels: [],
-      date: "",
-      tasks: [],
-    };
+  static makeCopyObject = ({ boards, boardId }) => {
+    const boardIndex = boards.findIndex((board) => board.id === boardId);
+    if (boardIndex === -1) return;
+
+    return JSON.parse(JSON.stringify(boards[boardIndex]));
+  };
+
+  static createNewCard({ title }) {
+    return { id: uuidv4(), title, labels: [], date: "", tasks: [] };
   }
 }
 

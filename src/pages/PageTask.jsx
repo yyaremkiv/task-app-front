@@ -13,22 +13,21 @@ export const PageTask = () => {
   const [limit, setLimit] = useState(5);
   const [openModal, setOpenModal] = useState(false);
   const [openFilter, setOpenFilter] = useState(false);
+  const [view, setView] = useState(6);
   const boards = useSelector((state) => state.task.data);
   const totalBoards = useSelector((state) => state.task.totalBords);
   const isLoading = useSelector((state) => state.task.isLoading);
   const error = useSelector((state) => state.task.error);
   const dispatch = useDispatch();
 
-  const handleOpen = () => setOpenModal(true);
-  const handleClose = () => setOpenModal(false);
-
   useEffect(() => {
     dispatch(TaskOperations.getBoards({ params: { page, limit } }));
   }, [dispatch, page, limit]);
 
-  const handleChangePage = (_, newPageValue) => {
-    setPage(newPageValue);
-  };
+  const handleOpen = () => setOpenModal(true);
+  const handleClose = () => setOpenModal(false);
+
+  const handleChangePage = (_, newPageValue) => setPage(newPageValue);
 
   const handleChangeLimit = (value) => {
     setPage(1);
@@ -45,6 +44,8 @@ export const PageTask = () => {
       <FilterListOption
         showFilter={openFilter}
         showFilterFunc={setOpenFilter}
+        view={view}
+        viewChangeFunc={setView}
         limit={limit}
         changeLimit={handleChangeLimit}
         shown={boards.length}
@@ -52,7 +53,7 @@ export const PageTask = () => {
       />
 
       <Box sx={{ display: "flex" }}>
-        <Box>
+        <Box sx={{ padding: "0 1rem 0 0" }}>
           {openFilter ? (
             <FilterBoards page={page} limit={limit} isLoading={isLoading} />
           ) : null}
@@ -63,6 +64,7 @@ export const PageTask = () => {
             boards={boards}
             page={page}
             limit={limit}
+            view={view}
             isLoading={isLoading}
           />
         </Box>

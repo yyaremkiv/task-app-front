@@ -31,6 +31,10 @@ import DataConfigInformation from "../data/DataConfigInformation";
 
 export const Board = ({
   board,
+  handleChangeTitleBoard,
+  handleChangeLabelBoard,
+  handleChangeColorBoard,
+  handleRemoveBoard,
   addCard,
   removeCard,
   updateCard,
@@ -50,49 +54,6 @@ export const Board = ({
   const [color, setColor] = useState(
     DataConfigInformation.colors.find((el) => el.color === board.color)
   );
-
-  const handleRemoveBoard = (boardId) => {
-    dispatch(TaskOperations.removeBoard({ boardId }));
-  };
-
-  const handleChangeTitle = () => {
-    const newBoard = new BoardHandler([board]);
-
-    const updatedBoard = newBoard.updateTitleBoard({
-      boardId: board.id,
-      titleBoard,
-    });
-    dispatch(
-      TaskOperations.updateBoard({ boardId: board.id, board: updatedBoard })
-    );
-    setShowTitleChange(false);
-  };
-
-  const handleChangeLable = () => {
-    const newBoard = new BoardHandler([board]);
-
-    const updatedBoard = newBoard.updateLabeleBoard({
-      boardId: board.id,
-      labels,
-    });
-    dispatch(
-      TaskOperations.updateBoard({ boardId: board.id, board: updatedBoard })
-    );
-    setShowLabelsChange(false);
-  };
-
-  const handleChangeColor = () => {
-    const newBoard = new BoardHandler([board]);
-
-    const updatedBoard = newBoard.updateColorBoard({
-      boardId: board.id,
-      color: color?.color || "",
-    });
-    dispatch(
-      TaskOperations.updateBoard({ boardId: board.id, board: updatedBoard })
-    );
-    setShowColorChange(false);
-  };
 
   return (
     <Box>
@@ -129,7 +90,12 @@ export const Board = ({
                   value={titleBoard}
                   onChange={(e) => setTitleBoard(e.target.value)}
                 />
-                <IconButton onClick={handleChangeTitle}>
+                <IconButton
+                  onClick={() => {
+                    handleChangeTitleBoard({ boardId: board.id, titleBoard });
+                    setShowTitleChange(false);
+                  }}
+                >
                   <DoneIcon />
                 </IconButton>
                 <IconButton onClick={() => setShowTitleChange(false)}>
@@ -214,7 +180,7 @@ export const Board = ({
                 </Button>
                 <Button
                   startIcon={<DeleteIcon />}
-                  onClick={() => handleRemoveBoard(board.id)}
+                  onClick={() => handleRemoveBoard({ boardId: board.id })}
                   style={{ whiteSpace: "nowrap", justifyContent: "flex-start" }}
                 >
                   Delete Board
@@ -291,7 +257,12 @@ export const Board = ({
                     gap: "1rem",
                   }}
                 >
-                  <IconButton onClick={handleChangeLable}>
+                  <IconButton
+                    onClick={() => {
+                      handleChangeLabelBoard({ boardId: board.id, labels });
+                      setShowLabelsChange(false);
+                    }}
+                  >
                     <DoneIcon />
                   </IconButton>
                   <IconButton onClick={() => setShowLabelsChange(false)}>
@@ -367,7 +338,15 @@ export const Board = ({
                     gap: "1rem",
                   }}
                 >
-                  <IconButton onClick={handleChangeColor}>
+                  <IconButton
+                    onClick={() => {
+                      handleChangeColorBoard({
+                        boardId: board.id,
+                        color: color?.color || "",
+                      });
+                      setShowColorChange(false);
+                    }}
+                  >
                     <DoneIcon />
                   </IconButton>
                   <IconButton onClick={() => setShowColorChange(false)}>

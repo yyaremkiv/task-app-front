@@ -30,8 +30,7 @@ export const ModalBoardCreate = ({ handleClose, isLoading, error }) => {
   const dispatch = useDispatch();
 
   const handleSubmitSearch = async ({ title, labels, color: { color } }) => {
-    const newBoard = { title, labels, color: color || "" };
-
+    const newBoard = { title, labels, color: color || "", cards: [] };
     const response = await dispatch(TaskOperations.addBoard(newBoard));
 
     if (response.error) return;
