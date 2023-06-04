@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Paper, Box, Button, TextField, Stack } from "@mui/material";
-import { Add as Add, Close, Done } from "@mui/icons-material/";
+import { Paper, Box, Button, TextField } from "@mui/material";
+import { Add, Close, Done } from "@mui/icons-material/";
 import IconButton from "@mui/material/IconButton";
 
 interface CustomInputProps {

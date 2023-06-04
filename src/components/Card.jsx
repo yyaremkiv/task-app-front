@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { CardInfo } from "./CardInfo";
 import { Dropdown } from "./Dropdown";
-// import { Chipp } from "./Chippdfdsfd";
 import {
   Box,
   Paper,
@@ -19,16 +18,8 @@ import {
 } from "@mui/icons-material";
 import { TitleBgCard } from "./styles";
 
-export const Card = ({
-  card,
-  boardId,
-  removeCard,
-  updateCard,
-  onDragEnd,
-  onDragEnter,
-}) => {
+export const Card = ({ card, boardId, removeCard, updateCard }) => {
   const { id, title, date, tasks, labels, desc } = card;
-
   const [showDropdown, setShowDropdown] = useState(false);
   const [showCardInfo, setShowCardInfo] = useState(false);
 
@@ -55,12 +46,6 @@ export const Card = ({
       <Stack
         key={card.id}
         draggable
-        onDragEnd={() => {
-          return onDragEnd(boardId, id);
-        }}
-        onDragEnter={() => {
-          return onDragEnter(boardId, id);
-        }}
         onClick={() => {
           setShowCardInfo(true);
         }}
@@ -152,7 +137,6 @@ export const Card = ({
             borderBottom: "1px solid #009688",
           }}
         >
-          {" "}
           {date ? (
             <CalendarMonthOutlinedIcon color="primary" fontSize="small" />
           ) : null}

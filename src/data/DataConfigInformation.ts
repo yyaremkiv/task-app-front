@@ -20,6 +20,17 @@ const DataConfigInformation = {
     { label: "status: needs information", color: "#fef2c0" },
     { label: "status: wont do/fix", color: "#eeeeee" },
   ],
+  labelCategoriesOfCard: [
+    { label: "label1", color: "#b60205" },
+    { label: "label2", color: "#d93f0b" },
+    { label: "label3", color: "#0e8a16" },
+    { label: "label4", color: "#fbca04" },
+    { label: "label5", color: "#fec1c1" },
+    { label: "label6", color: "#215cea" },
+    { label: "label7", color: "#cfd3d7" },
+    { label: "label8", color: "#fef2c0" },
+    { label: "label9", color: "#eeeeee" },
+  ],
 };
 
 export default DataConfigInformation;

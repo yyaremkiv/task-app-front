@@ -3,6 +3,7 @@ import { Autocomplete, Box, Chip, TextField, Typography } from "@mui/material";
 export const CustomAutocompleteSingle = ({
   label,
   options,
+  value,
   changeFieldName,
   changeFieldFunction,
   isLoading = false,
@@ -12,6 +13,7 @@ export const CustomAutocompleteSingle = ({
       fullWidth
       options={options}
       disabled={isLoading}
+      value={value}
       getOptionLabel={(option) => option.label}
       onChange={(_, selectedValues) => {
         changeFieldFunction(changeFieldName, selectedValues);

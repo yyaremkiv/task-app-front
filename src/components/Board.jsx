@@ -3,6 +3,9 @@ import { CustomInput } from "./CustomInput";
 import { Card } from "./Card";
 import { Dropdown } from "./Dropdown";
 import { deepOrange } from "@mui/material/colors";
+import { CustomAutocomplete } from "./CustomAutocomplete";
+import { CustomAutocompleteSingle } from "./CustomAutocompleteSingle";
+import { ChangeButtons } from "./ChangeButtons";
 import { ItemAddCardBtn, TitleBgBoard } from "./styles";
 import {
   Box,
@@ -10,7 +13,6 @@ import {
   IconButton,
   Button,
   TextField,
-  Autocomplete,
   Chip,
 } from "@mui/material";
 import DragHandleRoundedIcon from "@mui/icons-material/DragHandleRounded";
@@ -24,7 +26,6 @@ import CloseIcon from "@mui/icons-material/Close";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import PaletteIcon from "@mui/icons-material/Palette";
 import DataConfigInformation from "../data/DataConfigInformation";
-import { CustomAutocomplete } from "./CustomAutocomplete";
 
 export const Board = ({
   board,
@@ -35,8 +36,6 @@ export const Board = ({
   addCard,
   removeCard,
   updateCard,
-  onDragEnd,
-  onDragEnter,
 }) => {
   const [showTitleChange, setShowTitleChange] = useState(false);
   const [showLabelsChange, setShowLabelsChange] = useState(false);
@@ -49,11 +48,8 @@ export const Board = ({
   );
   const matches = useMediaQuery("(min-width:600px)");
 
-  console.log("this is console", labels);
-
-  const handleChangeLabels = (_, labels) => {
-    setLabels(labels);
-  };
+  const handleChangeLabels = (_, labels) => setLabels(labels);
+  const handleChangeColor = (_, color) => setColor(color);
 
   return (
     <Box>
@@ -61,12 +57,12 @@ export const Board = ({
         <TitleBgBoard
           sx={{
             display: "flex",
+            flexWrap: "wrap",
             justifyContent: "space-between",
             alignItems: "center",
-            flexWrap: "wrap",
             marginBottom: "12px",
-            padding: "7px 10px",
-            borderRadius: "7px 7px 0px 0px ",
+            padding: "0.25rem 1rem",
+            borderRadius: "0.75rem 0.75rem 0 0",
           }}
         >
           <Box
@@ -90,17 +86,12 @@ export const Board = ({
                   value={titleBoard}
                   onChange={(e) => setTitleBoard(e.target.value)}
                 />
-                <IconButton
-                  onClick={() => {
-                    handleChangeTitleBoard({ boardId: board.id, titleBoard });
-                    setShowTitleChange(false);
-                  }}
-                >
-                  <DoneIcon />
-                </IconButton>
-                <IconButton onClick={() => setShowTitleChange(false)}>
-                  <CloseIcon />
-                </IconButton>
+
+                <ChangeButtons
+                  valueForSubmit={{ boardId: board.id, titleBoard }}
+                  changeFunc={handleChangeTitleBoard}
+                  closeFunc={setShowTitleChange}
+                />
               </Box>
             ) : (
               <Typography
@@ -209,164 +200,67 @@ export const Board = ({
             },
           }}
         >
-          {/* Start change labels */}
-          <Box sx={{ border: "1px solid gray" }}>
-            {showLabelsChange ? (
-              <Box
-                sx={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}
-              >
-                <Autocomplete
-                  id="size-small-outlined-multi"
-                  multiple
-                  fullWidth
-                  isOptionEqualToValue={(option, value) =>
-                    option.label === value.label && option.color === value.color
-                  }
-                  options={DataConfigInformation.labelCategories}
-                  getOptionLabel={(option) => option.label}
-                  value={labels}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label="Set Label"
-                      placeholder="Add more"
-                    />
-                  )}
-                  onChange={(_, values) => {
-                    setLabels(values);
-                  }}
-                  renderTags={(value, getTagProps) =>
-                    value.map((option, index) => (
-                      <Chip
-                        key={index}
-                        label={option.label}
-                        style={{
-                          color: "white",
-                          backgroundColor: option.color,
-                          marginRight: "5px",
-                        }}
-                        {...getTagProps({ index })}
-                      />
-                    ))
-                  }
-                />
+          {/* Start - labels */}
+          {showLabelsChange ? (
+            <Box>
+              <CustomAutocomplete
+                label="Set Labels of Board"
+                changeFieldName="labels"
+                value={labels}
+                changeFieldFunction={handleChangeLabels}
+                options={DataConfigInformation.labelCategories}
+              />
 
-                <CustomAutocomplete
-                  label="Set Labels of Board"
-                  changeFieldName="labels"
-                  value={labels}
-                  changeFieldFunction={handleChangeLabels}
-                  options={DataConfigInformation.labelCategories}
-                />
-
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                    gap: "1rem",
+              <ChangeButtons
+                valueForSubmit={{ boardId: board.id, labels }}
+                changeFunc={handleChangeLabelBoard}
+                closeFunc={setShowLabelsChange}
+              />
+            </Box>
+          ) : (
+            <Box
+              sx={{
+                display: "flex",
+                flexWrap: "wrap",
+                gap: "4px",
+              }}
+            >
+              {board?.labels.map((item) => (
+                <Chip
+                  key={item.label}
+                  label={item.label}
+                  style={{
+                    color: "#fff",
+                    backgroundColor: item.color,
                   }}
-                >
-                  <IconButton
-                    onClick={() => {
-                      handleChangeLabelBoard({ boardId: board.id, labels });
-                      setShowLabelsChange(false);
-                    }}
-                  >
-                    <DoneIcon />
-                  </IconButton>
-                  <IconButton onClick={() => setShowLabelsChange(false)}>
-                    <CloseIcon />
-                  </IconButton>
-                </Box>
-              </Box>
-            ) : (
-              <Box
-                sx={{
-                  display: "flex",
-                  width: "100%",
-                  justifyContent: "start",
-                  alignItems: "center",
-                  flexWrap: "wrap",
-                  gap: "3px",
+                />
+              ))}
+            </Box>
+          )}
+          {/* End - labels */}
+
+          {/* Start - color change */}
+          {showColorChange && (
+            <Box>
+              <CustomAutocompleteSingle
+                label="Set Color Of Border"
+                changeFieldName="color"
+                value={color}
+                changeFieldFunction={handleChangeColor}
+                options={DataConfigInformation.colors}
+              />
+
+              <ChangeButtons
+                valueForSubmit={{
+                  boardId: board.id,
+                  color: color?.color || "",
                 }}
-              >
-                {board?.labels?.map((item) => (
-                  <Chip
-                    key={item.label}
-                    label={item.label}
-                    style={{
-                      color: "white",
-                      backgroundColor: item.color,
-                    }}
-                  />
-                ))}
-              </Box>
-            )}
-          </Box>
-
-          {/* Start color changer */}
-          <Box>
-            {showColorChange ? (
-              <Box>
-                <Autocomplete
-                  fullWidth
-                  disablePortal
-                  id="combo-box-demo"
-                  value={color}
-                  options={DataConfigInformation.colors}
-                  getOptionLabel={(option) => option.label}
-                  onChange={(_, selectedValues) => {
-                    setColor(selectedValues);
-                  }}
-                  renderInput={(params) => (
-                    <TextField {...params} label="Set Color Of Border" />
-                  )}
-                  renderOption={(props, option) => (
-                    <Box
-                      {...props}
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "1rem",
-                      }}
-                    >
-                      <Box
-                        sx={{
-                          width: "2rem",
-                          height: "1rem",
-                          backgroundColor: option.color,
-                        }}
-                      ></Box>
-                      <Typography>{option.label}</Typography>
-                    </Box>
-                  )}
-                />
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                    gap: "1rem",
-                  }}
-                >
-                  <IconButton
-                    onClick={() => {
-                      handleChangeColorBoard({
-                        boardId: board.id,
-                        color: color?.color || "",
-                      });
-                      setShowColorChange(false);
-                    }}
-                  >
-                    <DoneIcon />
-                  </IconButton>
-                  <IconButton onClick={() => setShowColorChange(false)}>
-                    <CloseIcon />
-                  </IconButton>
-                </Box>
-              </Box>
-            ) : null}
-          </Box>
-          {/* End color changer */}
+                changeFunc={handleChangeColorBoard}
+                closeFunc={setShowColorChange}
+              />
+            </Box>
+          )}
+          {/* End - color change */}
           {board?.cards?.map((card) => (
             <Card
               card={card}
@@ -374,12 +268,11 @@ export const Board = ({
               boardId={board.id}
               removeCard={removeCard}
               updateCard={updateCard}
-              onDragEnd={onDragEnd}
-              onDragEnter={onDragEnter}
             />
           ))}
         </Box>
       </Box>
+
       <ItemAddCardBtn>
         <CustomInput
           text="Add Card"

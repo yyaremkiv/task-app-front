@@ -1,21 +1,26 @@
+import { useState } from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import dayjs from "dayjs";
+import { CustomTextField } from "./CustomTextField";
+import { CustomAutocomplete } from "./CustomAutocomplete";
+import { v4 as uuidv4 } from "uuid";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { Box } from "@mui/material";
+import {
+  Box,
+  TextField,
+  Paper,
+  Checkbox,
+  Typography,
+  FormHelperText,
+} from "@mui/material";
 import { LoadingButton } from "@mui/lab";
-import { useState } from "react";
-import { TextField, Paper, Checkbox } from "@mui/material";
-import { FormHelperText } from "@mui/material";
-import { Typography } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import Autocomplete from "@mui/material/Autocomplete";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import DoneIcon from "@mui/icons-material/Done";
 import CloseIcon from "@mui/icons-material/Close";
-import { v4 as uuidv4 } from "uuid";
 import {
   Title,
   Description,
@@ -23,30 +28,14 @@ import {
   AssignmentTurnedIn,
   BookmarkBorder,
 } from "@mui/icons-material/";
+import DataConfigInformation from "../data/DataConfigInformation";
+import EditIcon from "@mui/icons-material/Edit";
+import { ListTasks } from "./ListTasks";
 
 const cardSchema = Yup.object().shape({
   title: Yup.string(),
   desc: Yup.string(),
 });
-
-const labelCategories = [
-  { color: "#f44336", text: "label1" },
-  { color: "#e91e63", text: "label2" },
-  { color: "#9c27b0", text: "label3" },
-  { color: "#673ab7", text: "label4" },
-  { color: "#2196f3", text: "label5" },
-  { color: "#03a9f4", text: "label6" },
-  { color: "#00bcd4", text: "label7" },
-  { color: "#009688", text: "label8" },
-  { color: "#4caf50", text: "label9" },
-  { color: "#8bc34a", text: "label10" },
-  { color: "#8bc34a", text: "label11" },
-  { color: "#cddc39", text: "label12" },
-  { color: "#ffeb3b", text: "label13" },
-  { color: "#ffc107", text: "label14" },
-  { color: "#ff9800", text: "label15" },
-  { color: "#ff5722", text: "label16" },
-];
 
 export const ModalCardInfo = ({ card, updateCard }) => {
   const [showAddNewTask, setShowAddNewTask] = useState(false);
@@ -66,29 +55,9 @@ export const ModalCardInfo = ({ card, updateCard }) => {
   const handleAddNewTask = ({ tasks, setFieldValue }) => {
     setFieldValue("tasks", [
       ...tasks,
-      { id: uuidv4(), text: titleTask, completed: false },
+      { id: uuidv4(), text: titleTask, completed: false, progress: 0 },
     ]);
     setTitleTask("");
-  };
-
-  const handleRemoveTask = ({ tasks, taskId, setFieldValue }) => {
-    setFieldValue(
-      "tasks",
-      tasks.filter((task) => task.id !== taskId)
-    );
-  };
-
-  const handleCheckDoneTask = ({ tasks, taskId, setFieldValue }) => {
-    let newTasks = JSON.parse(JSON.stringify(tasks));
-
-    for (let i = 0; i < newTasks.length; i++) {
-      if (newTasks[i].id === taskId) {
-        newTasks[i].completed = Boolean(!newTasks[i].completed);
-        break;
-      }
-    }
-
-    setFieldValue("tasks", newTasks);
   };
 
   return (
@@ -115,33 +84,31 @@ export const ModalCardInfo = ({ card, updateCard }) => {
           >
             <Box sx={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
               <Title color="primary" fontSize="large" />
-              <TextField
+              <CustomTextField
                 label="Title"
                 name="title"
-                fullWidth
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.title}
-                error={Boolean(touched.title && errors.title)}
-                helperText={touched.title && errors.title}
-                disabled={isLoading}
-                style={{ height: "60px" }}
+                formikFunc={{
+                  values,
+                  errors,
+                  touched,
+                  handleBlur,
+                  handleChange,
+                }}
               />
             </Box>
 
             <Box sx={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
               <Description color="primary" fontSize="large" />
-              <TextField
+              <CustomTextField
                 label="Description"
                 name="desc"
-                fullWidth
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.desc}
-                error={Boolean(touched.desc && errors.desc)}
-                helperText={touched.desc && errors.desc}
-                disabled={isLoading}
-                style={{ height: "60px" }}
+                formikFunc={{
+                  values,
+                  errors,
+                  touched,
+                  handleBlur,
+                  handleChange,
+                }}
               />
             </Box>
 
@@ -184,30 +151,17 @@ export const ModalCardInfo = ({ card, updateCard }) => {
 
             <Box sx={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
               <BookmarkBorder color="primary" fontSize="large" />
-              <Autocomplete
-                id="size-small-outlined-multi"
-                multiple
-                fullWidth
-                options={labelCategories}
-                getOptionLabel={(option) => option.text}
+              <CustomAutocomplete
+                label="Set Labels of Board"
+                changeFieldName="labels"
                 value={values.labels}
-                disabled={
-                  labelCategories.length === 0 || isLoading ? true : false
-                }
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label="Set Label"
-                    placeholder="Add more"
-                  />
-                )}
-                onChange={(_, selectedValues) => {
-                  setFieldValue("labels", selectedValues);
-                }}
+                changeFieldFunction={setFieldValue}
+                options={DataConfigInformation.labelCategoriesOfCard}
               />
             </Box>
 
             <AssignmentTurnedIn color="primary" fontSize="large" />
+
             {/* Start Add New Task */}
             {showAddNewTask && (
               <Box
@@ -234,65 +188,14 @@ export const ModalCardInfo = ({ card, updateCard }) => {
             <Box>
               <Button onClick={handleShowAddNewTask}>Add New Task</Button>
             </Box>
-            {/* End Add New Task */}
-            <Box>
-              {values.tasks.length > 0
-                ? values.tasks.map(({ id, text, completed }) => (
-                    <Paper
-                      elevation={1}
-                      key={id}
-                      sx={{
-                        width: "100%",
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                        padding: "3px",
-                        marginBottom: "5px",
-                      }}
-                    >
-                      <Box
-                        sx={{
-                          display: "flex",
-                          alignItems: "center",
-                        }}
-                      >
-                        <Checkbox
-                          checked={completed}
-                          onChange={() =>
-                            handleCheckDoneTask({
-                              tasks: values.tasks,
-                              taskId: id,
-                              setFieldValue,
-                            })
-                          }
-                        />
-                        <Typography
-                          variant="subtitle1"
-                          align="left"
-                          sx={{
-                            textDecoration: completed ? "line-through" : "none",
-                          }}
-                        >
-                          {text}
-                        </Typography>
-                      </Box>
-                      <IconButton
-                        aria-label="close"
-                        color="secondary"
-                        onClick={() =>
-                          handleRemoveTask({
-                            tasks: values.tasks,
-                            taskId: id,
-                            setFieldValue,
-                          })
-                        }
-                      >
-                        <CloseIcon fontSize="medium" />
-                      </IconButton>
-                    </Paper>
-                  ))
-                : null}
-            </Box>
+
+            <ListTasks
+              values={values}
+              changeFuncByFormik={setFieldValue}
+              errors={errors}
+              touched={touched}
+              isLoading={isLoading}
+            />
 
             <LoadingButton
               variant="contained"
@@ -307,7 +210,7 @@ export const ModalCardInfo = ({ card, updateCard }) => {
                 color: "#fff",
               }}
             >
-              <span>Update</span>
+              <span>Save Changes</span>
             </LoadingButton>
           </form>
         )}
