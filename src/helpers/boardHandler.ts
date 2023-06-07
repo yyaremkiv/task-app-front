@@ -1,11 +1,13 @@
 import { v4 as uuidv4 } from "uuid";
 
 class BoardHandler {
-  constructor(boards) {
+  boards: any[];
+
+  constructor(boards: any[]) {
     this.boards = boards;
   }
 
-  static updateBoard({ boards, boardId, payload }) {
+  static updateBoard({ boards, boardId, payload }: any) {
     let copyOfBoards = this.makeCopyObject({ boards, boardId });
     if (!copyOfBoards) return;
 
@@ -13,7 +15,7 @@ class BoardHandler {
     return updatedBoard;
   }
 
-  static addCard({ boards, boardId, titleCard }) {
+  static addCard({ boards, boardId, titleCard }: any) {
     let copyOfBoards = this.makeCopyObject({ boards, boardId });
     if (!copyOfBoards) return;
 
@@ -21,17 +23,17 @@ class BoardHandler {
     return copyOfBoards;
   }
 
-  static removeCard({ boards, boardId, cardId }) {
+  static removeCard({ boards, boardId, cardId }: any) {
     let copyOfBoards = this.makeCopyObject({ boards, boardId });
     if (!copyOfBoards) return;
 
     copyOfBoards.cards = copyOfBoards.cards.filter(
-      (card) => card.id !== cardId
+      (card: any) => card.id !== cardId
     );
     return copyOfBoards;
   }
 
-  static updateCard({ boards, boardId, cardId, updatedCard }) {
+  static updateCard({ boards, boardId, cardId, updatedCard }: any) {
     let copyOfBoards = this.makeCopyObject({ boards, boardId });
     if (!copyOfBoards) return;
 
@@ -45,13 +47,13 @@ class BoardHandler {
     return copyOfBoards;
   }
 
-  static makeCopyObject = ({ boards, boardId }) => {
-    const boardIndex = boards.findIndex((board) => board.id === boardId);
+  static makeCopyObject = ({ boards, boardId }: any) => {
+    const boardIndex = boards.findIndex((board: any) => board.id === boardId);
     if (boardIndex === -1) return;
     return JSON.parse(JSON.stringify(boards[boardIndex]));
   };
 
-  static createNewCard({ title }) {
+  static createNewCard({ title }: any) {
     return { id: uuidv4(), title, labels: [], date: "", tasks: [] };
   }
 }

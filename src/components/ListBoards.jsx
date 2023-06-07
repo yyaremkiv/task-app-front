@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { Grid } from "@mui/material";
 import { GridItem } from "./GridItem";
 import { Board } from "./Board";
-import BoardHandler from "../helpers/boardHandler.js";
+import BoardHandler from "../helpers/boardHandler";
 import TaskOperations from "../redux/task/taskOperations";
 
 export const ListBoards = ({ boards, page, limit, isLoading, view }) => {

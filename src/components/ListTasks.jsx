@@ -1,5 +1,4 @@
 import { useState } from "react";
-import * as Yup from "yup";
 import {
   Box,
   Checkbox,
@@ -16,7 +15,7 @@ export const ListTasks = ({ isLoading, values, changeFuncByFormik }) => {
   const [openModal, setOpenModal] = useState(false);
   const [taskToUpdate, setTaskToUpdate] = useState(null);
 
-  const handleOpen = () => setOpenModal(true);
+  // const handleOpen = () => setOpenModal(true);
   const handleClose = () => setOpenModal(false);
 
   const handleRemoveTask = ({ taskId }) => {

@@ -5,7 +5,7 @@ import { deepOrange } from "@mui/material/colors";
 import { CustomAutocomplete } from "./CustomAutocomplete";
 import { CustomAutocompleteSingle } from "./CustomAutocompleteSingle";
 import { ChangeButtons } from "./ChangeButtons";
-import { ItemAddCardBtn, TitleBgBoard } from "./styles";
+import { ItemAddCardBtn } from "./styles";
 import { Box, Typography, TextField, Chip } from "@mui/material";
 import NoteRoundedIcon from "@mui/icons-material/NoteRounded";
 import NoteAltRoundedIcon from "@mui/icons-material/NoteAltRounded";
