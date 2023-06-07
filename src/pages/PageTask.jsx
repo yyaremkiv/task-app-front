@@ -5,19 +5,15 @@ import { FilterBoards } from "../components/FilterBoards";
 import { ListBoards } from "../components/ListBoards";
 import { ModalBoardCreate } from "../components/ModalBoardCreate";
 import { Container, Box, Modal, IconButton, Pagination } from "@mui/material";
-import TaskOperations from "../redux/task/taskOperations";
 import AddIcon from "@mui/icons-material/Add";
-import { ModalCardInfo } from "../components/ModalCardInfo";
+import TaskOperations from "../redux/task/taskOperations";
 
 export const PageTask = () => {
-  const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(5);
   const [openModal, setOpenModal] = useState(false);
   const [openFilter, setOpenFilter] = useState(false);
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(5);
   const [view, setView] = useState(6);
-  const [type, setType] = useState("board");
-  const [card, setCard] = useState(null);
-  const [boardId, setBoardId] = useState(null);
   const boards = useSelector((state) => state.task.data);
   const totalBoards = useSelector((state) => state.task.totalBords);
   const isLoading = useSelector((state) => state.task.isLoading);
@@ -28,10 +24,7 @@ export const PageTask = () => {
     dispatch(TaskOperations.getBoards({ params: { page, limit } }));
   }, [dispatch, page, limit]);
 
-  const handleOpen = (type) => {
-    setType(type);
-    setOpenModal(true);
-  };
+  const handleOpen = () => setOpenModal(true);
   const handleClose = () => setOpenModal(false);
 
   const handleChangePage = (_, newPageValue) => setPage(newPageValue);
@@ -39,11 +32,6 @@ export const PageTask = () => {
   const handleChangeLimit = (value) => {
     setPage(1);
     setLimit(value);
-  };
-
-  const handleSetCurrentCard = ({ card, boardId }) => {
-    setCard(card);
-    setBoardId(boardId);
   };
 
   return (
@@ -78,8 +66,6 @@ export const PageTask = () => {
             limit={limit}
             view={view}
             isLoading={isLoading}
-            handleOpen={handleOpen}
-            handleSetCurrentCard={handleSetCurrentCard}
           />
         </Box>
       </Box>
@@ -125,15 +111,11 @@ export const PageTask = () => {
             transform: "translate(-50%, -50%)",
           }}
         >
-          {type === "board" ? (
-            <ModalBoardCreate
-              handleClose={handleClose}
-              isLoading={isLoading}
-              error={error}
-            />
-          ) : (
-            <ModalCardInfo card={card} boardId={boardId} />
-          )}
+          <ModalBoardCreate
+            handleClose={handleClose}
+            isLoading={isLoading}
+            error={error}
+          />
         </Box>
       </Modal>
     </Container>

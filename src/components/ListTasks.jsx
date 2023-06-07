@@ -11,11 +11,10 @@ import EditIcon from "@mui/icons-material/Edit";
 import CloseIcon from "@mui/icons-material/Close";
 import { FormChangeTask } from "./FormChangeTask";
 
-export const ListTasks = ({ isLoading, values, changeFuncByFormik }) => {
+export const ListTasks = ({ values, changeFuncByFormik }) => {
   const [openModal, setOpenModal] = useState(false);
   const [taskToUpdate, setTaskToUpdate] = useState(null);
 
-  // const handleOpen = () => setOpenModal(true);
   const handleClose = () => setOpenModal(false);
 
   const handleRemoveTask = ({ taskId }) => {

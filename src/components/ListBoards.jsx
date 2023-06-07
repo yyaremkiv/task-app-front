@@ -1,24 +1,27 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { Grid, Paper } from "@mui/material";
+import { Box, Grid, Modal, Paper } from "@mui/material";
 import { Board } from "./Board";
 import BoardHandler from "../helpers/boardHandler";
 import TaskOperations from "../redux/task/taskOperations";
+import { ModalCardInfo } from "./ModalCardInfo";
 
-export const ListBoards = ({
-  boards,
-  page,
-  limit,
-  view,
-  isLoading,
-  handleOpen,
-  handleSetCurrentCard,
-}) => {
+export const ListBoards = ({ boards, page, limit, view }) => {
+  const [openModal, setOpenModal] = useState(false);
+  const [currentBoardId, setCurrentBoardId] = useState(null);
+  const [currentCard, setCurrentCard] = useState(null);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(TaskOperations.getBoards({ params: { page, limit } }));
   }, [dispatch, page, limit]);
+
+  const handleOpen = ({ boardId, card }) => {
+    setCurrentBoardId(boardId);
+    setCurrentCard(card);
+    setOpenModal(true);
+  };
+  const handleClose = () => setOpenModal(false);
 
   const handleBoardUpdate = ({ boards, boardId, payload }) => {
     const updatedBoard = BoardHandler.updateBoard({
@@ -49,7 +52,7 @@ export const ListBoards = ({
     dispatch(TaskOperations.updateBoard({ boardId, board: updatedBoard }));
   };
 
-  const handelUpdateCard = ({ boardId, cardId, updatedCard }) => {
+  const handleUpdateCard = ({ boardId, cardId, updatedCard }) => {
     const updatedBoard = BoardHandler.updateCard({
       boards,
       boardId,
@@ -85,14 +88,33 @@ export const ListBoards = ({
               handleChangeColorBoard={handleChangeColorBoard}
               handleRemoveBoard={handleRemoveBoard}
               addCard={handleAddCardToBoard}
-              updateCard={handelUpdateCard}
               removeCard={handleRemoveCard}
               handleOpen={handleOpen}
-              handleSetCurrentCard={handleSetCurrentCard}
             />
           </Paper>
         </Grid>
       ))}
+      <Modal open={openModal} onClose={handleClose}>
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            maxHeight: "85vh",
+            overflowY: "auto",
+            padding: "1rem",
+            bgcolor: "background.paper",
+            borderRadius: "0.5rem",
+            transform: "translate(-50%, -50%)",
+          }}
+        >
+          <ModalCardInfo
+            card={currentCard}
+            boardId={currentBoardId}
+            updateCard={handleUpdateCard}
+          />
+        </Box>
+      </Modal>
     </Grid>
   );
 };

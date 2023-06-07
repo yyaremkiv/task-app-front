@@ -37,7 +37,7 @@ const cardSchema = Yup.object().shape({
   desc: Yup.string(),
 });
 
-export const ModalCardInfo = ({ card, boardId, onClose, updateCard }) => {
+export const ModalCardInfo = ({ card, boardId, updateCard }) => {
   const [showAddNewTask, setShowAddNewTask] = useState(false);
   const [titleTask, setTitleTask] = useState("");
   const isLoading = false;
@@ -231,7 +231,6 @@ export const ModalCardInfo = ({ card, boardId, onClose, updateCard }) => {
 
               <AssignmentTurnedIn color="primary" fontSize="large" />
 
-              {/* Start Add New Task */}
               {showAddNewTask && (
                 <Box
                   sx={{ display: "flex", alignItems: "center", gap: "0.5rem" }}

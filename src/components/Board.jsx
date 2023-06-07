@@ -5,8 +5,7 @@ import { deepOrange } from "@mui/material/colors";
 import { CustomAutocomplete } from "./CustomAutocomplete";
 import { CustomAutocompleteSingle } from "./CustomAutocompleteSingle";
 import { ChangeButtons } from "./ChangeButtons";
-import { ItemAddCardBtn } from "./styles";
-import { Box, Typography, TextField, Chip } from "@mui/material";
+import { Box, Typography, TextField, Chip, Paper } from "@mui/material";
 import NoteRoundedIcon from "@mui/icons-material/NoteRounded";
 import NoteAltRoundedIcon from "@mui/icons-material/NoteAltRounded";
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -21,7 +20,6 @@ export const Board = ({
   handleRemoveBoard,
   addCard,
   removeCard,
-  updateCard,
   handleOpen,
   handleSetCurrentCard,
 }) => {
@@ -206,7 +204,6 @@ export const Board = ({
                 key={card.id}
                 boardId={board.id}
                 removeCard={removeCard}
-                updateCard={updateCard}
                 handleOpen={handleOpen}
                 handleSetCurrentCard={handleSetCurrentCard}
               />
@@ -215,7 +212,7 @@ export const Board = ({
         </Box>
       </Box>
 
-      <ItemAddCardBtn>
+      <Paper sx={{ border: `1px solid green`, textAlign: "center" }}>
         <CustomInput
           text="Add Card"
           placeholder="Enter Card Title"
@@ -224,7 +221,7 @@ export const Board = ({
           }
           directionBtn="row"
         />
-      </ItemAddCardBtn>
+      </Paper>
     </Box>
   );
 };

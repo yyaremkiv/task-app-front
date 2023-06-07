@@ -8,27 +8,14 @@ import MenuIcon from "@mui/icons-material/Menu";
 import DeleteIcon from "@mui/icons-material/Delete";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import EventAvailableIcon from "@mui/icons-material/EventAvailable";
-import { ModalCardInfo } from "./ModalCardInfo";
 
-export const Card = ({
-  card,
-  boardId,
-  removeCard,
-  updateCard,
-  handleOpen,
-  handleSetCurrentCard,
-}) => {
+export const Card = ({ card, boardId, removeCard, handleOpen }) => {
   const { id, title, dateStart, dateEnd, tasks, labels, desc } = card;
-  const [showCardInfo, setShowCardInfo] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
   const handleClick = (event) => setAnchorEl(event.currentTarget);
   const handleClose = () => setAnchorEl(null);
-
-  const handleChange = () => {
-    handleSetCurrentCard({ card, boardId });
-  };
 
   return (
     <Paper
@@ -38,21 +25,9 @@ export const Card = ({
         cursor: "pointer",
       }}
     >
-      {showCardInfo && (
-        <Box>
-          <ModalCardInfo
-            card={card}
-            boardId={boardId}
-            onClose={() => setShowCardInfo(false)}
-            updateCard={updateCard}
-          />
-        </Box>
-      )}
-
       <Stack
         onClick={() => {
-          handleOpen("card");
-          handleChange();
+          handleOpen({ boardId, card });
         }}
       >
         <Box

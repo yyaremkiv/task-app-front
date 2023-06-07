@@ -10,9 +10,9 @@ interface ModeProps {
   matches: boolean;
 }
 
-export const Mode = ({ mode, setMode, matches }: ModeProps) => {
+export const Mode = ({ mode, matches }: ModeProps) => {
   return (
-    <Box onClick={() => setMode(mode === "light" ? "dark" : "light")}>
+    <Box>
       <IconButton sx={{ color: "#fff" }}>
         {mode === "light" ? <Brightness4Icon /> : <Brightness7Icon />}{" "}
       </IconButton>

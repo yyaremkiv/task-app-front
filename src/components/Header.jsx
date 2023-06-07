@@ -25,9 +25,8 @@ import {
   ListItemButton,
   ListItemText,
 } from "@mui/material";
-import { WrapperBurgerMenu } from "./styles";
 
-export const Header = ({ mode, setMode }) => {
+export const Header = ({ mode }) => {
   const isLogged = useSelector((state) => state.auth.isLogged);
   const dispatch = useDispatch();
   const matches = useMediaQuery("(max-width:600px)");
@@ -82,29 +81,25 @@ export const Header = ({ mode, setMode }) => {
                   open={stateBurger["left"]}
                   onClose={toggleDrawer("left", false)}
                 >
-                  <WrapperBurgerMenu
+                  <Box
                     sx={{ width: 200 }}
                     role="presentation"
                     onClick={toggleDrawer("left", false)}
                     onKeyDown={toggleDrawer("left", false)}
                   >
                     <List>
-                      {[
-                        <Mode
-                          mode={mode}
-                          setMode={setMode}
-                          matches={matches}
-                        />,
-                      ].map((el, index) => (
-                        <ListItem key={index} disablePadding>
-                          <ListItemButton>
-                            <ListItemText primary={el} />
-                          </ListItemButton>
-                        </ListItem>
-                      ))}
+                      {[<Mode mode={mode} matches={matches} />].map(
+                        (el, index) => (
+                          <ListItem key={index} disablePadding>
+                            <ListItemButton>
+                              <ListItemText primary={el} />
+                            </ListItemButton>
+                          </ListItem>
+                        )
+                      )}
                     </List>
                     <Divider />
-                  </WrapperBurgerMenu>
+                  </Box>
                 </Drawer>
               </React.Fragment>
             ) : null}
@@ -133,11 +128,7 @@ export const Header = ({ mode, setMode }) => {
                 </Button>
               </Box>
             )}
-            {matches ? (
-              ""
-            ) : (
-              <Mode mode={mode} setMode={setMode} matches={matches} />
-            )}
+            {matches ? "" : <Mode mode={mode} matches={matches} />}
           </Toolbar>
         </Container>
       </AppBar>
