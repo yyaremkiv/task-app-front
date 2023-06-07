@@ -22,6 +22,8 @@ export const Board = ({
   addCard,
   removeCard,
   updateCard,
+  handleOpen,
+  handleSetCurrentCard,
 }) => {
   const [showTitleChange, setShowTitleChange] = useState(false);
   const [showLabelsChange, setShowLabelsChange] = useState(false);
@@ -205,6 +207,8 @@ export const Board = ({
                 boardId={board.id}
                 removeCard={removeCard}
                 updateCard={updateCard}
+                handleOpen={handleOpen}
+                handleSetCurrentCard={handleSetCurrentCard}
               />
             ))}
           </Box>

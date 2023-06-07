@@ -1,12 +1,19 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { Grid } from "@mui/material";
-import { GridItem } from "./GridItem";
+import { Grid, Paper } from "@mui/material";
 import { Board } from "./Board";
 import BoardHandler from "../helpers/boardHandler";
 import TaskOperations from "../redux/task/taskOperations";
 
-export const ListBoards = ({ boards, page, limit, isLoading, view }) => {
+export const ListBoards = ({
+  boards,
+  page,
+  limit,
+  view,
+  isLoading,
+  handleOpen,
+  handleSetCurrentCard,
+}) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -64,8 +71,9 @@ export const ListBoards = ({ boards, page, limit, isLoading, view }) => {
     <Grid container spacing={2} sx={{ wdith: "100%" }}>
       {boards?.map((board) => (
         <Grid key={board.id} item xs={view}>
-          <GridItem
+          <Paper
             sx={{
+              padding: "1rem",
               border: board.color ? `3px solid ${board.color || "gray"}` : null,
               borderRadius: "0.75rem",
             }}
@@ -79,8 +87,10 @@ export const ListBoards = ({ boards, page, limit, isLoading, view }) => {
               addCard={handleAddCardToBoard}
               updateCard={handelUpdateCard}
               removeCard={handleRemoveCard}
+              handleOpen={handleOpen}
+              handleSetCurrentCard={handleSetCurrentCard}
             />
-          </GridItem>
+          </Paper>
         </Grid>
       ))}
     </Grid>

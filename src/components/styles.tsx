@@ -1,7 +1,6 @@
 import { styled } from "@mui/material/styles";
 import { Paper, Box } from "@mui/material";
 import { Theme } from "@mui/material/styles";
-import { shadow } from "./GridItem";
 import { blueGrey } from "@mui/material/colors";
 
 export const ItemAddBoardBtn = styled(Paper)(({ theme }: { theme: Theme }) => ({
@@ -40,7 +39,7 @@ export const ItemAddCardBtn = styled(Paper)(({ theme }: { theme: Theme }) => ({
 export const ItemCardInfoBG = styled(Box)(({ theme }: { theme: Theme }) => ({
   backgroundColor:
     theme.palette.mode === "dark" ? blueGrey[900] : blueGrey[100],
-  boxShadow: theme.palette.mode === "dark" ? shadow[1] : shadow[2],
+  // boxShadow: theme.palette.mode === "dark" ? shadow[1] : shadow[2],
   borderRadius: "30px",
   color:
     theme.palette.mode === "dark"

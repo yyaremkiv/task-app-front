@@ -7,6 +7,7 @@ import { ModalBoardCreate } from "../components/ModalBoardCreate";
 import { Container, Box, Modal, IconButton, Pagination } from "@mui/material";
 import TaskOperations from "../redux/task/taskOperations";
 import AddIcon from "@mui/icons-material/Add";
+import { ModalCardInfo } from "../components/ModalCardInfo";
 
 export const PageTask = () => {
   const [page, setPage] = useState(1);
@@ -14,6 +15,9 @@ export const PageTask = () => {
   const [openModal, setOpenModal] = useState(false);
   const [openFilter, setOpenFilter] = useState(false);
   const [view, setView] = useState(6);
+  const [type, setType] = useState("board");
+  const [card, setCard] = useState(null);
+  const [boardId, setBoardId] = useState(null);
   const boards = useSelector((state) => state.task.data);
   const totalBoards = useSelector((state) => state.task.totalBords);
   const isLoading = useSelector((state) => state.task.isLoading);
@@ -24,7 +28,10 @@ export const PageTask = () => {
     dispatch(TaskOperations.getBoards({ params: { page, limit } }));
   }, [dispatch, page, limit]);
 
-  const handleOpen = () => setOpenModal(true);
+  const handleOpen = (type) => {
+    setType(type);
+    setOpenModal(true);
+  };
   const handleClose = () => setOpenModal(false);
 
   const handleChangePage = (_, newPageValue) => setPage(newPageValue);
@@ -32,6 +39,11 @@ export const PageTask = () => {
   const handleChangeLimit = (value) => {
     setPage(1);
     setLimit(value);
+  };
+
+  const handleSetCurrentCard = ({ card, boardId }) => {
+    setCard(card);
+    setBoardId(boardId);
   };
 
   return (
@@ -66,6 +78,8 @@ export const PageTask = () => {
             limit={limit}
             view={view}
             isLoading={isLoading}
+            handleOpen={handleOpen}
+            handleSetCurrentCard={handleSetCurrentCard}
           />
         </Box>
       </Box>
@@ -89,7 +103,7 @@ export const PageTask = () => {
       )}
 
       <Box
-        onClick={handleOpen}
+        onClick={() => handleOpen("board")}
         sx={{ position: "absolute", right: "4rem", bottom: "3rem" }}
       >
         <IconButton sx={{ backgroundColor: "tomato", fontSize: "3rem" }}>
@@ -103,18 +117,23 @@ export const PageTask = () => {
             position: "absolute",
             top: "50%",
             left: "50%",
-            p: "2rem 1rem",
-            width: 400,
+            maxHeight: "85vh",
+            overflowY: "auto",
+            padding: "1rem",
             bgcolor: "background.paper",
             borderRadius: "0.5rem",
             transform: "translate(-50%, -50%)",
           }}
         >
-          <ModalBoardCreate
-            handleClose={handleClose}
-            isLoading={isLoading}
-            error={error}
-          />
+          {type === "board" ? (
+            <ModalBoardCreate
+              handleClose={handleClose}
+              isLoading={isLoading}
+              error={error}
+            />
+          ) : (
+            <ModalCardInfo card={card} boardId={boardId} />
+          )}
         </Box>
       </Modal>
     </Container>

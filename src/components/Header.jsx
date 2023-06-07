@@ -1,3 +1,4 @@
+import React from "react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -11,11 +12,20 @@ import {
 } from "@mui/material";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { Menu as MenuIcon } from "@mui/icons-material";
-import { BurgerMenu } from "./Burger";
 import { Mode } from "./Mode";
 import AuthOperations from "../redux/auth/AuthOperations";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useDataUser } from "../hooks/useDataUser";
+
+import {
+  Drawer,
+  List,
+  Divider,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+} from "@mui/material";
+import { WrapperBurgerMenu } from "./styles";
 
 export const Header = ({ mode, setMode }) => {
   const isLogged = useSelector((state) => state.auth.isLogged);
@@ -66,15 +76,37 @@ export const Header = ({ mode, setMode }) => {
               </IconButton>
             ) : null}
             {burgerMenu ? (
-              <BurgerMenu
-                burgerMenu={burgerMenu}
-                matches={matches}
-                stateBurger={stateBurger}
-                toggleDrawer={toggleDrawer}
-                logOut={logOut}
-                mode={mode}
-                setMode={setMode}
-              />
+              <React.Fragment key={"left"}>
+                <Drawer
+                  anchor="left"
+                  open={stateBurger["left"]}
+                  onClose={toggleDrawer("left", false)}
+                >
+                  <WrapperBurgerMenu
+                    sx={{ width: 200 }}
+                    role="presentation"
+                    onClick={toggleDrawer("left", false)}
+                    onKeyDown={toggleDrawer("left", false)}
+                  >
+                    <List>
+                      {[
+                        <Mode
+                          mode={mode}
+                          setMode={setMode}
+                          matches={matches}
+                        />,
+                      ].map((el, index) => (
+                        <ListItem key={index} disablePadding>
+                          <ListItemButton>
+                            <ListItemText primary={el} />
+                          </ListItemButton>
+                        </ListItem>
+                      ))}
+                    </List>
+                    <Divider />
+                  </WrapperBurgerMenu>
+                </Drawer>
+              </React.Fragment>
             ) : null}
             <Typography
               variant="h6"

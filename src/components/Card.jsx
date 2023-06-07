@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { CardInfo } from "./CardInfo";
 import { ListItemIcon } from "@mui/material";
 import { PlaylistAddCheckSharp, NoteRounded } from "@mui/icons-material";
 import { Box, Paper, Stack, Typography, IconButton, Chip } from "@mui/material";
@@ -9,8 +8,16 @@ import MenuIcon from "@mui/icons-material/Menu";
 import DeleteIcon from "@mui/icons-material/Delete";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import EventAvailableIcon from "@mui/icons-material/EventAvailable";
+import { ModalCardInfo } from "./ModalCardInfo";
 
-export const Card = ({ card, boardId, removeCard, updateCard }) => {
+export const Card = ({
+  card,
+  boardId,
+  removeCard,
+  updateCard,
+  handleOpen,
+  handleSetCurrentCard,
+}) => {
   const { id, title, dateStart, dateEnd, tasks, labels, desc } = card;
   const [showCardInfo, setShowCardInfo] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -18,6 +25,10 @@ export const Card = ({ card, boardId, removeCard, updateCard }) => {
 
   const handleClick = (event) => setAnchorEl(event.currentTarget);
   const handleClose = () => setAnchorEl(null);
+
+  const handleChange = () => {
+    handleSetCurrentCard({ card, boardId });
+  };
 
   return (
     <Paper
@@ -28,15 +39,22 @@ export const Card = ({ card, boardId, removeCard, updateCard }) => {
       }}
     >
       {showCardInfo && (
-        <CardInfo
-          card={card}
-          boardId={boardId}
-          onCLose={() => setShowCardInfo(false)}
-          updateCard={updateCard}
-        />
+        <Box>
+          <ModalCardInfo
+            card={card}
+            boardId={boardId}
+            onClose={() => setShowCardInfo(false)}
+            updateCard={updateCard}
+          />
+        </Box>
       )}
 
-      <Stack onClick={() => setShowCardInfo(true)}>
+      <Stack
+        onClick={() => {
+          handleOpen("card");
+          handleChange();
+        }}
+      >
         <Box
           sx={{
             display: "flex",
@@ -63,7 +81,7 @@ export const Card = ({ card, boardId, removeCard, updateCard }) => {
             color: "#009688",
             backgroundColor: "#00606425",
             borderBottom: "2px solid #006064",
-            borderRadius: "0.5rem 0.5rem 0 0",
+            borderRadius: "0.25rem 0.25rem 0 0",
           }}
         >
           <Box
