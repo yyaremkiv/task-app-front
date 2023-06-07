@@ -1,6 +1,4 @@
-import { BoardItem } from "../interfaces/DataTypes";
-
-export const ApiTask: BoardItem[] = [
+export const ApiTask: any = [
   {
     id: 1,
     title: "Doing",
