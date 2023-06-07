@@ -59,7 +59,7 @@ export const PageTask = () => {
           ) : null}
         </Box>
 
-        <Box sx={{ border: "1px solid gray" }}>
+        <Box>
           <ListBoards
             boards={boards}
             page={page}

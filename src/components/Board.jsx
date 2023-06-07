@@ -1,29 +1,17 @@
 import { useState } from "react";
 import { CustomInput } from "./CustomInput";
 import { Card } from "./Card";
-import { Dropdown } from "./Dropdown";
 import { deepOrange } from "@mui/material/colors";
 import { CustomAutocomplete } from "./CustomAutocomplete";
 import { CustomAutocompleteSingle } from "./CustomAutocompleteSingle";
 import { ChangeButtons } from "./ChangeButtons";
 import { ItemAddCardBtn, TitleBgBoard } from "./styles";
-import {
-  Box,
-  Typography,
-  IconButton,
-  Button,
-  TextField,
-  Chip,
-} from "@mui/material";
-import DragHandleRoundedIcon from "@mui/icons-material/DragHandleRounded";
+import { Box, Typography, TextField, Chip } from "@mui/material";
 import NoteRoundedIcon from "@mui/icons-material/NoteRounded";
 import NoteAltRoundedIcon from "@mui/icons-material/NoteAltRounded";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
-import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
-import PaletteIcon from "@mui/icons-material/Palette";
 import DataConfigInformation from "../data/DataConfigInformation";
+import { MenuDashboard } from "./MenuDashboard";
 
 export const Board = ({
   board,
@@ -39,7 +27,6 @@ export const Board = ({
   const [showLabelsChange, setShowLabelsChange] = useState(false);
   const [showColorChange, setShowColorChange] = useState(false);
   const [titleBoard, setTitleBoard] = useState(board.title || "title");
-  const [showDropdown, setShowDropdown] = useState(false);
   const [labels, setLabels] = useState(board.labels || []);
   const [color, setColor] = useState(
     DataConfigInformation.colors.find((el) => el.color === board.color)
@@ -52,13 +39,16 @@ export const Board = ({
   return (
     <Box>
       <Box>
-        <TitleBgBoard
+        <Box
           sx={{
             display: "flex",
             flexWrap: "wrap",
             justifyContent: "space-between",
             alignItems: "center",
             padding: "0.25rem 1rem",
+            color: "#009688",
+            backgroundColor: "#00606425",
+            borderBottom: "2px solid #006064",
             borderRadius: "0.75rem 0.75rem 0 0",
           }}
         >
@@ -74,7 +64,11 @@ export const Board = ({
 
             {showTitleChange ? (
               <Box
-                sx={{ display: "flex", alignItems: "center", gap: "0.5rem" }}
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.5rem",
+                }}
               >
                 <TextField
                   size="small"
@@ -91,92 +85,37 @@ export const Board = ({
                 />
               </Box>
             ) : (
-              <Typography
-                variant="h5"
-                gutterBottom
-                sx={{ margin: "0" }}
-                fontSize="20px"
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "2rem",
+                }}
               >
-                {board.title}
-              </Typography>
+                <Typography variant="h5" fontSize="1.25rem">
+                  {board.title}
+                </Typography>
+                <Box
+                  sx={{ display: "flex", alignItems: "center", gap: "0.5rem" }}
+                >
+                  <Typography variant="h6">
+                    {board?.cards?.length || 0}
+                  </Typography>
+                  <NoteRoundedIcon color="inherit" fontSize="medium" />
+                </Box>
+              </Box>
             )}
           </Box>
 
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <Typography
-              variant="h6"
-              gutterBottom
-              sx={{
-                padding: "6px",
-                borderRadius: "5px",
-                margin: "0",
-              }}
-            >
-              {board?.cards?.length || 0}
-            </Typography>
-            <NoteRoundedIcon color="inherit" fontSize="medium" />
-          </Box>
-          <Box sx={{ zIndex: 5, position: "relative" }}>
-            <IconButton
-              size="large"
-              color="inherit"
-              aria-label="menu"
-              onClick={() => {
-                setShowDropdown(!showDropdown);
-              }}
-            >
-              <DragHandleRoundedIcon fontSize="inherit" />
-            </IconButton>
-
-            {showDropdown && (
-              <Dropdown onClose={() => setShowDropdown(false)}>
-                <Button
-                  startIcon={<EditIcon />}
-                  onClick={() => {
-                    setShowDropdown(false);
-                    setShowTitleChange(!showTitleChange);
-                  }}
-                  style={{ whiteSpace: "nowrap", justifyContent: "flex-start" }}
-                >
-                  Edit title
-                </Button>
-                <Button
-                  startIcon={<BookmarkBorderIcon />}
-                  onClick={() => {
-                    setShowDropdown(false);
-                    setShowLabelsChange(true);
-                  }}
-                  style={{ whiteSpace: "nowrap", justifyContent: "flex-start" }}
-                >
-                  Edit Labels
-                </Button>
-                <Button
-                  startIcon={<PaletteIcon />}
-                  onClick={() => {
-                    setShowDropdown(false);
-                    setShowColorChange(true);
-                  }}
-                  style={{ whiteSpace: "nowrap", justifyContent: "flex-start" }}
-                >
-                  Edit Color
-                </Button>
-                <Button
-                  startIcon={<DeleteIcon />}
-                  onClick={() => handleRemoveBoard({ boardId: board.id })}
-                  style={{ whiteSpace: "nowrap", justifyContent: "flex-start" }}
-                >
-                  Delete Board
-                </Button>
-              </Dropdown>
-            )}
-          </Box>
-        </TitleBgBoard>
+          <MenuDashboard
+            boardId={board.id}
+            showTitleChange={showTitleChange}
+            setShowTitleChange={setShowTitleChange}
+            setShowLabelsChange={setShowLabelsChange}
+            setShowColorChange={setShowColorChange}
+            handleRemoveBoard={handleRemoveBoard}
+          />
+        </Box>
         <Box
           sx={{
             padding: "7px",
@@ -197,9 +136,8 @@ export const Board = ({
             },
           }}
         >
-          {/* Start - labels */}
           {showLabelsChange ? (
-            <Box>
+            <Box sx={{ padding: "0.5rem 0" }}>
               <CustomAutocomplete
                 label="Set Labels of Board"
                 changeFieldName="labels"
@@ -219,11 +157,11 @@ export const Board = ({
               sx={{
                 display: "flex",
                 flexWrap: "wrap",
-                gap: "4px",
+                gap: "0.25rem",
                 paddingBottom: "0.5rem",
               }}
             >
-              {board?.labels.map((item) => (
+              {board?.labels?.map((item) => (
                 <Chip
                   key={item.label}
                   label={item.label}
@@ -235,11 +173,9 @@ export const Board = ({
               ))}
             </Box>
           )}
-          {/* End - labels */}
 
-          {/* Start - color change */}
           {showColorChange && (
-            <Box>
+            <Box sx={{ padding: "0.5rem 0" }}>
               <CustomAutocompleteSingle
                 label="Set Color Of Border"
                 changeFieldName="color"
@@ -258,16 +194,20 @@ export const Board = ({
               />
             </Box>
           )}
-          {/* End - color change */}
-          {board?.cards?.map((card) => (
-            <Card
-              card={card}
-              key={card.id}
-              boardId={board.id}
-              removeCard={removeCard}
-              updateCard={updateCard}
-            />
-          ))}
+
+          <Box
+            sx={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}
+          >
+            {board?.cards?.map((card) => (
+              <Card
+                card={card}
+                key={card.id}
+                boardId={board.id}
+                removeCard={removeCard}
+                updateCard={updateCard}
+              />
+            ))}
+          </Box>
         </Box>
       </Box>
 

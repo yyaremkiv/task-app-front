@@ -11,10 +11,6 @@ import { Box, TextField, FormHelperText, Tooltip } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { ListTasks } from "./ListTasks";
-import Button from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
-import DoneIcon from "@mui/icons-material/Done";
-import CloseIcon from "@mui/icons-material/Close";
 import {
   Title,
   Description,
@@ -22,8 +18,12 @@ import {
   AssignmentTurnedIn,
   BookmarkBorder,
 } from "@mui/icons-material/";
+import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
 import DataConfigInformation from "../data/DataConfigInformation";
 import DeleteIcon from "@mui/icons-material/Delete";
+import DoneIcon from "@mui/icons-material/Done";
+import CloseIcon from "@mui/icons-material/Close";
 import "dayjs/locale/de";
 
 const cardSchema = Yup.object().shape({

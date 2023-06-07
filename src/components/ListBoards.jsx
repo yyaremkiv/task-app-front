@@ -67,6 +67,7 @@ export const ListBoards = ({ boards, page, limit, isLoading, view }) => {
           <GridItem
             sx={{
               border: board.color ? `3px solid ${board.color || "gray"}` : null,
+              borderRadius: "0.75rem",
             }}
           >
             <Board
