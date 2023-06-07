@@ -21,8 +21,6 @@ import NoteAltRoundedIcon from "@mui/icons-material/NoteAltRounded";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import DoneIcon from "@mui/icons-material/Done";
-import CloseIcon from "@mui/icons-material/Close";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import PaletteIcon from "@mui/icons-material/Palette";
 import DataConfigInformation from "../data/DataConfigInformation";
@@ -60,7 +58,6 @@ export const Board = ({
             flexWrap: "wrap",
             justifyContent: "space-between",
             alignItems: "center",
-            marginBottom: "12px",
             padding: "0.25rem 1rem",
             borderRadius: "0.75rem 0.75rem 0 0",
           }}
@@ -223,6 +220,7 @@ export const Board = ({
                 display: "flex",
                 flexWrap: "wrap",
                 gap: "4px",
+                paddingBottom: "0.5rem",
               }}
             >
               {board?.labels.map((item) => (

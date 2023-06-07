@@ -1,25 +1,20 @@
 import { useState } from "react";
+import * as Yup from "yup";
 import {
   Box,
   Checkbox,
   IconButton,
   Modal,
   Paper,
-  Slider,
-  TextField,
   Typography,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import CloseIcon from "@mui/icons-material/Close";
+import { FormChangeTask } from "./FormChangeTask";
 
-export const ListTasks = ({
-  errors,
-  touched,
-  isLoading,
-  values,
-  changeFuncByFormik,
-}) => {
+export const ListTasks = ({ isLoading, values, changeFuncByFormik }) => {
   const [openModal, setOpenModal] = useState(false);
+  const [taskToUpdate, setTaskToUpdate] = useState(null);
 
   const handleOpen = () => setOpenModal(true);
   const handleClose = () => setOpenModal(false);
@@ -37,6 +32,7 @@ export const ListTasks = ({
     for (let i = 0; i < newTasks.length; i++) {
       if (newTasks[i].id === taskId) {
         newTasks[i].completed = Boolean(!newTasks[i].completed);
+        newTasks[i].progress = Boolean(newTasks[i].completed) ? 100 : 0;
         break;
       }
     }
@@ -44,13 +40,29 @@ export const ListTasks = ({
     changeFuncByFormik("tasks", newTasks);
   };
 
-  const handleUpdateTask = ({ taskId }) => {
-    setOpenModal(true);
+  const handleOpenTaskToUpdate = ({ taskId }) => {
+    const task = values?.tasks.find((task) => task.id === taskId);
+    if (task) {
+      setTaskToUpdate(task);
+      setOpenModal(true);
+    }
+  };
+
+  const handleUpdateTask = ({ taskId, updatedTask }) => {
+    let newTasks = JSON.parse(JSON.stringify(values.tasks));
+
+    for (let i = 0; i < newTasks.length; i++) {
+      if (newTasks[i].id === taskId) {
+        newTasks[i] = updatedTask;
+        break;
+      }
+    }
+    changeFuncByFormik("tasks", newTasks);
   };
 
   return (
     <Box>
-      {values.tasks.map(({ id, text, completed }) => (
+      {values.tasks.map(({ id, text, completed, progress }) => (
         <Paper
           key={id}
           elevation={1}
@@ -77,18 +89,21 @@ export const ListTasks = ({
                 })
               }
             />
-            <Typography
-              variant="subtitle1"
-              align="left"
-              sx={{
-                textDecoration: completed ? "line-through" : "none",
-              }}
-            >
-              {text}
-            </Typography>
+            <Box>
+              <Typography
+                variant="subtitle1"
+                align="left"
+                sx={{
+                  textDecoration: completed ? "line-through" : "none",
+                }}
+              >
+                {text}
+              </Typography>
+              <Typography> This is progress: {progress}%</Typography>
+            </Box>
           </Box>
           <Box>
-            <IconButton onClick={() => handleUpdateTask({ taskId: id })}>
+            <IconButton onClick={() => handleOpenTaskToUpdate({ taskId: id })}>
               <EditIcon fontSize="medium" />
             </IconButton>
             <IconButton
@@ -119,48 +134,11 @@ export const ListTasks = ({
             transform: "translate(-50%, -50%)",
           }}
         >
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              gap: "1rem",
-              border: "1px solid gray",
-            }}
-          >
-            <Typography>Title:</Typography>
-            <TextField
-              multiline
-              fullWidth
-              size="small"
-              label="Title"
-              // value={titleBoard}
-              // onChange={(e) => setTitleBoard(e.target.value)}
-            />
-
-            <Box sx={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-              <TextField
-                label="Progress"
-                name="progress"
-                size="small"
-                value={values.progress}
-                error={Boolean(touched.progress && errors.progress)}
-                helperText={touched.progress && errors.progress}
-                disabled={isLoading}
-                onChange={(e) => {
-                  changeFuncByFormik("progress", e.target.value);
-                }}
-              />
-
-              <Slider
-                aria-label="Default"
-                valueLabelDisplay="auto"
-                value={values.progress}
-                onChange={(e) => {
-                  changeFuncByFormik("progress", e.target.value);
-                }}
-              />
-            </Box>
-          </Box>
+          <FormChangeTask
+            task={taskToUpdate}
+            handleUpdateTask={handleUpdateTask}
+            handleClose={handleClose}
+          />
         </Box>
       </Modal>
     </Box>

@@ -57,9 +57,9 @@ export const Card = ({ card, boardId, removeCard, updateCard }) => {
         <Box
           sx={{
             display: "flex",
-            width: "100%",
             justifyContent: "start",
             alignItems: "center",
+            width: "100%",
             flexWrap: "wrap",
             gap: "3px",
           }}
@@ -67,7 +67,7 @@ export const Card = ({ card, boardId, removeCard, updateCard }) => {
           {labels?.map((item, index) => (
             <Chip
               key={index}
-              label={item.text}
+              label={item.label}
               style={{
                 color: "white",
                 backgroundColor: item.color,

@@ -7,16 +7,10 @@ import { CustomAutocomplete } from "./CustomAutocomplete";
 import { v4 as uuidv4 } from "uuid";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import {
-  Box,
-  TextField,
-  Paper,
-  Checkbox,
-  Typography,
-  FormHelperText,
-} from "@mui/material";
+import { Box, TextField, FormHelperText, Tooltip } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { ListTasks } from "./ListTasks";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import DoneIcon from "@mui/icons-material/Done";
@@ -29,8 +23,8 @@ import {
   BookmarkBorder,
 } from "@mui/icons-material/";
 import DataConfigInformation from "../data/DataConfigInformation";
-import EditIcon from "@mui/icons-material/Edit";
-import { ListTasks } from "./ListTasks";
+import DeleteIcon from "@mui/icons-material/Delete";
+import "dayjs/locale/de";
 
 const cardSchema = Yup.object().shape({
   title: Yup.string(),
@@ -45,7 +39,8 @@ export const ModalCardInfo = ({ card, updateCard }) => {
   const initialValuesCard = {
     title: card.title,
     desc: card.desc || "",
-    date: dayjs(card.date),
+    dateStart: card.dateStart ? dayjs(card.dateStart) : null,
+    dateEnd: card.dateEnd ? dayjs(card.dateEnd) : null,
     labels: card.labels || [],
     tasks: card.tasks,
   };
@@ -64,7 +59,11 @@ export const ModalCardInfo = ({ card, updateCard }) => {
     <Box>
       <Formik
         onSubmit={(values) => {
-          updateCard({ ...values, date: values.date ? values.date.$d : "" });
+          updateCard({
+            ...values,
+            dateStart: values.dateStart ? values.dateStart.$d : null,
+            dateEnd: values.dateEnd ? values.dateEnd.$d : null,
+          });
         }}
         initialValues={initialValuesCard}
         validationSchema={cardSchema}
@@ -114,27 +113,50 @@ export const ModalCardInfo = ({ card, updateCard }) => {
 
             <Box sx={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
               <CalendarMonth color="primary" fontSize="large" />
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <LocalizationProvider
+                dateAdapter={AdapterDayjs}
+                adapterLocale="de"
+              >
                 <Box sx={{ display: "flex", gap: "1rem" }}>
-                  <Box>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "0.25rem",
+                    }}
+                  >
                     <DatePicker
-                      label="Date Start"
                       fullWidth
-                      value={values.date}
+                      label="Date Start"
+                      value={values.dateStart}
                       disabled={isLoading}
-                      onChange={(date) => setFieldValue("date", date)}
+                      onChange={(date) => setFieldValue("dateStart", date)}
+                      className={!values.dateStart ? "no-date-selected" : ""}
                     />
                     <FormHelperText
                       error={Boolean(touched.dateStart && errors.dateStart)}
                     >
                       {touched.dateStart && errors.dateStart}
                     </FormHelperText>
+                    <Tooltip title="Delete the start date" placement="top">
+                      <IconButton
+                        onClick={() => setFieldValue("dateStart", null)}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </Tooltip>
                   </Box>
 
-                  <Box>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "0.25rem",
+                    }}
+                  >
                     <DatePicker
-                      label="Date End"
                       fullWidth
+                      label="Date End"
                       value={values.dateEnd}
                       disabled={isLoading}
                       onChange={(date) => setFieldValue("dateEnd", date)}
@@ -144,6 +166,13 @@ export const ModalCardInfo = ({ card, updateCard }) => {
                     >
                       {touched.dateEnd && errors.dateEnd}
                     </FormHelperText>
+                    <Tooltip title="Delete the end date" placement="top">
+                      <IconButton
+                        onClick={() => setFieldValue("dateEnd", null)}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </Tooltip>
                   </Box>
                 </Box>
               </LocalizationProvider>
