@@ -38,25 +38,19 @@ export const themeSettings = (mode: any) => {
               main: "#00838f",
               light: "#00acc1",
               dark: "#006064",
-              contrastText: "#fff",
             },
             secondary: {
               light: "#ff7961",
               main: "#ff3d00",
               dark: "#dd2c00",
-              contrastText: "#000",
-            },
-            neutral: {
-              light: "#00838f",
-              dark: "#00838f",
             },
             background: {
-              light: "#00838f",
-              dark: "#00838f",
+              default: "#121212",
             },
             text: {
-              light: "#00838f",
-              dark: "#00838f",
+              primary: "#fff",
+              light: "#fff",
+              main: "#f44336",
             },
           }
         : {
@@ -70,19 +64,14 @@ export const themeSettings = (mode: any) => {
               light: "#ff7961",
               main: "#ff3d00",
               dark: "#dd2c00",
-              contrastText: "#000",
-            },
-            neutral: {
-              light: "#00838f",
-              dark: "#00838f",
             },
             background: {
-              light: "#00838f",
-              dark: "#00838f",
+              default: "#fff",
             },
             text: {
-              light: "#00838f",
-              dark: "#00838f",
+              primary: "rgba(0, 0, 0, 0.87)",
+              light: "#fff",
+              main: "#651fff",
             },
           }),
     },

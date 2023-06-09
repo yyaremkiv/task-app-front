@@ -1,19 +1,24 @@
 import { Outlet } from "react-router-dom";
 import { Header } from "../components/Header/Header";
-import { Box } from "@mui/material";
+import { Box, Container } from "@mui/material";
+import { useTheme, Theme } from "@mui/material/styles";
 
-export const Layout = () => {
+export const Layout = (): JSX.Element => {
+  const theme: Theme = useTheme();
+
   return (
     <Box
       sx={{
         position: "relative",
         minHeight: "100vh",
-        color: "text.primary",
-        bgcolor: "background.default",
+        color: theme.palette.text.primary,
+        backgroundColor: theme.palette.background.default,
       }}
     >
       <Header />
-      <Outlet />
+      <Container maxWidth="xl" sx={{ border: "1px solid green" }}>
+        <Outlet />
+      </Container>
     </Box>
   );
 };

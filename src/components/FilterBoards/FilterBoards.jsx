@@ -6,6 +6,7 @@ import { CustomTextField } from "../CustomTextField";
 import { LoadingButton } from "@mui/lab";
 import TaskOperations from "../../redux/task/taskOperations";
 import DataConfigInformation from "../../data/DataConfigInformation";
+import { Box } from "@mui/material";
 
 const initialValues = {
   query: "",
@@ -51,66 +52,68 @@ export const FilterBoards = ({ page = 1, limit = 10, isLoading = false }) => {
   };
 
   return (
-    <Formik
-      onSubmit={handleSubmitSearch}
-      initialValues={initialValues}
-      validationSchema={filterSchema}
-    >
-      {({
-        values,
-        errors,
-        touched,
-        handleBlur,
-        handleChange,
-        handleSubmit,
-        setFieldValue,
-        resetForm,
-      }) => (
-        <form
-          onSubmit={handleSubmit}
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "0.75rem",
-          }}
-        >
-          <CustomTextField
-            label="Search In Title"
-            name="query"
-            formikFunc={{ values, errors, touched, handleBlur, handleChange }}
-            isLoading={isLoading}
-          />
-
-          <CustomAutocomplete
-            label="Set Labels of Board"
-            changeFieldName="labels"
-            value={values.labels}
-            changeFieldFunction={setFieldValue}
-            options={DataConfigInformation.labelCategories}
-            isLoading={isLoading}
-          />
-
-          <CustomAutocomplete
-            label="Set Color Of Board"
-            changeFieldName="colors"
-            value={values.colors}
-            changeFieldFunction={setFieldValue}
-            options={DataConfigInformation.colors}
-            isLoading={isLoading}
-          />
-
-          <LoadingButton type="submit" variant="outlined" loading={isLoading}>
-            Search Boards
-          </LoadingButton>
-          <LoadingButton
-            variant="outlined"
-            loading={isLoading}
-            onClick={() => handleClearFilter(resetForm, values)}
+    <Box sx={{ padding: "0.5rem" }}>
+      <Formik
+        onSubmit={handleSubmitSearch}
+        initialValues={initialValues}
+        validationSchema={filterSchema}
+      >
+        {({
+          values,
+          errors,
+          touched,
+          handleBlur,
+          handleChange,
+          handleSubmit,
+          setFieldValue,
+          resetForm,
+        }) => (
+          <form
+            onSubmit={handleSubmit}
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "0.75rem",
+            }}
           >
-            Clear Filter
-          </LoadingButton>
-        </form>
-      )}
-    </Formik>
+            <CustomTextField
+              label="Search In Title"
+              name="query"
+              formikFunc={{ values, errors, touched, handleBlur, handleChange }}
+              isLoading={isLoading}
+            />
+
+            <CustomAutocomplete
+              label="Set Labels of Board"
+              changeFieldName="labels"
+              value={values.labels}
+              changeFieldFunction={setFieldValue}
+              options={DataConfigInformation.labelCategories}
+              isLoading={isLoading}
+            />
+
+            <CustomAutocomplete
+              label="Set Color Of Board"
+              changeFieldName="colors"
+              value={values.colors}
+              changeFieldFunction={setFieldValue}
+              options={DataConfigInformation.colors}
+              isLoading={isLoading}
+            />
+
+            <LoadingButton type="submit" variant="outlined" loading={isLoading}>
+              Search Boards
+            </LoadingButton>
+            <LoadingButton
+              variant="outlined"
+              loading={isLoading}
+              onClick={() => handleClearFilter(resetForm, values)}
+            >
+              Clear Filter
+            </LoadingButton>
+          </form>
+        )}
+      </Formik>
+    </Box>
   );
 };

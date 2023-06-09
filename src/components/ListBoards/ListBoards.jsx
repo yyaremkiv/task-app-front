@@ -77,30 +77,34 @@ export const ListBoards = ({ boards, page, limit, view, error, isLoading }) => {
   };
 
   return (
-    <Grid container spacing={2} sx={{ wdith: "100%" }}>
-      {boards?.map((board) => (
-        <Grid key={board.id} item xs={view}>
-          <Paper
-            sx={{
-              padding: "1rem",
-              border: board.color ? `3px solid ${board.color || "gray"}` : null,
-              borderRadius: "0.75rem",
-            }}
-          >
-            <Board
-              board={board}
-              handleChangeTitleBoard={handleChangeTitleBoard}
-              handleChangeLabelBoard={handleChangeLabelBoard}
-              handleChangeColorBoard={handleChangeColorBoard}
-              handleRemoveBoard={handleRemoveBoard}
-              addCard={handleAddCardToBoard}
-              removeCard={handleRemoveCard}
-              handleOpen={handleOpen}
-              isLoading={isLoading}
-            />
-          </Paper>
-        </Grid>
-      ))}
+    <Box>
+      <Grid container>
+        {boards?.map((board) => (
+          <Grid key={board.id} item xs={view} sx={{ padding: "0.5rem" }}>
+            <Paper
+              sx={{
+                border: board.color
+                  ? `3px solid ${board.color || "gray"}`
+                  : null,
+                borderRadius: "0.75rem",
+              }}
+            >
+              <Board
+                board={board}
+                handleChangeTitleBoard={handleChangeTitleBoard}
+                handleChangeLabelBoard={handleChangeLabelBoard}
+                handleChangeColorBoard={handleChangeColorBoard}
+                handleRemoveBoard={handleRemoveBoard}
+                addCard={handleAddCardToBoard}
+                removeCard={handleRemoveCard}
+                handleOpen={handleOpen}
+                isLoading={isLoading}
+              />
+            </Paper>
+          </Grid>
+        ))}
+      </Grid>
+
       <Modal open={openModal} onClose={handleClose}>
         <Box
           sx={{
@@ -124,6 +128,6 @@ export const ListBoards = ({ boards, page, limit, view, error, isLoading }) => {
           />
         </Box>
       </Modal>
-    </Grid>
+    </Box>
   );
 };

@@ -19,7 +19,6 @@ import { useDataUser } from "../../hooks/useDataUser";
 import { Drawer, List, Divider } from "@mui/material";
 import { DarkMode, LightMode } from "@mui/icons-material";
 import { setModeTheme } from "../../redux/theme/themeSlice";
-import { UserImage } from "../UserImage";
 import { AvatarUser } from "../AvatarUser";
 
 export const Header = () => {
@@ -31,7 +30,7 @@ export const Header = () => {
   const [stateBurger, setStateBurger] = useState({
     left: false,
   });
-  const [user, isLoading, error] = useDataUser();
+  const [user, isLoading] = useDataUser();
   const { palette } = useTheme();
 
   useEffect(() => {
@@ -56,7 +55,7 @@ export const Header = () => {
   };
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box>
       <AppBar position="static">
         <Container maxWidth="xl">
           <Toolbar>
@@ -104,46 +103,48 @@ export const Header = () => {
                 </Drawer>
               </Fragment>
             ) : null}
+
             <Typography
               variant="h6"
-              component="div"
-              textAlign={matches ? "center" : "left"}
-              sx={{ flexGrow: 1, padding: "10px" }}
+              sx={{
+                flexGrow: 1,
+                padding: "10px",
+                color: palette.text.light,
+              }}
             >
               Task Manager App
             </Typography>
 
-            {user && !isLoading && !error && (
-              <AvatarUser username={user.username} />
-              // <Typography mr="2rem">Hello , {user.username}</Typography>
-            )}
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: "2rem",
+                padding: "0.5rem 0",
+              }}
+            >
+              {user && !isLoading && <AvatarUser username={user.username} />}
 
-            {isLogged && matches ? (
-              ""
-            ) : (
-              <Box
-                onClick={logOut}
-                sx={{ display: "flex", alignContent: "center" }}
-              >
-                <Button color="inherit" startIcon={<LogoutIcon />}>
+              {isLogged && matches ? null : (
+                <Button
+                  color="inherit"
+                  startIcon={<LogoutIcon />}
+                  onClick={logOut}
+                >
                   Log out
                 </Button>
-              </Box>
-            )}
-            {matches ? (
-              ""
-            ) : (
-              <IconButton
-                onClick={() => dispatch(setModeTheme())}
-                sx={{ fontSize: "25px" }}
-              >
-                {palette.mode === "dark" ? (
-                  <DarkMode sx={{ fontSize: "25px" }} />
-                ) : (
-                  <LightMode sx={{ color: "white", fontSize: "25px" }} />
-                )}
-              </IconButton>
-            )}
+              )}
+
+              {matches ? null : (
+                <IconButton onClick={() => dispatch(setModeTheme())}>
+                  {palette.mode === "dark" ? (
+                    <DarkMode sx={{ fontSize: "25px" }} />
+                  ) : (
+                    <LightMode sx={{ color: "white", fontSize: "25px" }} />
+                  )}
+                </IconButton>
+              )}
+            </Box>
           </Toolbar>
         </Container>
       </AppBar>

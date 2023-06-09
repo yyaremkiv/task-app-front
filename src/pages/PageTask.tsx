@@ -4,62 +4,61 @@ import { FilterListOption } from "../components/FilterListOption/FilterListOptio
 import { FilterBoards } from "../components/FilterBoards/FilterBoards";
 import { ListBoards } from "../components/ListBoards/ListBoards";
 import { ModalBoardCreate } from "../components/ModalBoardCreate/ModalBoardCreate";
-import { Container, Box, Modal, IconButton, Pagination } from "@mui/material";
+import { Box, Modal, IconButton, Pagination, Grid } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import TaskOperations from "../redux/task/taskOperations";
 
 export const PageTask = () => {
-  const [openModal, setOpenModal] = useState(false);
-  const [openFilter, setOpenFilter] = useState(false);
-  const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(5);
-  const [view, setView] = useState(6);
-  const boards = useSelector((state) => state.task.data);
-  const totalBoards = useSelector((state) => state.task.totalBords);
-  const isLoading = useSelector((state) => state.task.isLoading);
-  const error = useSelector((state) => state.task.error);
+  const [openModal, setOpenModal] = useState<boolean>(false);
+  const [openFilter, setOpenFilter] = useState<boolean>(false);
+  const [page, setPage] = useState<number>(1);
+  const [limit, setLimit] = useState<number>(5);
+  const [view, setView] = useState<number>(6);
+  const boards = useSelector((state: any) => state.task.data);
+  const totalBoards = useSelector((state: any) => state.task.totalBords);
+  const isLoading = useSelector((state: any) => state.task.isLoading);
+  const error = useSelector((state: any) => state.task.error);
   const dispatch = useDispatch();
 
   useEffect(() => {
+    // @ts-ignore
     dispatch(TaskOperations.getBoards({ params: { page, limit } }));
   }, [dispatch, page, limit]);
 
   const handleOpen = () => setOpenModal(true);
   const handleClose = () => setOpenModal(false);
 
-  const handleChangePage = (_, newPageValue) => setPage(newPageValue);
+  const handleChangePage = (_: any, newPageValue: number) =>
+    setPage(newPageValue);
 
-  const handleChangeLimit = (value) => {
+  const handleChangeLimit = (value: number) => {
     setPage(1);
     setLimit(value);
   };
 
   return (
-    <Container
-      sx={{
-        padding: "1rem 2rem",
-        border: "1px solid green",
-      }}
-    >
-      <FilterListOption
-        showFilter={openFilter}
-        showFilterFunc={setOpenFilter}
-        view={view}
-        viewChangeFunc={setView}
-        limit={limit}
-        changeLimit={handleChangeLimit}
-        shown={boards.length}
-        total={totalBoards}
-      />
+    <Box>
+      <Grid container spacing={1}>
+        <Grid item xs={12}>
+          <FilterListOption
+            showFilter={openFilter}
+            showFilterFunc={setOpenFilter}
+            view={view}
+            viewChangeFunc={setView}
+            limit={limit}
+            changeLimit={handleChangeLimit}
+            shown={boards.length}
+            total={totalBoards}
+          />
+        </Grid>
 
-      <Box sx={{ display: "flex" }}>
-        <Box sx={{ padding: "0 1rem 0 0" }}>
-          {openFilter ? (
+        {openFilter ? (
+          <Grid item xs={3}>
             <FilterBoards page={page} limit={limit} isLoading={isLoading} />
-          ) : null}
-        </Box>
+          </Grid>
+        ) : null}
 
-        <Box>
+        <Grid item xs={openFilter ? 9 : 12}>
           <ListBoards
             boards={boards}
             page={page}
@@ -68,8 +67,8 @@ export const PageTask = () => {
             error={error}
             isLoading={isLoading}
           />
-        </Box>
-      </Box>
+        </Grid>
+      </Grid>
 
       {boards.length < totalBoards && (
         <Box
@@ -90,7 +89,7 @@ export const PageTask = () => {
       )}
 
       <Box
-        onClick={() => handleOpen("board")}
+        onClick={() => handleOpen()}
         sx={{ position: "absolute", right: "4rem", bottom: "3rem" }}
       >
         <IconButton sx={{ backgroundColor: "tomato", fontSize: "3rem" }}>
@@ -119,6 +118,6 @@ export const PageTask = () => {
           />
         </Box>
       </Modal>
-    </Container>
+    </Box>
   );
 };
