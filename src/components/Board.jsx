@@ -22,6 +22,7 @@ export const Board = ({
   removeCard,
   handleOpen,
   handleSetCurrentCard,
+  isLoading,
 }) => {
   const [showTitleChange, setShowTitleChange] = useState(false);
   const [showLabelsChange, setShowLabelsChange] = useState(false);

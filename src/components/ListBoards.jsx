@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { Box, Grid, Modal, Paper } from "@mui/material";
 import { Board } from "./Board";
+import { ModalCardInfo } from "./ModalCardInfo";
+import { Box, Grid, Modal, Paper } from "@mui/material";
 import BoardHandler from "../helpers/boardHandler";
 import TaskOperations from "../redux/task/taskOperations";
-import { ModalCardInfo } from "./ModalCardInfo";
 
-export const ListBoards = ({ boards, page, limit, view }) => {
+export const ListBoards = ({ boards, page, limit, view, error, isLoading }) => {
   const [openModal, setOpenModal] = useState(false);
   const [currentBoardId, setCurrentBoardId] = useState(null);
   const [currentCard, setCurrentCard] = useState(null);
@@ -21,7 +21,9 @@ export const ListBoards = ({ boards, page, limit, view }) => {
     setCurrentCard(card);
     setOpenModal(true);
   };
-  const handleClose = () => setOpenModal(false);
+  const handleClose = () => {
+    setOpenModal(false);
+  };
 
   const handleBoardUpdate = ({ boards, boardId, payload }) => {
     const updatedBoard = BoardHandler.updateBoard({
@@ -52,7 +54,7 @@ export const ListBoards = ({ boards, page, limit, view }) => {
     dispatch(TaskOperations.updateBoard({ boardId, board: updatedBoard }));
   };
 
-  const handleUpdateCard = ({ boardId, cardId, updatedCard }) => {
+  const handleUpdateCard = async ({ boardId, cardId, updatedCard }) => {
     const updatedBoard = BoardHandler.updateCard({
       boards,
       boardId,
@@ -61,7 +63,11 @@ export const ListBoards = ({ boards, page, limit, view }) => {
     });
     if (!updatedBoard) return;
 
-    dispatch(TaskOperations.updateBoard({ boardId, board: updatedBoard }));
+    const response = await dispatch(
+      TaskOperations.updateBoard({ boardId, board: updatedBoard })
+    );
+    if (response.error) return;
+    if (!isLoading) setOpenModal(false);
   };
 
   const handleRemoveCard = ({ boardId, cardId }) => {
@@ -90,6 +96,7 @@ export const ListBoards = ({ boards, page, limit, view }) => {
               addCard={handleAddCardToBoard}
               removeCard={handleRemoveCard}
               handleOpen={handleOpen}
+              isLoading={isLoading}
             />
           </Paper>
         </Grid>
@@ -103,7 +110,7 @@ export const ListBoards = ({ boards, page, limit, view }) => {
             maxHeight: "85vh",
             overflowY: "auto",
             padding: "1rem",
-            bgcolor: "background.paper",
+            backgroundColor: "background.paper",
             borderRadius: "0.5rem",
             transform: "translate(-50%, -50%)",
           }}
@@ -112,6 +119,8 @@ export const ListBoards = ({ boards, page, limit, view }) => {
             card={currentCard}
             boardId={currentBoardId}
             updateCard={handleUpdateCard}
+            error={error}
+            isLoading={isLoading}
           />
         </Box>
       </Modal>

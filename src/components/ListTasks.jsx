@@ -11,7 +11,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import CloseIcon from "@mui/icons-material/Close";
 import { FormChangeTask } from "./FormChangeTask";
 
-export const ListTasks = ({ values, changeFuncByFormik }) => {
+export const ListTasks = ({ values, changeFuncByFormik, isLoading }) => {
   const [openModal, setOpenModal] = useState(false);
   const [taskToUpdate, setTaskToUpdate] = useState(null);
 
@@ -59,18 +59,21 @@ export const ListTasks = ({ values, changeFuncByFormik }) => {
   };
 
   return (
-    <Box>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        gap: "0.45rem",
+      }}
+    >
       {values.tasks.map(({ id, text, completed, progress }) => (
         <Paper
           key={id}
           elevation={1}
           sx={{
-            width: "100%",
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
-            padding: "3px",
-            marginBottom: "5px",
           }}
         >
           <Box
@@ -86,6 +89,7 @@ export const ListTasks = ({ values, changeFuncByFormik }) => {
                   taskId: id,
                 })
               }
+              disabled={isLoading}
             />
             <Box>
               <Typography
@@ -101,7 +105,10 @@ export const ListTasks = ({ values, changeFuncByFormik }) => {
             </Box>
           </Box>
           <Box>
-            <IconButton onClick={() => handleOpenTaskToUpdate({ taskId: id })}>
+            <IconButton
+              onClick={() => handleOpenTaskToUpdate({ taskId: id })}
+              disabled={isLoading}
+            >
               <EditIcon fontSize="medium" />
             </IconButton>
             <IconButton
@@ -112,6 +119,7 @@ export const ListTasks = ({ values, changeFuncByFormik }) => {
                   taskId: id,
                 })
               }
+              disabled={isLoading}
             >
               <CloseIcon fontSize="medium" />
             </IconButton>
@@ -127,7 +135,7 @@ export const ListTasks = ({ values, changeFuncByFormik }) => {
             left: "50%",
             p: "2rem 1rem",
             width: 400,
-            bgcolor: "background.paper",
+            backgroundColor: "background.paper",
             borderRadius: "0.5rem",
             transform: "translate(-50%, -50%)",
           }}

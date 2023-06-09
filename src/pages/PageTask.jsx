@@ -65,6 +65,7 @@ export const PageTask = () => {
             page={page}
             limit={limit}
             view={view}
+            error={error}
             isLoading={isLoading}
           />
         </Box>
