@@ -8,7 +8,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import PaletteIcon from "@mui/icons-material/Palette";
 
-export const MenuDashboard = ({
+export const MenuDashBoard = ({
   boardId,
   showTitleChange,
   setShowTitleChange,

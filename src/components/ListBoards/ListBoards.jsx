@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { Board } from "./Board";
-import { ModalCardInfo } from "./ModalCardInfo";
+import { Board } from "../Board/Board";
+import { ModalCardUpdate } from "../ModalCardUpdate/ModalCardUpdate";
 import { Box, Grid, Modal, Paper } from "@mui/material";
-import BoardHandler from "../helpers/boardHandler";
-import TaskOperations from "../redux/task/taskOperations";
+import BoardHandler from "../../helpers/boardHandler";
+import TaskOperations from "../../redux/task/taskOperations";
 
 export const ListBoards = ({ boards, page, limit, view, error, isLoading }) => {
   const [openModal, setOpenModal] = useState(false);
@@ -115,7 +115,7 @@ export const ListBoards = ({ boards, page, limit, view, error, isLoading }) => {
             transform: "translate(-50%, -50%)",
           }}
         >
-          <ModalCardInfo
+          <ModalCardUpdate
             card={currentCard}
             boardId={currentBoardId}
             updateCard={handleUpdateCard}

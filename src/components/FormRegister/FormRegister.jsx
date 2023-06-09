@@ -1,12 +1,10 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import { FormConfig } from "../../config/form.config";
 import { Formik } from "formik";
-import { FormConfig } from "../config/form.config";
-import { TextField } from "@mui/material";
+import { Box, TextField, Typography, useTheme } from "@mui/material";
 import { FormHelperText } from "@mui/material";
-import { Box, useTheme } from "@mui/system";
-import { Typography } from "@mui/material";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import OutlinedInput from "@mui/material/OutlinedInput";
@@ -15,28 +13,25 @@ import InputAdornment from "@mui/material/InputAdornment";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import LoadingButton from "@mui/lab/LoadingButton";
-import AuthOperations from "../redux/auth/AuthOperations";
+import AuthOperations from "../../redux/auth/AuthOperations";
 
-export const FormLogin = () => {
+export const FormRegister = () => {
   const [showPassword, setShowPassword] = useState(false);
   const isLoading = useSelector((state) => state.auth.isLoading);
   const isErrorAuth = useSelector((state) => state.auth.error);
   const dispatch = useDispatch();
   const { palette } = useTheme();
 
+  const handleFormSubmit = ({ username, email, password }) => {
+    dispatch(AuthOperations.signup({ username, email, password }));
+  };
+
   return (
     <Box>
       <Formik
-        onSubmit={(values) =>
-          dispatch(
-            AuthOperations.signin({
-              email: values.email.toLocaleLowerCase(),
-              password: values.password,
-            })
-          )
-        }
-        initialValues={FormConfig.initialValuesLogin}
-        validationSchema={FormConfig.loginSchema}
+        onSubmit={handleFormSubmit}
+        initialValues={FormConfig.initialValuesRegister}
+        validationSchema={FormConfig.registerSchema}
       >
         {({
           values,
@@ -51,6 +46,17 @@ export const FormLogin = () => {
             style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
           >
             <TextField
+              label="User Name"
+              onBlur={handleBlur}
+              onChange={handleChange}
+              value={values.username}
+              name="username"
+              error={Boolean(touched.username && errors.username)}
+              helperText={touched.username && errors.username}
+              sx={{ height: "60px" }}
+            />
+
+            <TextField
               label="Email"
               onBlur={handleBlur}
               onChange={handleChange}
@@ -58,11 +64,10 @@ export const FormLogin = () => {
               name="email"
               error={Boolean(touched.email && errors.email)}
               helperText={touched.email && errors.email}
-              disabled={isLoading}
-              style={{ height: "60px" }}
+              sx={{ height: "60px" }}
             />
 
-            <FormControl variant="outlined">
+            <FormControl sx={{ gridColumn: "span 4" }} variant="outlined">
               <InputLabel
                 htmlFor="outlined-adornment-password"
                 error={Boolean(touched.password && errors.password)}
@@ -77,7 +82,6 @@ export const FormLogin = () => {
                 onBlur={handleBlur}
                 onChange={handleChange}
                 error={Boolean(touched.password && errors.password)}
-                disabled={isLoading}
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton
@@ -116,17 +120,17 @@ export const FormLogin = () => {
                 color: "#fff",
               }}
             >
-              <span>LOGIN</span>
+              REGISTER
             </LoadingButton>
           </form>
         )}
       </Formik>
 
       <Box>
-        <Link to="/register" style={{ textDecoration: "none" }}>
+        <Link to="/" style={{ textDecoration: "none" }}>
           <Typography
             sx={{
-              textDecoration: "none",
+              marginBottom: "0.25rem",
               color: palette.primary.main,
               "&:hover": {
                 cursor: "pointer",
@@ -134,7 +138,7 @@ export const FormLogin = () => {
               },
             }}
           >
-            "Don't have an account? Sign Up here."
+            "Already have an account? Login here."
           </Typography>
         </Link>
         {isErrorAuth && (
@@ -142,11 +146,6 @@ export const FormLogin = () => {
             {isErrorAuth}
           </Typography>
         )}
-        <Typography mt="1rem" fontSize="0.85rem">
-          User to test:
-        </Typography>
-        <Typography fontSize="0.85rem">email: tester@gmail.com</Typography>
-        <Typography fontSize="0.85rem">password: tester123</Typography>
       </Box>
     </Box>
   );

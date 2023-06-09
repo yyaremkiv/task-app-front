@@ -9,8 +9,8 @@ import { PublicRoute } from "./components/PublicRoute";
 import { PrivateRoute } from "./components/PrivateRoute";
 import { Layout } from "./pages/Layout";
 import { PageAuth } from "./pages/PageAuth";
-import { FormLogin } from "./components/FormLogin";
-import { FormRegister } from "./components/FormRegister";
+import { FormLogin } from "./components/FormLogin/FormLogin";
+import { FormRegister } from "./components/FormRegister/FormRegister";
 import { themeSettings } from "./config/theme";
 
 function App() {

@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { FilterListOption } from "../components/FilterListOption";
-import { FilterBoards } from "../components/FilterBoards";
-import { ListBoards } from "../components/ListBoards";
-import { ModalBoardCreate } from "../components/ModalBoardCreate";
+import { FilterListOption } from "../components/FilterListOption/FilterListOption";
+import { FilterBoards } from "../components/FilterBoards/FilterBoards";
+import { ListBoards } from "../components/ListBoards/ListBoards";
+import { ModalBoardCreate } from "../components/ModalBoardCreate/ModalBoardCreate";
 import { Container, Box, Modal, IconButton, Pagination } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import TaskOperations from "../redux/task/taskOperations";

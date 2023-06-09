@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import CloseIcon from "@mui/icons-material/Close";
-import { FormChangeTask } from "./FormChangeTask";
+import { FormChangeTask } from "../FormChangeTask/FormChangeTask";
 
 export const ListTasks = ({ values, changeFuncByFormik, isLoading }) => {
   const [openModal, setOpenModal] = useState(false);

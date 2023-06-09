@@ -1,16 +1,16 @@
 import { useState } from "react";
-import { CustomInput } from "./CustomInput";
-import { Card } from "./Card";
+import { CustomInput } from "../CustomInput";
+import { Card } from "../Card/Card";
 import { deepOrange } from "@mui/material/colors";
-import { CustomAutocomplete } from "./CustomAutocomplete";
-import { CustomAutocompleteSingle } from "./CustomAutocompleteSingle";
-import { ChangeButtons } from "./ChangeButtons";
+import { CustomAutocomplete } from "../CustomAutocomplete";
+import { CustomAutocompleteSingle } from "../CustomAutocompleteSingle";
+import { ChangeButtons } from "../ChangeButtons";
 import { Box, Typography, TextField, Chip, Paper } from "@mui/material";
 import NoteRoundedIcon from "@mui/icons-material/NoteRounded";
 import NoteAltRoundedIcon from "@mui/icons-material/NoteAltRounded";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import DataConfigInformation from "../data/DataConfigInformation";
-import { MenuDashboard } from "./MenuDashboard";
+import DataConfigInformation from "../../data/DataConfigInformation";
+import { MenuDashBoard } from "../MenuDashBoard/MenuDashBoard";
 
 export const Board = ({
   board,
@@ -108,7 +108,7 @@ export const Board = ({
             )}
           </Box>
 
-          <MenuDashboard
+          <MenuDashBoard
             boardId={board.id}
             showTitleChange={showTitleChange}
             setShowTitleChange={setShowTitleChange}

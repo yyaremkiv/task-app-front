@@ -1,4 +1,4 @@
-import React from "react";
+import { Fragment } from "react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -9,32 +9,30 @@ import {
   Container,
   Button,
   IconButton,
+  useTheme,
 } from "@mui/material";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { Menu as MenuIcon } from "@mui/icons-material";
-import { Mode } from "./Mode";
-import AuthOperations from "../redux/auth/AuthOperations";
+import AuthOperations from "../../redux/auth/AuthOperations";
 import LogoutIcon from "@mui/icons-material/Logout";
-import { useDataUser } from "../hooks/useDataUser";
+import { useDataUser } from "../../hooks/useDataUser";
+import { Drawer, List, Divider } from "@mui/material";
+import { DarkMode, LightMode } from "@mui/icons-material";
+import { setModeTheme } from "../../redux/theme/themeSlice";
+import { UserImage } from "../UserImage";
+import { AvatarUser } from "../AvatarUser";
 
-import {
-  Drawer,
-  List,
-  Divider,
-  ListItem,
-  ListItemButton,
-  ListItemText,
-} from "@mui/material";
-
-export const Header = ({ mode }) => {
+export const Header = () => {
   const isLogged = useSelector((state) => state.auth.isLogged);
   const dispatch = useDispatch();
+
   const matches = useMediaQuery("(max-width:600px)");
   const [burgerMenu, setBurgerMenu] = useState(false);
   const [stateBurger, setStateBurger] = useState({
     left: false,
   });
   const [user, isLoading, error] = useDataUser();
+  const { palette } = useTheme();
 
   useEffect(() => {
     if (!matches) {
@@ -75,7 +73,7 @@ export const Header = ({ mode }) => {
               </IconButton>
             ) : null}
             {burgerMenu ? (
-              <React.Fragment key={"left"}>
+              <Fragment key={"left"}>
                 <Drawer
                   anchor="left"
                   open={stateBurger["left"]}
@@ -88,20 +86,23 @@ export const Header = ({ mode }) => {
                     onKeyDown={toggleDrawer("left", false)}
                   >
                     <List>
-                      {[<Mode mode={mode} matches={matches} />].map(
-                        (el, index) => (
-                          <ListItem key={index} disablePadding>
-                            <ListItemButton>
-                              <ListItemText primary={el} />
-                            </ListItemButton>
-                          </ListItem>
-                        )
-                      )}
+                      <IconButton
+                        onClick={() => dispatch(setModeTheme())}
+                        sx={{ fontSize: "25px" }}
+                      >
+                        {palette.mode === "dark" ? (
+                          <DarkMode sx={{ fontSize: "25px" }} />
+                        ) : (
+                          <LightMode
+                            sx={{ color: "white", fontSize: "25px" }}
+                          />
+                        )}
+                      </IconButton>
                     </List>
                     <Divider />
                   </Box>
                 </Drawer>
-              </React.Fragment>
+              </Fragment>
             ) : null}
             <Typography
               variant="h6"
@@ -113,7 +114,8 @@ export const Header = ({ mode }) => {
             </Typography>
 
             {user && !isLoading && !error && (
-              <Typography mr="2rem">Hello , {user.username}</Typography>
+              <AvatarUser username={user.username} />
+              // <Typography mr="2rem">Hello , {user.username}</Typography>
             )}
 
             {isLogged && matches ? (
@@ -128,7 +130,20 @@ export const Header = ({ mode }) => {
                 </Button>
               </Box>
             )}
-            {matches ? "" : <Mode mode={mode} matches={matches} />}
+            {matches ? (
+              ""
+            ) : (
+              <IconButton
+                onClick={() => dispatch(setModeTheme())}
+                sx={{ fontSize: "25px" }}
+              >
+                {palette.mode === "dark" ? (
+                  <DarkMode sx={{ fontSize: "25px" }} />
+                ) : (
+                  <LightMode sx={{ color: "white", fontSize: "25px" }} />
+                )}
+              </IconButton>
+            )}
           </Toolbar>
         </Container>
       </AppBar>

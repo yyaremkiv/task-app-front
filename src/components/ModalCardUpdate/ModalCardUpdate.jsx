@@ -2,14 +2,14 @@ import { useState } from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import dayjs from "dayjs";
-import { CustomTextField } from "./CustomTextField";
-import { CustomAutocomplete } from "./CustomAutocomplete";
+import { CustomTextField } from "../CustomTextField";
+import { CustomAutocomplete } from "../CustomAutocomplete";
 import { v4 as uuidv4 } from "uuid";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { LoadingButton } from "@mui/lab";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { ListTasks } from "./ListTasks";
+import { ListTasks } from "../ListTasks/ListTasks";
 import {
   Box,
   TextField,
@@ -26,7 +26,7 @@ import {
 } from "@mui/icons-material/";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
-import DataConfigInformation from "../data/DataConfigInformation";
+import DataConfigInformation from "../../data/DataConfigInformation";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DoneIcon from "@mui/icons-material/Done";
 import CloseIcon from "@mui/icons-material/Close";
@@ -37,7 +37,7 @@ const cardSchema = Yup.object().shape({
   desc: Yup.string(),
 });
 
-export const ModalCardInfo = ({
+export const ModalCardUpdate = ({
   card,
   boardId,
   updateCard,

@@ -2,11 +2,11 @@ import { Box, CircularProgress, IconButton, Slider } from "@mui/material";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { Title } from "@mui/icons-material";
-import { CustomTextField } from "./CustomTextField";
+import { CustomTextField } from "../CustomTextField";
 import TimelineIcon from "@mui/icons-material/Timeline";
 import DoneIcon from "@mui/icons-material/Done";
 import CloseIcon from "@mui/icons-material/Close";
-import { CustomNumberField } from "./CustomNumberField";
+import { CustomNumberField } from "../CustomNumberField";
 
 const taskSchema = Yup.object().shape({
   text: Yup.string()

@@ -1,8 +1,8 @@
 import { Outlet } from "react-router-dom";
-import { Header } from "../components/Header";
+import { Header } from "../components/Header/Header";
 import { Box } from "@mui/material";
 
-export const Layout = ({ mode }: { setMode: any; mode: any }) => {
+export const Layout = () => {
   return (
     <Box
       sx={{
@@ -12,7 +12,7 @@ export const Layout = ({ mode }: { setMode: any; mode: any }) => {
         bgcolor: "background.default",
       }}
     >
-      <Header mode={mode} />
+      <Header />
       <Outlet />
     </Box>
   );

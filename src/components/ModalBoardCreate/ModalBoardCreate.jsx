@@ -3,14 +3,14 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import { Box, IconButton, Typography } from "@mui/material";
 import { Title, BookmarkBorder } from "@mui/icons-material/";
-import { CustomAutocomplete } from "./CustomAutocomplete";
-import { CustomAutocompleteSingle } from "./CustomAutocompleteSingle";
-import { CustomTextField } from "./CustomTextField";
-import TaskOperations from "../redux/task/taskOperations";
+import { CustomAutocomplete } from "../CustomAutocomplete";
+import { CustomAutocompleteSingle } from "../CustomAutocompleteSingle";
+import { CustomTextField } from "../CustomTextField";
+import TaskOperations from "../../redux/task/taskOperations";
 import DoneIcon from "@mui/icons-material/Done";
 import CloseIcon from "@mui/icons-material/Close";
 import PaletteIcon from "@mui/icons-material/Palette";
-import DataConfigInformation from "../data/DataConfigInformation";
+import DataConfigInformation from "../../data/DataConfigInformation";
 import CircularProgress from "@mui/material/CircularProgress";
 
 const initialValuesBoard = {

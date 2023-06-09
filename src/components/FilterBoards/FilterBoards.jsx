@@ -1,11 +1,11 @@
 import { useDispatch } from "react-redux";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import { CustomAutocomplete } from "./CustomAutocomplete";
-import { CustomTextField } from "./CustomTextField";
+import { CustomAutocomplete } from "../CustomAutocomplete";
+import { CustomTextField } from "../CustomTextField";
 import { LoadingButton } from "@mui/lab";
-import TaskOperations from "../redux/task/taskOperations";
-import DataConfigInformation from "../data/DataConfigInformation";
+import TaskOperations from "../../redux/task/taskOperations";
+import DataConfigInformation from "../../data/DataConfigInformation";
 
 const initialValues = {
   query: "",
