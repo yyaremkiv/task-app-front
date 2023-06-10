@@ -16,7 +16,14 @@ export const Layout = (): JSX.Element => {
       }}
     >
       <Header />
-      <Container maxWidth="xl" sx={{ border: "1px solid green" }}>
+      <Container
+        maxWidth="xl"
+        sx={{
+          border: "1px solid green",
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
         <Outlet />
       </Container>
     </Box>

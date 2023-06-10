@@ -1,34 +1,12 @@
-export const colorTokens = {
-  grey: {
-    0: "#FFFFFF",
-    10: "#F6F6F6",
-    50: "#F0F0F0",
-    100: "#E0E0E0",
-    200: "#C2C2C2",
-    300: "#A3A3A3",
-    400: "#858585",
-    500: "#666666",
-    600: "#4D4D4D",
-    700: "#333333",
-    800: "#1A1A1A",
-    900: "#0A0A0A",
-    1000: "#000000",
-  },
-  primary: {
-    50: "#E6FBFF",
-    100: "#CCF7FE",
-    200: "#99EEFD",
-    300: "#66E6FC",
-    400: "#33DDFB",
-    500: "#00D5FA",
-    600: "#00A0BC",
-    700: "#006B7D",
-    800: "#00353F",
-    900: "#001519",
-  },
-};
+import { PaletteColor, PaletteMode, TypeBackground } from "@mui/material";
 
-export const themeSettings = (mode: any) => {
+declare module "@mui/material" {
+  interface TypeBackground {
+    light: string;
+  }
+}
+
+export const themeSettings = (mode: PaletteMode) => {
   return {
     palette: {
       mode: mode,
@@ -46,11 +24,15 @@ export const themeSettings = (mode: any) => {
             },
             background: {
               default: "#121212",
+              paper: "#121212",
+              light: "#212121",
+              main: "#26a69a",
+              mainHover: "#00796b",
             },
             text: {
               primary: "#fff",
               light: "#fff",
-              main: "#f44336",
+              main: "#26a69a",
             },
           }
         : {
@@ -67,11 +49,15 @@ export const themeSettings = (mode: any) => {
             },
             background: {
               default: "#fff",
+              paper: "#fff",
+              light: "#fafafa",
+              main: "#26a69a",
+              mainHover: "#00796b",
             },
             text: {
               primary: "rgba(0, 0, 0, 0.87)",
               light: "#fff",
-              main: "#651fff",
+              main: "#26a69a",
             },
           }),
     },

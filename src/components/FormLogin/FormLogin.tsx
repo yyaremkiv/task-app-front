@@ -19,16 +19,18 @@ import AuthOperations from "../../redux/auth/AuthOperations";
 
 export const FormLogin = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const isLoading = useSelector((state) => state.auth.isLoading);
-  const isErrorAuth = useSelector((state) => state.auth.error);
+  const isLoading = useSelector((state: any) => state.auth.isLoading);
+  const isErrorAuth = useSelector((state: any) => state.auth.error);
   const dispatch = useDispatch();
-  const { palette } = useTheme();
+  const theme = useTheme();
 
   return (
     <Box>
       <Formik
+        // @ts-ignore
         onSubmit={(values) =>
           dispatch(
+            // @ts-ignore
             AuthOperations.signin({
               email: values.email.toLocaleLowerCase(),
               password: values.password,
@@ -81,7 +83,6 @@ export const FormLogin = () => {
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton
-                      aria-label="toggle password visibility"
                       onClick={() => setShowPassword((show) => !show)}
                       onMouseDown={(e) => e.preventDefault()}
                       edge="end"
@@ -114,6 +115,10 @@ export const FormLogin = () => {
                 padding: "0.25rem 4rem",
                 fontSize: "0.9rem",
                 color: "#fff",
+                backgroundColor: theme.palette.background.main,
+                "&:hover": {
+                  backgroundColor: theme.palette.background.mainHover,
+                },
               }}
             >
               <span>LOGIN</span>
@@ -127,7 +132,7 @@ export const FormLogin = () => {
           <Typography
             sx={{
               textDecoration: "none",
-              color: palette.primary.main,
+              color: theme.palette.text.main,
               "&:hover": {
                 cursor: "pointer",
                 textDecoration: "underline",
@@ -137,11 +142,13 @@ export const FormLogin = () => {
             "Don't have an account? Sign Up here."
           </Typography>
         </Link>
+
         {isErrorAuth && (
           <Typography sx={{ textAlign: "right", color: "red" }}>
             {isErrorAuth}
           </Typography>
         )}
+
         <Typography mt="1rem" fontSize="0.85rem">
           User to test:
         </Typography>
