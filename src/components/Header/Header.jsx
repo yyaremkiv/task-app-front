@@ -1,11 +1,11 @@
-import { Fragment } from "react";
-import { useEffect, useState } from "react";
+import { useState, Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { AvatarUser } from "../AvatarUser";
+import { useDataUser } from "../../hooks/useDataUser";
+import { setModeTheme } from "../../redux/theme/themeSlice";
 import {
   Box,
   Typography,
-  Toolbar,
-  AppBar,
   Container,
   Button,
   IconButton,
@@ -13,24 +13,19 @@ import {
 } from "@mui/material";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { Menu as MenuIcon } from "@mui/icons-material";
-import AuthOperations from "../../redux/auth/AuthOperations";
-import LogoutIcon from "@mui/icons-material/Logout";
-import { useDataUser } from "../../hooks/useDataUser";
 import { Drawer, List, Divider } from "@mui/material";
 import { DarkMode, LightMode } from "@mui/icons-material";
-import { setModeTheme } from "../../redux/theme/themeSlice";
-import { AvatarUser } from "../AvatarUser";
-
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
+import LogoutIcon from "@mui/icons-material/Logout";
+import AuthOperations from "../../redux/auth/AuthOperations";
 
 export const Header = () => {
   const [state, setState] = useState({ left: false });
-  const [user, isLogged] = useDataUser();
+  const isLogged = useSelector((state) => state.auth.isLogged);
+  const [user] = useDataUser();
   const isNonMobileScreens = useMediaQuery("(max-width:600px)");
   const dispatch = useDispatch();
   const { palette } = useTheme();
@@ -49,24 +44,35 @@ export const Header = () => {
       onClick={toggleDrawer(anchor, false)}
       onKeyDown={toggleDrawer(anchor, false)}
     >
+      <ListItem
+        disablePadding
+        sx={{ display: "flex", justifyContent: "center", padding: "1rem" }}
+      >
+        <AvatarUser username={user.username} />
+      </ListItem>
+      <Divider />
       <List>
-        <ListItem disablePadding>
+        <ListItem disablePadding onClick={logOut}>
           <ListItemButton>
             <ListItemIcon>
-              <InboxIcon />
+              <LogoutIcon />
             </ListItemIcon>
-            <ListItemText primary={"Inbox"} />
+            <ListItemText primary={"Logout"} />
           </ListItemButton>
         </ListItem>
       </List>
       <Divider />
       <List>
-        <ListItem disablePadding>
+        <ListItem disablePadding onClick={() => dispatch(setModeTheme())}>
           <ListItemButton>
             <ListItemIcon>
-              <MailIcon />
+              {palette.mode === "dark" ? (
+                <DarkMode sx={{ fontSize: "25px" }} />
+              ) : (
+                <LightMode sx={{ fontSize: "25px" }} />
+              )}
             </ListItemIcon>
-            <ListItemText primary={"All mail"} />
+            <ListItemText primary={"Change Mode"} />
           </ListItemButton>
         </ListItem>
       </List>
@@ -79,12 +85,28 @@ export const Header = () => {
     >
       <Container maxWidth="xl">
         {isNonMobileScreens ? (
-          <IconButton
-            onClick={toggleDrawer("left", true)}
-            sx={{ color: "white" }}
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
           >
-            <MenuIcon />
-          </IconButton>
+            <IconButton
+              onClick={toggleDrawer("left", true)}
+              sx={{ color: "white" }}
+            >
+              <MenuIcon />
+            </IconButton>
+            <Typography
+              variant="h6"
+              sx={{
+                color: theme.palette.text.light,
+              }}
+            >
+              Task Manager App
+            </Typography>
+          </Box>
         ) : (
           <Box
             sx={{
@@ -108,9 +130,9 @@ export const Header = () => {
 
               {isLogged ? (
                 <Button
-                  color="inherit"
                   startIcon={<LogoutIcon />}
                   onClick={logOut}
+                  sx={{ color: theme.palette.text.light }}
                 >
                   Log out
                 </Button>
@@ -126,87 +148,8 @@ export const Header = () => {
             </Box>
           </Box>
         )}
-
-        {/* <Toolbar> */}
-        {/* {matches ? (
-            <IconButton
-              onClick={toggleDrawer("left", true)}
-              size="large"
-              edge="start"
-              color="inherit"
-              aria-label="menu"
-              sx={{ mr: 2 }}
-            >
-              <MenuIcon />
-            </IconButton>
-          ) : null} */}
-        {/* {burgerMenu ? (
-            <Fragment key={"left"}>
-              <Drawer
-                anchor="left"
-                open={stateBurger["left"]}
-                onClose={toggleDrawer("left", false)}
-              >
-                <Box
-                  sx={{ width: 200 }}
-                  role="presentation"
-                  onClick={toggleDrawer("left", false)}
-                  onKeyDown={toggleDrawer("left", false)}
-                >
-                  <List>
-                    <IconButton
-                      onClick={() => dispatch(setModeTheme())}
-                      sx={{ fontSize: "25px" }}
-                    >
-                      {palette.mode === "dark" ? (
-                        <DarkMode sx={{ fontSize: "25px" }} />
-                      ) : (
-                        <LightMode sx={{ color: "white", fontSize: "25px" }} />
-                      )}
-                    </IconButton>
-                  </List>
-                  <Divider />
-                </Box>
-              </Drawer>
-            </Fragment>
-          ) : null} */}
-
-        {/* <Typography
-            variant="h6"
-            sx={{
-              flexGrow: 1,
-              padding: "10px",
-              color: palette.text.light,
-            }}
-          >
-            Task Manager App
-          </Typography> */}
-
-        {/* <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              gap: "2rem",
-              padding: "0.5rem 0",
-            }}
-          > */}
-        {/* {user && !isLoading && <AvatarUser username={user.username} />} */}
-
-        {/* {isLogged && matches ? null : (
-              <Button
-                color="inherit"
-                startIcon={<LogoutIcon />}
-                onClick={logOut}
-              >
-                Log out
-              </Button>
-            )} */}
-        {/*
-
-
-        {/* </Box> */}
-        {/* </Toolbar> */}
       </Container>
+
       <Box>
         <Fragment key={"left"}>
           <Drawer
@@ -221,98 +164,3 @@ export const Header = () => {
     </Box>
   );
 };
-
-// <Box>
-//   <AppBar position="static">
-//     <Container maxWidth="xl">
-//       <Toolbar>
-//         {matches ? (
-//           <IconButton
-//             onClick={toggleDrawer("left", true)}
-//             size="large"
-//             edge="start"
-//             color="inherit"
-//             aria-label="menu"
-//             sx={{ mr: 2 }}
-//           >
-//             <MenuIcon />
-//           </IconButton>
-//         ) : null}
-//         {burgerMenu ? (
-//           <Fragment key={"left"}>
-//             <Drawer
-//               anchor="left"
-//               open={stateBurger["left"]}
-//               onClose={toggleDrawer("left", false)}
-//             >
-//               <Box
-//                 sx={{ width: 200 }}
-//                 role="presentation"
-//                 onClick={toggleDrawer("left", false)}
-//                 onKeyDown={toggleDrawer("left", false)}
-//               >
-//                 <List>
-//                   <IconButton
-//                     onClick={() => dispatch(setModeTheme())}
-//                     sx={{ fontSize: "25px" }}
-//                   >
-//                     {palette.mode === "dark" ? (
-//                       <DarkMode sx={{ fontSize: "25px" }} />
-//                     ) : (
-//                       <LightMode
-//                         sx={{ color: "white", fontSize: "25px" }}
-//                       />
-//                     )}
-//                   </IconButton>
-//                 </List>
-//                 <Divider />
-//               </Box>
-//             </Drawer>
-//           </Fragment>
-//         ) : null}
-
-//         <Typography
-//           variant="h6"
-//           sx={{
-//             flexGrow: 1,
-//             padding: "10px",
-//             color: palette.text.light,
-//           }}
-//         >
-//           Task Manager App
-//         </Typography>
-
-//         <Box
-//           sx={{
-//             display: "flex",
-//             alignItems: "center",
-//             gap: "2rem",
-//             padding: "0.5rem 0",
-//           }}
-//         >
-//           {user && !isLoading && <AvatarUser username={user.username} />}
-
-//           {isLogged && matches ? null : (
-//             <Button
-//               color="inherit"
-//               startIcon={<LogoutIcon />}
-//               onClick={logOut}
-//             >
-//               Log out
-//             </Button>
-//           )}
-
-//           {matches ? null : (
-//             <IconButton onClick={() => dispatch(setModeTheme())}>
-//               {palette.mode === "dark" ? (
-//                 <DarkMode sx={{ fontSize: "25px" }} />
-//               ) : (
-//                 <LightMode sx={{ color: "white", fontSize: "25px" }} />
-//               )}
-//             </IconButton>
-//           )}
-//         </Box>
-//       </Toolbar>
-//     </Container>
-//   </AppBar>
-// </Box>;

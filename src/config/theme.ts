@@ -4,6 +4,9 @@ declare module "@mui/material" {
   interface TypeBackground {
     light: string;
   }
+  interface TypeText {
+    light: string;
+  }
 }
 
 export const themeSettings = (mode: PaletteMode) => {

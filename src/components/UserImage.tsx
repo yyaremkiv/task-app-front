@@ -1,9 +1,16 @@
 import { useState } from "react";
 import { Box } from "@mui/system";
 import { Skeleton } from "@mui/material";
+// @ts-ignore
 import userPhoto from "../image/userphoto.jpg";
 
-export const UserImage = ({ image, size = "60px" }) => {
+export const UserImage = ({
+  image,
+  size = "60px",
+}: {
+  image?: string;
+  size?: string;
+}) => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(false);
   const imagePath = image ? image : userPhoto;
