@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { Board } from "../Board/Board";
+import { BoardItem } from "../BoardItem/BoardItem";
 import { ModalCardUpdate } from "../ModalCardUpdate/ModalCardUpdate";
 import { Box, Grid, Modal, Paper } from "@mui/material";
 import BoardHandler from "../../helpers/boardHandler";
@@ -89,7 +89,7 @@ export const ListBoards = ({ boards, page, limit, view, error, isLoading }) => {
                 borderRadius: "0.75rem",
               }}
             >
-              <Board
+              <BoardItem
                 board={board}
                 handleChangeTitleBoard={handleChangeTitleBoard}
                 handleChangeLabelBoard={handleChangeLabelBoard}

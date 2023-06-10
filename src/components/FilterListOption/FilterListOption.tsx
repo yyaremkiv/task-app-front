@@ -8,6 +8,7 @@ import {
   ToggleButton,
   ToggleButtonGroup,
   Typography,
+  useMediaQuery,
 } from "@mui/material";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import FilterListOffIcon from "@mui/icons-material/FilterListOff";
@@ -15,7 +16,18 @@ import LooksTwoIcon from "@mui/icons-material/LooksTwo";
 import Looks3Icon from "@mui/icons-material/Looks3";
 import Looks4Icon from "@mui/icons-material/Looks4";
 
-export const FilterListOption = ({
+interface IFilterListOptionProps {
+  showFilter: boolean;
+  showFilterFunc: (show: boolean) => void;
+  view: number;
+  viewChangeFunc: (view: number) => void;
+  limit: number;
+  changeLimit: (limit: number) => void;
+  shown: number;
+  total: number;
+}
+
+export const FilterListOption: React.FC<IFilterListOptionProps> = ({
   showFilter,
   showFilterFunc,
   view,
@@ -25,6 +37,8 @@ export const FilterListOption = ({
   shown,
   total,
 }) => {
+  const isNonMobileScreens = useMediaQuery("(min-width: 700px)");
+
   return (
     <Box
       sx={{
@@ -38,22 +52,24 @@ export const FilterListOption = ({
         {showFilter ? <FilterListOffIcon /> : <FilterListIcon />}
       </IconButton>
 
-      <ToggleButtonGroup
-        orientation="horizontal"
-        value={+view}
-        exclusive
-        onChange={(_, value) => viewChangeFunc(value)}
-      >
-        <ToggleButton value={6}>
-          <LooksTwoIcon />
-        </ToggleButton>
-        <ToggleButton value={4}>
-          <Looks3Icon />
-        </ToggleButton>
-        <ToggleButton value={3}>
-          <Looks4Icon />
-        </ToggleButton>
-      </ToggleButtonGroup>
+      {isNonMobileScreens && (
+        <ToggleButtonGroup
+          orientation="horizontal"
+          value={+view}
+          exclusive
+          onChange={(_, value) => viewChangeFunc(value)}
+        >
+          <ToggleButton value={6}>
+            <LooksTwoIcon />
+          </ToggleButton>
+          <ToggleButton value={4}>
+            <Looks3Icon />
+          </ToggleButton>
+          <ToggleButton value={3}>
+            <Looks4Icon />
+          </ToggleButton>
+        </ToggleButtonGroup>
+      )}
 
       <Box sx={{ display: "flex", alignItems: "center", gap: "1rem" }}>
         <Typography>All Boards: {total}</Typography>
@@ -64,7 +80,7 @@ export const FilterListOption = ({
             label="Count"
             id="demo-select-small"
             value={limit}
-            onChange={(e) => changeLimit(e.target.value)}
+            onChange={(e) => changeLimit(Number(e.target.value))}
           >
             <MenuItem value={3}>3</MenuItem>
             <MenuItem value={5}>5</MenuItem>

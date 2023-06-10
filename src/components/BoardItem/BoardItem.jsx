@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { CustomInput } from "../CustomInput";
-import { Card } from "../Card/Card";
+import { CardItem } from "../CardItem/CardItem";
 import { deepOrange } from "@mui/material/colors";
 import { CustomAutocomplete } from "../CustomAutocomplete";
 import { CustomAutocompleteSingle } from "../CustomAutocompleteSingle";
@@ -12,7 +12,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import DataConfigInformation from "../../data/DataConfigInformation";
 import { MenuDashBoard } from "../MenuDashBoard/MenuDashBoard";
 
-export const Board = ({
+export const BoardItem = ({
   board,
   handleChangeTitleBoard,
   handleChangeLabelBoard,
@@ -200,7 +200,7 @@ export const Board = ({
             sx={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}
           >
             {board?.cards?.map((card) => (
-              <Card
+              <CardItem
                 card={card}
                 key={card.id}
                 boardId={board.id}

@@ -2,7 +2,14 @@ import { Box, CircularProgress, IconButton } from "@mui/material";
 import DoneIcon from "@mui/icons-material/Done";
 import CloseIcon from "@mui/icons-material/Close";
 
-export const ChangeButtons = ({
+interface IChangeButtonsProps {
+  valueForSubmit: any;
+  changeFunc: (value: any) => void;
+  closeFunc: (value: boolean) => void;
+  isLoading?: boolean;
+}
+
+export const ChangeButtons: React.FC<IChangeButtonsProps> = ({
   valueForSubmit,
   changeFunc,
   closeFunc,

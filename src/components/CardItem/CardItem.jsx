@@ -9,7 +9,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import EventAvailableIcon from "@mui/icons-material/EventAvailable";
 
-export const Card = ({ card, boardId, removeCard, handleOpen }) => {
+export const CardItem = ({ card, boardId, removeCard, handleOpen }) => {
   const { id, title, dateStart, dateEnd, tasks, labels, desc } = card;
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);

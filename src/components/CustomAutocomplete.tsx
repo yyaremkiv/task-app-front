@@ -1,6 +1,18 @@
 import { Autocomplete, Box, Chip, TextField, Typography } from "@mui/material";
 
-export const CustomAutocomplete = ({
+interface ICustomAutocompleteProps {
+  label: string;
+  options: Array<any>;
+  changeFieldName: string;
+  changeFieldFunction: (
+    changeFieldName: string,
+    selectedValues: Array<any>
+  ) => void;
+  value: any;
+  isLoading?: boolean;
+}
+
+export const CustomAutocomplete: React.FC<ICustomAutocompleteProps> = ({
   label,
   options,
   changeFieldName,
@@ -24,7 +36,9 @@ export const CustomAutocomplete = ({
       }}
       renderInput={(params) => <TextField {...params} label={label} />}
       renderOption={(props, option) => (
+        // @ts-ignore
         <Box
+          component="div"
           {...props}
           sx={{ display: "flex", alignItems: "center", gap: "1rem" }}
         >
@@ -41,7 +55,8 @@ export const CustomAutocomplete = ({
       renderTags={(value, getTagProps) =>
         value.map((option, index) => (
           <Chip
-            key={index}
+            // @ts-ignore
+            key={option.label}
             label={option.label}
             style={{
               color: "white",

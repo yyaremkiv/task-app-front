@@ -4,7 +4,14 @@ import { FilterListOption } from "../components/FilterListOption/FilterListOptio
 import { FilterBoards } from "../components/FilterBoards/FilterBoards";
 import { ListBoards } from "../components/ListBoards/ListBoards";
 import { ModalBoardCreate } from "../components/ModalBoardCreate/ModalBoardCreate";
-import { Box, Modal, IconButton, Pagination, Grid } from "@mui/material";
+import {
+  Box,
+  Modal,
+  IconButton,
+  Pagination,
+  Grid,
+  useMediaQuery,
+} from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import TaskOperations from "../redux/task/taskOperations";
 
@@ -19,6 +26,7 @@ export const PageTask = () => {
   const isLoading = useSelector((state: any) => state.task.isLoading);
   const error = useSelector((state: any) => state.task.error);
   const dispatch = useDispatch();
+  const isNonMobileScreens = useMediaQuery("(min-width: 700px)");
 
   useEffect(() => {
     // @ts-ignore
@@ -53,12 +61,12 @@ export const PageTask = () => {
         </Grid>
 
         {openFilter ? (
-          <Grid item xs={3}>
+          <Grid item xs={isNonMobileScreens ? 3 : 12}>
             <FilterBoards page={page} limit={limit} isLoading={isLoading} />
           </Grid>
         ) : null}
 
-        <Grid item xs={openFilter ? 9 : 12}>
+        <Grid item xs={openFilter ? (isNonMobileScreens ? 9 : 12) : 12}>
           <ListBoards
             boards={boards}
             page={page}
