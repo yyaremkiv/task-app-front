@@ -1,7 +1,8 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { ListItemIcon } from "@mui/material";
 import { PlaylistAddCheckSharp, NoteRounded } from "@mui/icons-material";
 import { Box, Paper, Stack, Typography, IconButton, Chip } from "@mui/material";
+import { ILabelItemSingle } from "../../interfaces/DataTypes";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -9,12 +10,31 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import EventAvailableIcon from "@mui/icons-material/EventAvailable";
 
-export const CardItem = ({ card, boardId, removeCard, handleOpen }) => {
+type HandleOpenFunction = (params: { boardId: string; card: any }) => void;
+type HandleRemoveCardFunction = (params: {
+  boardId: string;
+  cardId: string;
+}) => void;
+
+interface ICardItemProp {
+  card: any;
+  boardId: string;
+  removeCard: HandleRemoveCardFunction;
+  handleOpen: HandleOpenFunction;
+}
+
+export const CardItem: React.FC<ICardItemProp> = ({
+  card,
+  boardId,
+  removeCard,
+  handleOpen,
+}) => {
   const { id, title, dateStart, dateEnd, tasks, labels, desc } = card;
-  const [anchorEl, setAnchorEl] = useState(null);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
-  const handleClick = (event) => setAnchorEl(event.currentTarget);
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) =>
+    setAnchorEl(event.currentTarget);
   const handleClose = () => setAnchorEl(null);
 
   return (
@@ -38,7 +58,7 @@ export const CardItem = ({ card, boardId, removeCard, handleOpen }) => {
             padding: "0.45rem 0",
           }}
         >
-          {labels?.map((item, index) => (
+          {labels?.map((item: ILabelItemSingle, index: number) => (
             <Chip
               key={index}
               label={item.label}
@@ -166,7 +186,7 @@ export const CardItem = ({ card, boardId, removeCard, handleOpen }) => {
           <PlaylistAddCheckSharp color="primary" fontSize="medium" />
           {tasks?.length > 0 ? (
             <Typography variant="subtitle1" color="primary">
-              {`${tasks?.filter((el) => el.completed)?.length}/${
+              {`${tasks?.filter((el: any) => el.completed)?.length}/${
                 tasks?.length
               } tasks`}
             </Typography>

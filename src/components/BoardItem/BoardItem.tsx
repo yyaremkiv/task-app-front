@@ -5,14 +5,34 @@ import { deepOrange } from "@mui/material/colors";
 import { CustomAutocomplete } from "../CustomAutocomplete";
 import { CustomAutocompleteSingle } from "../CustomAutocompleteSingle";
 import { ChangeButtons } from "../ChangeButtons";
+import { MenuDashBoard } from "../MenuDashBoard/MenuDashBoard";
+import { ILabelsArray, IColorSingle } from "../../interfaces/DataTypes";
 import { Box, Typography, TextField, Chip, Paper } from "@mui/material";
 import NoteRoundedIcon from "@mui/icons-material/NoteRounded";
 import NoteAltRoundedIcon from "@mui/icons-material/NoteAltRounded";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import DataConfigInformation from "../../data/DataConfigInformation";
-import { MenuDashBoard } from "../MenuDashBoard/MenuDashBoard";
 
-export const BoardItem = ({
+type AddCardFunction = (params: { boardId: string; titleCard: string }) => void;
+type HandleRemoveCardFunction = (params: {
+  boardId: string;
+  cardId: string;
+}) => void;
+type HandleOpenFunction = (params: { boardId: string; card: any }) => void;
+
+interface IBoardItemProp {
+  board: any;
+  handleChangeTitleBoard: (titleBoard: string) => void;
+  handleChangeLabelBoard: (value: any) => void;
+  handleChangeColorBoard: (value: any) => void;
+  handleRemoveBoard: (boardId: string) => void;
+  addCard: AddCardFunction;
+  removeCard: HandleRemoveCardFunction;
+  handleOpen: HandleOpenFunction;
+  isLoading?: boolean;
+}
+
+export const BoardItem: React.FC<IBoardItemProp> = ({
   board,
   handleChangeTitleBoard,
   handleChangeLabelBoard,
@@ -21,21 +41,24 @@ export const BoardItem = ({
   addCard,
   removeCard,
   handleOpen,
-  handleSetCurrentCard,
-  isLoading,
+  isLoading = false,
 }) => {
-  const [showTitleChange, setShowTitleChange] = useState(false);
-  const [showLabelsChange, setShowLabelsChange] = useState(false);
-  const [showColorChange, setShowColorChange] = useState(false);
+  const [showTitleChange, setShowTitleChange] = useState<boolean>(false);
+  const [showLabelsChange, setShowLabelsChange] = useState<boolean>(false);
+  const [showColorChange, setShowColorChange] = useState<boolean>(false);
   const [titleBoard, setTitleBoard] = useState(board.title || "title");
   const [labels, setLabels] = useState(board.labels || []);
-  const [color, setColor] = useState(
+  const [color, setColor] = useState<IColorSingle | undefined>(
+    //@ts-ignore
     DataConfigInformation.colors.find((el) => el.color === board.color)
   );
   const matches = useMediaQuery("(min-width:600px)");
 
-  const handleChangeLabels = (_, labels) => setLabels(labels);
-  const handleChangeColor = (_, color) => setColor(color);
+  const handleChangeLabels = (_: any, labels: ILabelsArray): void =>
+    setLabels(labels);
+
+  const handleChangeColor = (_: any, color: IColorSingle): void =>
+    setColor(color);
 
   return (
     <Box>
@@ -83,6 +106,7 @@ export const BoardItem = ({
                   valueForSubmit={{ boardId: board.id, titleBoard }}
                   changeFunc={handleChangeTitleBoard}
                   closeFunc={setShowTitleChange}
+                  isLoading={isLoading}
                 />
               </Box>
             ) : (
@@ -162,7 +186,7 @@ export const BoardItem = ({
                 paddingBottom: "0.5rem",
               }}
             >
-              {board?.labels?.map((item) => (
+              {board?.labels?.map((item: any) => (
                 <Chip
                   key={item.label}
                   label={item.label}
@@ -199,14 +223,13 @@ export const BoardItem = ({
           <Box
             sx={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}
           >
-            {board?.cards?.map((card) => (
+            {board?.cards?.map((card: any) => (
               <CardItem
-                card={card}
                 key={card.id}
+                card={card}
                 boardId={board.id}
                 removeCard={removeCard}
                 handleOpen={handleOpen}
-                handleSetCurrentCard={handleSetCurrentCard}
               />
             ))}
           </Box>

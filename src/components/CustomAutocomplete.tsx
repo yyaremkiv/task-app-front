@@ -1,3 +1,4 @@
+import { ILabelsArray } from "../interfaces/DataTypes";
 import { Autocomplete, Box, Chip, TextField, Typography } from "@mui/material";
 
 interface ICustomAutocompleteProps {
@@ -6,7 +7,7 @@ interface ICustomAutocompleteProps {
   changeFieldName: string;
   changeFieldFunction: (
     changeFieldName: string,
-    selectedValues: Array<any>
+    selectedValues: ILabelsArray
   ) => void;
   value: any;
   isLoading?: boolean;
@@ -32,6 +33,7 @@ export const CustomAutocomplete: React.FC<ICustomAutocompleteProps> = ({
         option.label === value.label && option.color === value.color
       }
       onChange={(_, selectedValues) => {
+        // @ts-ignore
         changeFieldFunction(changeFieldName, selectedValues);
       }}
       renderInput={(params) => <TextField {...params} label={label} />}
