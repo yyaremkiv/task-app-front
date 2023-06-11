@@ -4,16 +4,10 @@ import { FilterListOption } from "../components/FilterListOption/FilterListOptio
 import { FilterBoards } from "../components/FilterBoards/FilterBoards";
 import { ListBoards } from "../components/ListBoards/ListBoards";
 import { ModalBoardCreate } from "../components/ModalBoardCreate/ModalBoardCreate";
-import {
-  Box,
-  Modal,
-  IconButton,
-  Pagination,
-  Grid,
-  useMediaQuery,
-} from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
+import { Box, Modal, Pagination, Grid, useMediaQuery } from "@mui/material";
+import { useTheme, Theme } from "@mui/material/styles";
 import TaskOperations from "../redux/task/taskOperations";
+import { MenuAddBoard } from "../components/MenuAddBoard";
 
 export const PageTask = () => {
   const [openModal, setOpenModal] = useState<boolean>(false);
@@ -26,6 +20,7 @@ export const PageTask = () => {
   const isLoading = useSelector((state: any) => state.task.isLoading);
   const error = useSelector((state: any) => state.task.error);
   const dispatch = useDispatch();
+  const theme: Theme = useTheme();
   const isNonMobileScreens = useMediaQuery("(min-width: 700px)");
 
   useEffect(() => {
@@ -96,14 +91,7 @@ export const PageTask = () => {
         </Box>
       )}
 
-      <Box
-        onClick={() => handleOpen()}
-        sx={{ position: "absolute", right: "4rem", bottom: "3rem" }}
-      >
-        <IconButton sx={{ backgroundColor: "tomato", fontSize: "3rem" }}>
-          <AddIcon sx={{ fontSize: 80, color: "white" }} />
-        </IconButton>
-      </Box>
+      <MenuAddBoard handleOpen={handleOpen} />
 
       <Modal open={openModal} onClose={handleClose}>
         <Box
@@ -111,10 +99,11 @@ export const PageTask = () => {
             position: "absolute",
             top: "50%",
             left: "50%",
+            maxWidth: "50vw",
             maxHeight: "85vh",
             overflowY: "auto",
             padding: "1rem",
-            bgcolor: "background.paper",
+            backgroundColor: theme.palette.background.light,
             borderRadius: "0.5rem",
             transform: "translate(-50%, -50%)",
           }}

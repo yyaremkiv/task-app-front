@@ -54,9 +54,19 @@ export const ModalBoardCreate = ({ handleClose, isLoading, error }) => {
       }) => (
         <form
           onSubmit={handleSubmit}
-          style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "1rem",
+          }}
         >
-          <Box sx={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: "0.5rem",
+            }}
+          >
             <Title color="primary" fontSize="large" />
             <CustomTextField
               label="Title"

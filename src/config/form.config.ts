@@ -1,6 +1,24 @@
 import * as Yup from "yup";
 
-export const FormConfig = {
+interface ILoginFormValues {
+  email: string;
+  password: string;
+}
+
+interface IRegisterFormValues {
+  username: string;
+  email: string;
+  password: string;
+}
+
+interface IFormConfig {
+  initialValuesLogin: ILoginFormValues;
+  initialValuesRegister: IRegisterFormValues;
+  loginSchema: Yup.Schema<ILoginFormValues>;
+  registerSchema: Yup.Schema<IRegisterFormValues>;
+}
+
+export const FormConfig: IFormConfig = {
   initialValuesLogin: {
     email: "",
     password: "",
@@ -25,9 +43,9 @@ export const FormConfig = {
   }),
   registerSchema: Yup.object().shape({
     username: Yup.string()
-      .min(3, "User Name must be at least 3 characters long.")
-      .max(50, "User Name cannot be longer than 50 characters.")
-      .required("User Name is required."),
+      .min(3, "Username must be at least 3 characters long.")
+      .max(50, "Username cannot be longer than 50 characters.")
+      .required("Username is required."),
     email: Yup.string()
       .matches(/^[^\s]+$/, "Enter a value without spaces")
       .email("Please enter a valid email address.")
@@ -39,13 +57,5 @@ export const FormConfig = {
       .min(6, "Password must be at least 6 characters")
       .max(20, "Password must be no more than 20 characters")
       .required("Password is required."),
-    location: Yup.string().max(
-      50,
-      "Location must be no more than 50 characters"
-    ),
-    occupation: Yup.string().max(
-      50,
-      "Occupation must be no more than 50 characters"
-    ),
   }),
 };
