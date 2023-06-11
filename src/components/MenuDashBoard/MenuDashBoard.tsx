@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, MouseEvent } from "react";
 import { IconButton, ListItemIcon } from "@mui/material";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
@@ -8,7 +8,16 @@ import EditIcon from "@mui/icons-material/Edit";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import PaletteIcon from "@mui/icons-material/Palette";
 
-export const MenuDashBoard = ({
+interface IMenuDashBoard {
+  boardId: string;
+  showTitleChange: boolean;
+  setShowTitleChange: (value: boolean) => void;
+  setShowLabelsChange: (value: boolean) => void;
+  setShowColorChange: (value: boolean) => void;
+  handleRemoveBoard: (board: { boardId: string }) => void;
+}
+
+export const MenuDashBoard: React.FC<IMenuDashBoard> = ({
   boardId,
   showTitleChange,
   setShowTitleChange,
@@ -16,10 +25,11 @@ export const MenuDashBoard = ({
   setShowColorChange,
   handleRemoveBoard,
 }) => {
-  const [anchorEl, setAnchorEl] = useState(null);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
-  const handleClick = (event) => setAnchorEl(event.currentTarget);
+  const handleClick = (e: MouseEvent<HTMLButtonElement>) =>
+    setAnchorEl(e.currentTarget);
   const handleClose = () => setAnchorEl(null);
 
   return (

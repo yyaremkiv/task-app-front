@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Formik } from "formik";
 import { FormConfig } from "../../config/form.config";
+import { AppDispatch } from "../../redux/store";
 import { TextField } from "@mui/material";
 import { FormHelperText } from "@mui/material";
 import { Box, useTheme } from "@mui/system";
@@ -17,20 +18,18 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import LoadingButton from "@mui/lab/LoadingButton";
 import AuthOperations from "../../redux/auth/AuthOperations";
 
-export const FormLogin = () => {
+export const FormLogin: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const isLoading = useSelector((state: any) => state.auth.isLoading);
   const isErrorAuth = useSelector((state: any) => state.auth.error);
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
   const theme = useTheme();
 
   return (
     <Box>
       <Formik
-        // @ts-ignore
         onSubmit={(values) =>
           dispatch(
-            // @ts-ignore
             AuthOperations.signin({
               email: values.email.toLocaleLowerCase(),
               password: values.password,

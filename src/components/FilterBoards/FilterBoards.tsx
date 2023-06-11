@@ -1,14 +1,23 @@
 import { useDispatch } from "react-redux";
 import { Formik } from "formik";
 import * as Yup from "yup";
+import { ILabelItemSingle, ILabelsArray } from "../../interfaces/DataTypes";
+import { AppDispatch } from "../../redux/store";
+import { IParamsTask } from "../../redux/task/taskOperations";
 import { CustomAutocomplete } from "../CustomAutocomplete";
 import { CustomTextField } from "../CustomTextField";
 import { LoadingButton } from "@mui/lab";
+import { Box } from "@mui/material";
 import TaskOperations from "../../redux/task/taskOperations";
 import DataConfigInformation from "../../data/DataConfigInformation";
-import { Box } from "@mui/material";
 
-const initialValues = {
+interface IInitialValues {
+  query: string;
+  labels: [] | ILabelsArray;
+  colors: [] | ILabelItemSingle[];
+}
+
+const initialValues: IInitialValues = {
   query: "",
   labels: [],
   colors: [],
@@ -29,22 +38,46 @@ const filterSchema = Yup.object().shape({
   colors: Yup.array(),
 });
 
-export const FilterBoards = ({ page = 1, limit = 10, isLoading = false }) => {
-  const dispatch = useDispatch();
+interface IFilterBoardsProp {
+  page: number;
+  limit: number;
+  isLoading?: boolean;
+}
 
-  const handleSubmitSearch = ({ query, labels, colors }) => {
-    const params = { page, limit };
+interface IHandleSubmitSearch {
+  query: string;
+  labels: [] | ILabelsArray;
+  colors: [] | ILabelItemSingle[];
+}
+
+export const FilterBoards: React.FC<IFilterBoardsProp> = ({
+  page = 1,
+  limit = 10,
+  isLoading = false,
+}) => {
+  const dispatch: AppDispatch = useDispatch();
+
+  const handleSubmitSearch = ({
+    query,
+    labels,
+    colors,
+  }: IHandleSubmitSearch) => {
+    const params: IParamsTask["params"] = { page, limit };
 
     if (query.trim()) params.query = query.trim();
-    if (labels.length > 0)
-      params.labels = labels.map((item) => item.label).join(",");
+    if (Array.isArray(labels) && labels.length > 0)
+      params.labels = labels
+        .map((item: ILabelItemSingle) => item.label)
+        .join(",");
     if (colors.length > 0)
       params.colors = colors.map((item) => item.color).join(",");
+
+    console.log("params", params);
 
     dispatch(TaskOperations.getBoards({ params }));
   };
 
-  const handleClearFilter = (resetForm, values) => {
+  const handleClearFilter = (resetForm: () => void, values: IInitialValues) => {
     resetForm();
 
     if (JSON.stringify(initialValues) === JSON.stringify(values)) return;

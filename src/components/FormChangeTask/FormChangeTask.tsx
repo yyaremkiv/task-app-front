@@ -19,19 +19,31 @@ const taskSchema = Yup.object().shape({
     .required("Progress is required."),
 });
 
-export const FormChangeTask = ({
+interface IFormChangeTaskProp {
+  task: any;
+  handleUpdateTask: any;
+  handleClose: any;
+  isLoading?: boolean;
+}
+
+interface IInitialVauesTask {
+  text: string;
+  progress: number;
+}
+
+export const FormChangeTask: React.FC<IFormChangeTaskProp> = ({
   task,
   handleUpdateTask,
   handleClose,
   isLoading = false,
 }) => {
-  const handleSubmitCreate = (values) => {
+  const handleSubmitCreate = (values: IInitialVauesTask) => {
     const updatedTask = { ...task, ...values };
     handleUpdateTask({ taskId: task.id, updatedTask });
     handleClose();
   };
 
-  const initialValuesTask = {
+  const initialValuesTask: IInitialVauesTask = {
     text: task.text,
     progress: task.progress,
   };
@@ -98,7 +110,7 @@ export const FormChangeTask = ({
               <Slider
                 valueLabelDisplay="auto"
                 value={values.progress}
-                onChange={(e) => {
+                onChange={(e: any) => {
                   setFieldValue("progress", e.target.value);
                 }}
               />

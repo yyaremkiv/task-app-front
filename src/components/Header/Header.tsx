@@ -3,6 +3,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { AvatarUser } from "../AvatarUser";
 import { useDataUser } from "../../hooks/useDataUser";
 import { setModeTheme } from "../../redux/theme/themeSlice";
+import { RootState, AppDispatch } from "../../redux/store";
+import { Menu as MenuIcon } from "@mui/icons-material";
+import { Drawer, List, Divider } from "@mui/material";
+import { DarkMode, LightMode } from "@mui/icons-material";
 import {
   Box,
   Typography,
@@ -12,9 +16,6 @@ import {
   useTheme,
 } from "@mui/material";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { Menu as MenuIcon } from "@mui/icons-material";
-import { Drawer, List, Divider } from "@mui/material";
-import { DarkMode, LightMode } from "@mui/icons-material";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
@@ -22,23 +23,30 @@ import ListItemText from "@mui/material/ListItemText";
 import LogoutIcon from "@mui/icons-material/Logout";
 import AuthOperations from "../../redux/auth/AuthOperations";
 
-export const Header = () => {
+export const Header: React.FC = () => {
   const [state, setState] = useState({ left: false });
-  const isLogged = useSelector((state) => state.auth.isLogged);
+  const isLogged = useSelector((state: RootState) => state.auth.isLogged);
   const [user] = useDataUser();
   const isNonMobileScreens = useMediaQuery("(max-width:600px)");
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
   const { palette } = useTheme();
   const theme = useTheme();
 
   const logOut = () => dispatch(AuthOperations.logout());
 
-  const toggleDrawer = (anchor, open) => (e) => {
-    if (e.type === "keydown" && (e.key === "Tab" || e.key === "Shift")) return;
-    setState({ ...state, [anchor]: open });
-  };
+  const toggleDrawer =
+    (anchor: keyof typeof state, open: boolean) =>
+    (e: React.KeyboardEvent | React.MouseEvent) => {
+      if (
+        e.type === "keydown" &&
+        ((e as React.KeyboardEvent).key === "Tab" ||
+          (e as React.KeyboardEvent).key === "Shift")
+      )
+        return;
+      setState({ ...state, [anchor]: open });
+    };
 
-  const list = (anchor) => (
+  const list = (anchor: keyof typeof state) => (
     <Box
       sx={{ width: 250 }}
       onClick={toggleDrawer(anchor, false)}

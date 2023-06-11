@@ -2,17 +2,20 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { IAddBoard, IUpdateBoard } from "../../interfaces/DataTypes";
 import TaskService from "../../services/TaskService";
 
-interface IParams {
+export interface IParamsTask {
   params: {
     page: number;
     limit: number;
+    query?: string;
+    labels?: string;
+    colors?: string;
   };
 }
 
 class TaskOperations {
   static getBoards = createAsyncThunk(
     "task/getBoards",
-    async ({ params }: IParams, { rejectWithValue }) => {
+    async ({ params }: IParamsTask, { rejectWithValue }) => {
       try {
         const { data } = await TaskService.getBoards({ params });
         return data;

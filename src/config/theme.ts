@@ -3,6 +3,7 @@ import { PaletteColor, PaletteMode, TypeBackground } from "@mui/material";
 declare module "@mui/material" {
   interface TypeBackground {
     light: string;
+    main: string;
   }
   interface TypeText {
     light: string;

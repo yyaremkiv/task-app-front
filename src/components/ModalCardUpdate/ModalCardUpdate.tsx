@@ -37,17 +37,34 @@ const cardSchema = Yup.object().shape({
   desc: Yup.string(),
 });
 
-export const ModalCardUpdate = ({
+interface IModalCardUpdate {
+  card: any;
+  boardId: string;
+  updateCard: any;
+  error: null | string;
+  isLoading?: boolean;
+}
+
+interface IInitialValueCard {
+  title: string;
+  desc: string;
+  dateStart: any;
+  dateEnd: any;
+  labels: any;
+  tasks: any;
+}
+
+export const ModalCardUpdate: React.FC<IModalCardUpdate> = ({
   card,
   boardId,
   updateCard,
   error,
-  isLoading,
+  isLoading = false,
 }) => {
   const [showAddNewTask, setShowAddNewTask] = useState(false);
   const [titleTask, setTitleTask] = useState("");
 
-  const initialValuesCard = {
+  const initialValuesCard: IInitialValueCard = {
     title: card.title,
     desc: card.desc || "",
     dateStart: card.dateStart ? dayjs(card.dateStart) : null,
@@ -58,7 +75,13 @@ export const ModalCardUpdate = ({
 
   const handleShowAddNewTask = () => setShowAddNewTask(!showAddNewTask);
 
-  const handleAddNewTask = ({ tasks, setFieldValue }) => {
+  const handleAddNewTask = ({
+    tasks,
+    setFieldValue,
+  }: {
+    tasks: any;
+    setFieldValue: any;
+  }) => {
     setFieldValue("tasks", [
       ...tasks,
       { id: uuidv4(), text: titleTask, completed: false, progress: 0 },
@@ -66,7 +89,7 @@ export const ModalCardUpdate = ({
     setTitleTask("");
   };
 
-  const handleUpdateCard = (dataCard) => {
+  const handleUpdateCard = (dataCard: any) => {
     const updatedCard = { id: card.id, ...dataCard };
     updateCard({ boardId, cardId: card.id, updatedCard });
   };
@@ -79,7 +102,7 @@ export const ModalCardUpdate = ({
         </Typography>
       </Box>
       <Formik
-        onSubmit={(values) => {
+        onSubmit={(values: any) => {
           handleUpdateCard({
             ...values,
             dateStart: values.dateStart ? values.dateStart.$d : null,
@@ -149,6 +172,7 @@ export const ModalCardUpdate = ({
                     }}
                   >
                     <DatePicker
+                      //@ts-ignore
                       fullWidth
                       label="Date Start"
                       value={values.dateStart}
@@ -159,7 +183,7 @@ export const ModalCardUpdate = ({
                     <FormHelperText
                       error={Boolean(touched.dateStart && errors.dateStart)}
                     >
-                      {touched.dateStart && errors.dateStart}
+                      {/* {touched.dateStart && errors.dateStart} */}
                     </FormHelperText>
                     <Tooltip title="Delete the start date" placement="top">
                       <IconButton
@@ -179,6 +203,7 @@ export const ModalCardUpdate = ({
                     }}
                   >
                     <DatePicker
+                      //@ts-ignore
                       fullWidth
                       label="Date End"
                       value={values.dateEnd}
@@ -188,7 +213,7 @@ export const ModalCardUpdate = ({
                     <FormHelperText
                       error={Boolean(touched.dateEnd && errors.dateEnd)}
                     >
-                      {touched.dateEnd && errors.dateEnd}
+                      {/* {touched.dateEnd && errors.dateEnd} */}
                     </FormHelperText>
                     <Tooltip title="Delete the end date" placement="top">
                       <IconButton
@@ -251,6 +276,7 @@ export const ModalCardUpdate = ({
             <ListTasks
               values={values}
               changeFuncByFormik={setFieldValue}
+              //@ts-ignore
               errors={errors}
               touched={touched}
               isLoading={isLoading}

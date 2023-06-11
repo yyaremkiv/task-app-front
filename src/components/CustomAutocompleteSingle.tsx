@@ -8,7 +8,7 @@ interface IColorItem {
 interface ICustomAutocompleteProp {
   label: string;
   options: IColorItem[];
-  value: any;
+  value?: any;
   changeFieldName: string;
   changeFieldFunction: (changeFieldName: string, selectedValues: any) => void;
   isLoading?: boolean;

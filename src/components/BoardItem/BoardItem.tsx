@@ -19,13 +19,18 @@ type HandleRemoveCardFunction = (params: {
   cardId: string;
 }) => void;
 type HandleOpenFunction = (params: { boardId: string; card: any }) => void;
+type handleChangeTitleBoard = (params: {
+  boardId: string;
+  titleBoard: string;
+}) => void;
+type handleRemoveBoard = (params: { boardId: string }) => void;
 
 interface IBoardItemProp {
   board: any;
-  handleChangeTitleBoard: (titleBoard: string) => void;
+  handleChangeTitleBoard: handleChangeTitleBoard;
   handleChangeLabelBoard: (value: any) => void;
   handleChangeColorBoard: (value: any) => void;
-  handleRemoveBoard: (boardId: string) => void;
+  handleRemoveBoard: handleRemoveBoard;
   addCard: AddCardFunction;
   removeCard: HandleRemoveCardFunction;
   handleOpen: HandleOpenFunction;
@@ -49,8 +54,7 @@ export const BoardItem: React.FC<IBoardItemProp> = ({
   const [titleBoard, setTitleBoard] = useState(board.title || "title");
   const [labels, setLabels] = useState(board.labels || []);
   const [color, setColor] = useState<IColorSingle | undefined>(
-    //@ts-ignore
-    DataConfigInformation.colors.find((el) => el.color === board.color)
+    DataConfigInformation.colors.find((el: any) => el.color === board.color)
   );
   const matches = useMediaQuery("(min-width:600px)");
 

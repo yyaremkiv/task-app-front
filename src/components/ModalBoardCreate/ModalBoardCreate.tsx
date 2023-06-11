@@ -1,11 +1,13 @@
 import { useDispatch } from "react-redux";
 import { Formik } from "formik";
 import * as Yup from "yup";
+import { IAddBoard, ILabelsArray } from "../../interfaces/DataTypes";
+import { AppDispatch } from "../../redux/store";
+import { CustomTextField } from "../CustomTextField";
+import { CustomAutocompleteSingle } from "../CustomAutocompleteSingle";
+import { CustomAutocomplete } from "../CustomAutocomplete";
 import { Box, IconButton, Typography } from "@mui/material";
 import { Title, BookmarkBorder } from "@mui/icons-material/";
-import { CustomAutocomplete } from "../CustomAutocomplete";
-import { CustomAutocompleteSingle } from "../CustomAutocompleteSingle";
-import { CustomTextField } from "../CustomTextField";
 import TaskOperations from "../../redux/task/taskOperations";
 import DoneIcon from "@mui/icons-material/Done";
 import CloseIcon from "@mui/icons-material/Close";
@@ -13,7 +15,19 @@ import PaletteIcon from "@mui/icons-material/Palette";
 import DataConfigInformation from "../../data/DataConfigInformation";
 import CircularProgress from "@mui/material/CircularProgress";
 
-const initialValuesBoard = {
+interface IModalBoardCreate {
+  handleClose: any;
+  error: null | string;
+  isLoading?: boolean;
+}
+
+interface IInitialValuesBoard {
+  title: string;
+  labels: [] | ILabelsArray;
+  color: any;
+}
+
+const initialValuesBoard: IInitialValuesBoard = {
   title: "",
   labels: [],
   color: {},
@@ -26,12 +40,25 @@ const boardSchema = Yup.object().shape({
     .required("Title is required."),
 });
 
-export const ModalBoardCreate = ({ handleClose, isLoading, error }) => {
-  const dispatch = useDispatch();
+export const ModalBoardCreate: React.FC<IModalBoardCreate> = ({
+  handleClose,
+  error,
+  isLoading = false,
+}) => {
+  const dispatch: AppDispatch = useDispatch();
 
-  const handleSubmitSearch = async ({ title, labels, color: { color } }) => {
-    const newBoard = { title, labels, color: color || "", cards: [] };
-    const response = await dispatch(TaskOperations.addBoard(newBoard));
+  const handleSubmitSearch = async ({
+    title,
+    labels,
+    color: { color },
+  }: IInitialValuesBoard) => {
+    const newBoard: IAddBoard = {
+      title,
+      labels,
+      color: color || "",
+      cards: [],
+    };
+    const response: any = await dispatch(TaskOperations.addBoard(newBoard));
 
     if (response.error) return;
     if (!isLoading) handleClose();

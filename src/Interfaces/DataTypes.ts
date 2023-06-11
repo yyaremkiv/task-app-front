@@ -11,8 +11,8 @@ export interface ISignupArg {
 
 export interface IAddBoard {
   title: string;
-  cards: [];
-  labels: [];
+  cards: any[];
+  labels: [] | ILabelsArray;
   color: string;
 }
 
