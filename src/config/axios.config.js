@@ -14,7 +14,10 @@ const API = axios.create({
 
 API.interceptors.request.use((config) => {
   const accessToken = store.getState().auth.accessToken;
-  config.headers.Authorization = `Bearer ${accessToken}`;
+  config.headers = {
+    ...config.headers,
+    Authorization: `Bearer ${accessToken}`,
+  };
   return config;
 });
 

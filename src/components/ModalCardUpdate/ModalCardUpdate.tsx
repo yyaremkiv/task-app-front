@@ -61,8 +61,8 @@ export const ModalCardUpdate: React.FC<IModalCardUpdate> = ({
   error,
   isLoading = false,
 }) => {
-  const [showAddNewTask, setShowAddNewTask] = useState(false);
-  const [titleTask, setTitleTask] = useState("");
+  const [showAddNewTask, setShowAddNewTask] = useState<boolean>(false);
+  const [titleTask, setTitleTask] = useState<string>("");
 
   const initialValuesCard: IInitialValueCard = {
     title: card.title,
@@ -276,9 +276,6 @@ export const ModalCardUpdate: React.FC<IModalCardUpdate> = ({
             <ListTasks
               values={values}
               changeFuncByFormik={setFieldValue}
-              //@ts-ignore
-              errors={errors}
-              touched={touched}
               isLoading={isLoading}
             />
 

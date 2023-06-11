@@ -26,7 +26,7 @@ export const ListBoards: React.FC<IListBoardsProp> = ({
   isLoading = false,
 }) => {
   const [openModal, setOpenModal] = useState<boolean>(false);
-  const [currentBoardId, setCurrentBoardId] = useState<null | string>(null);
+  const [currentBoardId, setCurrentBoardId] = useState<any>(null);
   const [currentCard, setCurrentCard] = useState<null | any>(null);
   const dispatch: AppDispatch = useDispatch();
 
