@@ -1,9 +1,16 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import TaskOperations from "./taskOperations";
 
-const initialState = {
+export interface ITaskState {
+  data: any;
+  totalBords: number;
+  isLoading: boolean;
+  error: string | null;
+}
+
+const initialState: ITaskState = {
   data: [],
-  totalBoards: 1,
+  totalBords: 1,
   isLoading: false,
   error: null,
 };
@@ -16,15 +23,21 @@ export const taskSlice = createSlice({
       state.error = null;
       state.isLoading = true;
     });
-    builder.addCase(TaskOperations.getBoards.fulfilled, (state, action) => {
-      state.data = action.payload.boards;
-      state.totalBords = action.payload.totalBoards;
-      state.isLoading = false;
-    });
-    builder.addCase(TaskOperations.getBoards.rejected, (state, action) => {
-      state.error = action.payload;
-      state.isLoading = false;
-    });
+    builder.addCase(
+      TaskOperations.getBoards.fulfilled,
+      (state: ITaskState, action: PayloadAction<any>) => {
+        state.data = action.payload.boards;
+        state.totalBords = action.payload.totalBoards;
+        state.isLoading = false;
+      }
+    );
+    builder.addCase(
+      TaskOperations.getBoards.rejected,
+      (state: ITaskState, action: PayloadAction<any>) => {
+        state.error = action.payload;
+        state.isLoading = false;
+      }
+    );
     builder.addCase(TaskOperations.addBoard.pending, (state) => {
       state.error = null;
       state.isLoading = true;
@@ -34,10 +47,13 @@ export const taskSlice = createSlice({
       state.totalBords = action.payload.totalBoards;
       state.isLoading = false;
     });
-    builder.addCase(TaskOperations.addBoard.rejected, (state, action) => {
-      state.error = action.payload;
-      state.isLoading = false;
-    });
+    builder.addCase(
+      TaskOperations.addBoard.rejected,
+      (state: ITaskState, action: PayloadAction<any>) => {
+        state.error = action.payload;
+        state.isLoading = false;
+      }
+    );
     builder.addCase(TaskOperations.removeBoard.pending, (state) => {
       state.error = null;
       state.isLoading = true;
@@ -47,10 +63,13 @@ export const taskSlice = createSlice({
       state.totalBords = action.payload.totalBoards;
       state.isLoading = false;
     });
-    builder.addCase(TaskOperations.removeBoard.rejected, (state, action) => {
-      state.error = action.payload;
-      state.isLoading = false;
-    });
+    builder.addCase(
+      TaskOperations.removeBoard.rejected,
+      (state: ITaskState, action: PayloadAction<any>) => {
+        state.error = action.payload;
+        state.isLoading = false;
+      }
+    );
     builder.addCase(TaskOperations.updateBoard.pending, (state) => {
       state.error = null;
       state.isLoading = true;
@@ -60,11 +79,15 @@ export const taskSlice = createSlice({
       state.totalBords = action.payload.totalBoards;
       state.isLoading = false;
     });
-    builder.addCase(TaskOperations.updateBoard.rejected, (state, action) => {
-      state.error = action.payload;
-      state.isLoading = false;
-    });
+    builder.addCase(
+      TaskOperations.updateBoard.rejected,
+      (state: ITaskState, action: PayloadAction<any>) => {
+        state.error = action.payload;
+        state.isLoading = false;
+      }
+    );
   },
+  reducers: {},
 });
 
 export default taskSlice.reducer;

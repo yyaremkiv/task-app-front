@@ -6,8 +6,9 @@ import { ListBoards } from "../components/ListBoards/ListBoards";
 import { ModalBoardCreate } from "../components/ModalBoardCreate/ModalBoardCreate";
 import { Box, Modal, Pagination, Grid, useMediaQuery } from "@mui/material";
 import { useTheme, Theme } from "@mui/material/styles";
-import TaskOperations from "../redux/task/taskOperations";
 import { MenuAddBoard } from "../components/MenuAddBoard";
+import { RootState, AppDispatch } from "../redux/store";
+import TaskOperations from "../redux/task/taskOperations";
 
 export const PageTask = () => {
   const [openModal, setOpenModal] = useState<boolean>(false);
@@ -15,16 +16,15 @@ export const PageTask = () => {
   const [page, setPage] = useState<number>(1);
   const [limit, setLimit] = useState<number>(5);
   const [view, setView] = useState<number>(6);
-  const boards = useSelector((state: any) => state.task.data);
-  const totalBoards = useSelector((state: any) => state.task.totalBords);
-  const isLoading = useSelector((state: any) => state.task.isLoading);
-  const error = useSelector((state: any) => state.task.error);
-  const dispatch = useDispatch();
+  const boards = useSelector((state: RootState) => state.task.data);
+  const totalBoards = useSelector((state: RootState) => state.task.totalBords);
+  const isLoading = useSelector((state: RootState) => state.task.isLoading);
+  const error = useSelector((state: RootState) => state.task.error);
+  const dispatch: AppDispatch = useDispatch();
   const theme: Theme = useTheme();
   const isNonMobileScreens = useMediaQuery("(min-width: 700px)");
 
   useEffect(() => {
-    // @ts-ignore
     dispatch(TaskOperations.getBoards({ params: { page, limit } }));
   }, [dispatch, page, limit]);
 

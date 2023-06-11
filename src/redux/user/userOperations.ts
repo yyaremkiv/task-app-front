@@ -2,13 +2,13 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import UserService from "../../services/UserService";
 
 class UserOperations {
-  static getUserById = createAsyncThunk(
-    "user/getUserById",
+  static getUser = createAsyncThunk<any, void, { rejectValue: string }>(
+    "user/getUser",
     async (_, { rejectWithValue }) => {
       try {
-        const { data } = await UserService.getUserById();
+        const { data }: any = await UserService.getUser();
         return data;
-      } catch (err) {
+      } catch (err: any) {
         return rejectWithValue(
           err?.response?.data?.message || "An error occurred with the network"
         );

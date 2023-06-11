@@ -1,10 +1,15 @@
 import { TextField } from "@mui/material";
 
-export const CustomNumberField = ({
+interface ITextFieldProp {
+  label: string;
+  name: string;
+  formikFunc: any;
+  isLoading?: boolean;
+}
+
+export const CustomTextField: React.FC<ITextFieldProp> = ({
   label,
   name,
-  minValue,
-  maxValue,
   formikFunc,
   isLoading = false,
 }) => {
@@ -13,17 +18,12 @@ export const CustomNumberField = ({
       fullWidth
       label={label}
       name={name}
-      type="number"
       onBlur={formikFunc.handleBlur}
       onChange={formikFunc.handleChange}
       value={formikFunc.values[name]}
       error={Boolean(formikFunc.touched[name] && formikFunc.errors[name])}
       helperText={formikFunc.touched[name] && formikFunc.errors[name]}
       disabled={isLoading}
-      inputProps={{
-        min: minValue,
-        max: maxValue,
-      }}
     />
   );
 };

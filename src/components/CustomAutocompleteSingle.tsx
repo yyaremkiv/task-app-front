@@ -1,6 +1,15 @@
 import { Autocomplete, Box, Chip, TextField, Typography } from "@mui/material";
 
-export const CustomAutocompleteSingle = ({
+interface ICustomAutocompleteProp {
+  label: string;
+  options: any;
+  value: any;
+  changeFieldName: string;
+  changeFieldFunction: (changeFieldName: string, selectedValues: any) => void;
+  isLoading?: boolean;
+}
+
+export const CustomAutocompleteSingle: React.FC<ICustomAutocompleteProp> = ({
   label,
   options,
   value,

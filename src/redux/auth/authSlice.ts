@@ -1,7 +1,16 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import AuthOperations from "./AuthOperations";
 
-const initialState = {
+export interface IAuthState {
+  user: any;
+  isLogged: boolean;
+  isLoading: boolean;
+  accessToken: string | null;
+  error: string | null;
+  refreshAttempts: number;
+}
+
+const initialState: IAuthState = {
   user: {},
   isLogged: false,
   isLoading: false,
@@ -24,11 +33,14 @@ export const authSlice = createSlice({
       state.isLogged = true;
       state.isLoading = false;
     });
-    builder.addCase(AuthOperations.signup.rejected, (state, action) => {
-      state.error = action.payload;
-      state.isLogged = false;
-      state.isLoading = false;
-    });
+    builder.addCase(
+      AuthOperations.signup.rejected,
+      (state: IAuthState, action: PayloadAction<any>) => {
+        state.error = action.payload;
+        state.isLogged = false;
+        state.isLoading = false;
+      }
+    );
     builder.addCase(AuthOperations.signin.pending, (state) => {
       state.error = null;
       state.isLoading = true;
@@ -39,11 +51,14 @@ export const authSlice = createSlice({
       state.isLogged = true;
       state.isLoading = false;
     });
-    builder.addCase(AuthOperations.signin.rejected, (state, action) => {
-      state.error = action.payload;
-      state.isLogged = false;
-      state.isLoading = false;
-    });
+    builder.addCase(
+      AuthOperations.signin.rejected,
+      (state: IAuthState, action: PayloadAction<any>) => {
+        state.error = action.payload;
+        state.isLogged = false;
+        state.isLoading = false;
+      }
+    );
     builder.addCase(AuthOperations.logout.pending, (state) => {
       state.error = null;
       state.isLoading = true;
@@ -53,12 +68,15 @@ export const authSlice = createSlice({
       state.isLogged = false;
       state.isLoading = false;
     });
-    builder.addCase(AuthOperations.logout.rejected, (state, action) => {
-      state.error = action.payload;
-      state.accessToken = null;
-      state.isLogged = false;
-      state.isLoading = false;
-    });
+    builder.addCase(
+      AuthOperations.logout.rejected,
+      (state: IAuthState, action: PayloadAction<any>) => {
+        state.error = action.payload;
+        state.accessToken = null;
+        state.isLogged = false;
+        state.isLoading = false;
+      }
+    );
     builder.addCase(AuthOperations.refresh.pending, (state) => {
       state.error = null;
       state.isLoading = true;
@@ -70,12 +88,15 @@ export const authSlice = createSlice({
       state.isLogged = true;
       state.isLoading = false;
     });
-    builder.addCase(AuthOperations.refresh.rejected, (state, action) => {
-      state.error = action.payload;
-      state.accessToken = null;
-      state.isLogged = false;
-      state.isLoading = false;
-    });
+    builder.addCase(
+      AuthOperations.refresh.rejected,
+      (state: IAuthState, action: PayloadAction<any>) => {
+        state.error = action.payload;
+        state.accessToken = null;
+        state.isLogged = false;
+        state.isLoading = false;
+      }
+    );
   },
   reducers: {
     incrementRefreshAttempts: (state) => {

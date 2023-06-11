@@ -12,16 +12,17 @@ import { PageAuth } from "./pages/PageAuth";
 import { FormLogin } from "./components/FormLogin/FormLogin";
 import { FormRegister } from "./components/FormRegister/FormRegister";
 import { themeSettings } from "./config/theme";
+import { RootState } from "./redux/store";
 
 function App() {
-  const mode = useSelector((state) => state.theme.mode);
+  const mode = useSelector((state: RootState) => state.theme.mode);
   const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
 
   return (
     <BrowserRouter>
       <ThemeProvider theme={theme}>
         <Routes>
-          <Route path="/" element={<Layout mode={mode} />}>
+          <Route path="/" element={<Layout />}>
             <Route
               path="/"
               element={

@@ -1,14 +1,22 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import { IAddBoard, IUpdateBoard } from "../../interfaces/DataTypes";
 import TaskService from "../../services/TaskService";
+
+interface IParams {
+  params: {
+    page: number;
+    limit: number;
+  };
+}
 
 class TaskOperations {
   static getBoards = createAsyncThunk(
     "task/getBoards",
-    async ({ params }, { rejectWithValue }) => {
+    async ({ params }: IParams, { rejectWithValue }) => {
       try {
         const { data } = await TaskService.getBoards({ params });
         return data;
-      } catch (err) {
+      } catch (err: any) {
         return rejectWithValue(
           err?.response?.data?.message || "An error occurred with the network"
         );
@@ -18,7 +26,7 @@ class TaskOperations {
 
   static addBoard = createAsyncThunk(
     "task/addBoard",
-    async ({ title, cards, labels, color }, { rejectWithValue }) => {
+    async ({ title, cards, labels, color }: IAddBoard, { rejectWithValue }) => {
       try {
         const { data } = await TaskService.addBoard({
           body: {
@@ -29,7 +37,7 @@ class TaskOperations {
           },
         });
         return data;
-      } catch (err) {
+      } catch (err: any) {
         return rejectWithValue(
           err?.response?.data?.message || "An error occurred with the network"
         );
@@ -39,11 +47,11 @@ class TaskOperations {
 
   static updateBoard = createAsyncThunk(
     "task/updateBoard",
-    async ({ boardId, board }, { rejectWithValue }) => {
+    async ({ boardId, board }: IUpdateBoard, { rejectWithValue }) => {
       try {
         const { data } = await TaskService.updateBoard({ boardId, board });
         return data;
-      } catch (err) {
+      } catch (err: any) {
         return rejectWithValue(
           err?.response?.data?.message || "An error occurred with the network"
         );
@@ -53,11 +61,11 @@ class TaskOperations {
 
   static removeBoard = createAsyncThunk(
     "task/removeBoard",
-    async ({ boardId }, { rejectWithValue }) => {
+    async ({ boardId }: { boardId: string }, { rejectWithValue }) => {
       try {
         const { data } = await TaskService.removeBoard({ boardId });
         return data;
-      } catch (err) {
+      } catch (err: any) {
         return rejectWithValue(
           err?.response?.data?.message || "An error occurred with the network"
         );
