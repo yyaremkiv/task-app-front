@@ -1,4 +1,4 @@
-import { PaletteColor, PaletteMode, TypeBackground } from "@mui/material";
+import { PaletteMode } from "@mui/material";
 
 declare module "@mui/material" {
   interface TypeBackground {
