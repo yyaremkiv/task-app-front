@@ -9,13 +9,6 @@ export interface ISignupArg {
   password: string;
 }
 
-export interface IAddBoard {
-  title: string;
-  cards: any[];
-  labels: [] | ILabelsArray;
-  color: string;
-}
-
 export interface IUpdateBoard {
   boardId: string;
   board: any;
@@ -32,5 +25,12 @@ export interface ILabelsArray {
 
 export interface IColorSingle {
   label: string;
+  color: string;
+}
+
+export interface IAddBoard {
+  title: string;
+  cards: any[];
+  labels: [] | ILabelsArray;
   color: string;
 }
