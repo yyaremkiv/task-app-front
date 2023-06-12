@@ -1,12 +1,13 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { BoardItem } from "../BoardItem/BoardItem";
 import { ModalCardUpdate } from "../ModalCardUpdate/ModalCardUpdate";
 import { AppDispatch } from "../../redux/store";
-import { Box, Grid, Modal, Paper } from "@mui/material";
+import { Box, Grid, Paper } from "@mui/material";
 import BoardHandler from "../../helpers/boardHandler";
 import TaskOperations from "../../redux/task/taskOperations";
 import { ILabelsArray } from "../../interfaces/DataTypes";
+import { CustomModalWindow } from "../CustomModalWindow";
 
 interface IListBoardsProp {
   boards: any;
@@ -29,10 +30,6 @@ export const ListBoards: React.FC<IListBoardsProp> = ({
   const [currentBoardId, setCurrentBoardId] = useState<any>(null);
   const [currentCard, setCurrentCard] = useState<null | any>(null);
   const dispatch: AppDispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(TaskOperations.getBoards({ params: { page, limit } }));
-  }, [dispatch, page, limit]);
 
   const handleOpen = ({ boardId, card }: { boardId: string; card: any }) => {
     setCurrentBoardId(boardId);
@@ -142,7 +139,12 @@ export const ListBoards: React.FC<IListBoardsProp> = ({
     <Box>
       <Grid container>
         {boards?.map((board: any) => (
-          <Grid key={board.id} item xs={view} sx={{ padding: "0.5rem" }}>
+          <Grid
+            key={board.id}
+            item
+            xs={view}
+            sx={{ padding: "0.5rem", width: "100%" }}
+          >
             <Paper
               sx={{
                 border: board.color
@@ -167,29 +169,15 @@ export const ListBoards: React.FC<IListBoardsProp> = ({
         ))}
       </Grid>
 
-      <Modal open={openModal} onClose={handleClose}>
-        <Box
-          sx={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            maxHeight: "85vh",
-            overflowY: "auto",
-            padding: "1rem",
-            backgroundColor: "background.paper",
-            borderRadius: "0.5rem",
-            transform: "translate(-50%, -50%)",
-          }}
-        >
-          <ModalCardUpdate
-            card={currentCard}
-            boardId={currentBoardId}
-            updateCard={handleUpdateCard}
-            error={error}
-            isLoading={isLoading}
-          />
-        </Box>
-      </Modal>
+      <CustomModalWindow open={openModal} onCloseFunc={handleClose}>
+        <ModalCardUpdate
+          card={currentCard}
+          boardId={currentBoardId}
+          updateCard={handleUpdateCard}
+          error={error}
+          isLoading={isLoading}
+        />
+      </CustomModalWindow>
     </Box>
   );
 };

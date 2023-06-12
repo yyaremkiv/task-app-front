@@ -25,8 +25,8 @@ export const ChangeButtons: React.FC<IChangeButtonsProps> = ({
       }}
     >
       <IconButton
-        onClick={() => {
-          changeFunc(valueForSubmit);
+        onClick={(event) => {
+          changeFunc(valueForSubmit || event);
           closeFunc(false);
         }}
       >

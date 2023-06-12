@@ -16,6 +16,7 @@ export const CustomTextField: React.FC<ITextFieldProp> = ({
   return (
     <TextField
       fullWidth
+      multiline
       label={label}
       name={name}
       onBlur={formikFunc.handleBlur}

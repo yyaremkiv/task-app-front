@@ -4,9 +4,11 @@ declare module "@mui/material" {
   interface TypeBackground {
     light: string;
     main: string;
+    mainHover: string;
   }
   interface TypeText {
     light: string;
+    main: string;
   }
 }
 

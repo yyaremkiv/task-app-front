@@ -10,6 +10,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { LoadingButton } from "@mui/lab";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { ListTasks } from "../ListTasks/ListTasks";
+import { useTheme, Theme } from "@mui/material/styles";
 import {
   Box,
   TextField,
@@ -63,6 +64,7 @@ export const ModalCardUpdate: React.FC<IModalCardUpdate> = ({
 }) => {
   const [showAddNewTask, setShowAddNewTask] = useState<boolean>(false);
   const [titleTask, setTitleTask] = useState<string>("");
+  const theme: Theme = useTheme();
 
   const initialValuesCard: IInitialValueCard = {
     title: card.title,
@@ -97,7 +99,10 @@ export const ModalCardUpdate: React.FC<IModalCardUpdate> = ({
   return (
     <Box>
       <Box sx={{ marginBottom: "1rem" }}>
-        <Typography variant="h5" sx={{ textAlign: "center" }}>
+        <Typography
+          variant="h5"
+          sx={{ textAlign: "center", color: theme.palette.text.primary }}
+        >
           Card Information
         </Typography>
       </Box>

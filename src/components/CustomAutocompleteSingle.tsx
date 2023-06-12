@@ -22,7 +22,6 @@ export const CustomAutocompleteSingle: React.FC<ICustomAutocompleteProp> = ({
   changeFieldFunction,
   isLoading = false,
 }) => {
-  console.log("this is console", options);
   return (
     <Autocomplete
       fullWidth

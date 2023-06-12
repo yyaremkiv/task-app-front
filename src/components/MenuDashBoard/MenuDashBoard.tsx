@@ -1,5 +1,6 @@
 import { useState, MouseEvent } from "react";
 import { IconButton, ListItemIcon } from "@mui/material";
+import { useTheme, Theme } from "@mui/material/styles";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -27,6 +28,7 @@ export const MenuDashBoard: React.FC<IMenuDashBoard> = ({
 }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+  const theme: Theme = useTheme();
 
   const handleClick = (e: MouseEvent<HTMLButtonElement>) =>
     setAnchorEl(e.currentTarget);
@@ -35,7 +37,7 @@ export const MenuDashBoard: React.FC<IMenuDashBoard> = ({
   return (
     <div>
       <IconButton onClick={handleClick} size="large">
-        <MenuIcon color="primary" />
+        <MenuIcon sx={{ color: theme.palette.text.primary }} />
       </IconButton>
       <Menu
         id="basic-menu"

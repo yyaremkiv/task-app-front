@@ -1,35 +1,38 @@
 import { useState } from "react";
-import { CustomInput } from "../CustomInput";
 import { CardItem } from "../CardItem/CardItem";
 import { deepOrange } from "@mui/material/colors";
 import { CustomAutocomplete } from "../CustomAutocomplete";
 import { CustomAutocompleteSingle } from "../CustomAutocompleteSingle";
 import { ChangeButtons } from "../ChangeButtons";
 import { MenuDashBoard } from "../MenuDashBoard/MenuDashBoard";
+import { FormAddCard } from "../FormAddCard/FormAddCard";
 import { ILabelsArray, IColorSingle } from "../../interfaces/DataTypes";
-import { Box, Typography, TextField, Chip, Paper } from "@mui/material";
+import { useTheme, Theme } from "@mui/material/styles";
+import {
+  Box,
+  Typography,
+  TextField,
+  Chip,
+  Paper,
+  Divider,
+} from "@mui/material";
 import NoteRoundedIcon from "@mui/icons-material/NoteRounded";
 import NoteAltRoundedIcon from "@mui/icons-material/NoteAltRounded";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import DataConfigInformation from "../../data/DataConfigInformation";
 
-type AddCardFunction = (params: { boardId: string; titleCard: string }) => void;
-
-type handleChangeTitleBoard = (params: {
-  boardId: string;
-  titleBoard: string;
-}) => void;
-type handleRemoveBoard = (params: { boardId: string }) => void;
-
 interface IBoardItemProp {
   board: any;
-  handleChangeTitleBoard: handleChangeTitleBoard;
+  handleChangeTitleBoard: (data: {
+    boardId: string;
+    titleBoard: string;
+  }) => void;
   handleChangeLabelBoard: (value: any) => void;
   handleChangeColorBoard: (value: any) => void;
-  handleRemoveBoard: handleRemoveBoard;
-  addCard: AddCardFunction;
-  removeCard: (params: { boardId: string; cardId: string }) => void;
-  handleOpen: (params: { boardId: string; card: any }) => void;
+  handleRemoveBoard: (params: { boardId: string }) => void;
+  addCard: (data: { boardId: string; titleCard: string }) => void;
+  removeCard: (data: { boardId: string; cardId: string }) => void;
+  handleOpen: (data: { boardId: string; card: any }) => void;
   isLoading?: boolean;
 }
 
@@ -47,12 +50,13 @@ export const BoardItem: React.FC<IBoardItemProp> = ({
   const [showTitleChange, setShowTitleChange] = useState<boolean>(false);
   const [showLabelsChange, setShowLabelsChange] = useState<boolean>(false);
   const [showColorChange, setShowColorChange] = useState<boolean>(false);
-  const [titleBoard, setTitleBoard] = useState(board.title || "title");
+  const [titleBoard, setTitleBoard] = useState<string>(board.title || "title");
   const [labels, setLabels] = useState(board.labels || []);
   const [color, setColor] = useState<IColorSingle | undefined>(
     DataConfigInformation.colors.find((el: any) => el.color === board.color)
   );
   const matches = useMediaQuery("(min-width:600px)");
+  const theme: Theme = useTheme();
 
   const handleChangeLabels = (_: any, labels: ILabelsArray): void =>
     setLabels(labels);
@@ -70,7 +74,7 @@ export const BoardItem: React.FC<IBoardItemProp> = ({
             justifyContent: "space-between",
             alignItems: "center",
             padding: "0.25rem 1rem",
-            color: "#009688",
+            color: theme.palette.text.primary,
             backgroundColor: "#00606425",
             borderBottom: "2px solid #006064",
             borderRadius: "0.75rem 0.75rem 0 0",
@@ -236,14 +240,18 @@ export const BoardItem: React.FC<IBoardItemProp> = ({
         </Box>
       </Box>
 
-      <Paper sx={{ border: `1px solid green`, textAlign: "center" }}>
-        <CustomInput
-          text="Add Card"
-          placeholder="Enter Card Title"
-          onClickAddBtn={(value) =>
-            addCard({ boardId: board.id, titleCard: value })
-          }
-          directionBtn="row"
+      <Paper
+        sx={{
+          textAlign: "center",
+          borderRadius: "0 0 0.5rem 0.5rem",
+          backgroundColor: theme.palette.background.light,
+        }}
+      >
+        <Divider />
+        <FormAddCard
+          boardId={board.id}
+          handleAddCard={addCard}
+          isLoading={isLoading}
         />
       </Paper>
     </Box>

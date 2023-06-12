@@ -1,48 +1,38 @@
 import React, { useState } from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import { ChangeButtons } from "./ChangeButtons";
-import { CustomTextField } from "./CustomTextField";
+import { CustomTextField } from "../CustomTextField";
 import { LoadingButton } from "@mui/lab";
-import { Paper, Box } from "@mui/material";
+import { Box, CircularProgress, IconButton } from "@mui/material";
 import { useTheme, Theme } from "@mui/material/styles";
 import { Title } from "@mui/icons-material/";
 import AddBoxIcon from "@mui/icons-material/AddBox";
-import { CircularProgress, IconButton } from "@mui/material";
 import DoneIcon from "@mui/icons-material/Done";
 import CloseIcon from "@mui/icons-material/Close";
 
-interface CustomInputProps {
-  text: string;
-  placeholder: string;
-  onClickAddBtn: (value: string) => void;
+interface IFormAddCardProps {
+  boardId: string;
+  handleAddCard: (data: { boardId: string; titleCard: string }) => void;
   isLoading?: boolean;
 }
 
 const cardSchema = Yup.object().shape({
   title: Yup.string()
-    .min(6, "Title must be at least 6 characters long.")
+    .min(4, "Title must be at least 4 characters long.")
     .max(40, "Title cannot be longer than 40 characters.")
     .required("Title is required."),
 });
 
-export const CustomInput: React.FC<CustomInputProps> = ({
-  text,
-  placeholder,
-  onClickAddBtn,
+export const FormAddCard: React.FC<IFormAddCardProps> = ({
+  boardId,
+  handleAddCard,
   isLoading = false,
 }) => {
   const [showCustomInput, setShowCustomInput] = useState<boolean>(false);
-  const [inputText, setInputText] = useState<string>("");
   const theme: Theme = useTheme();
 
-  const getTitleBoard = (e: any) => {
-    e.preventDefault();
-
-    if (inputText && onClickAddBtn) {
-      onClickAddBtn(inputText);
-      setInputText("");
-    }
+  const handleSubmitFunc = (values: { title: string }) => {
+    handleAddCard({ boardId, titleCard: values.title });
     setShowCustomInput(false);
   };
 
@@ -50,7 +40,7 @@ export const CustomInput: React.FC<CustomInputProps> = ({
     <Box sx={{ display: "flex", justifyContent: "center" }}>
       {showCustomInput ? (
         <Formik
-          onSubmit={(values) => console.log("values", values)}
+          onSubmit={handleSubmitFunc}
           initialValues={{ title: "" }}
           validationSchema={cardSchema}
         >

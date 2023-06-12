@@ -4,13 +4,13 @@ import { FilterListOption } from "../components/FilterListOption/FilterListOptio
 import { FilterBoards } from "../components/FilterBoards/FilterBoards";
 import { ListBoards } from "../components/ListBoards/ListBoards";
 import { ModalBoardCreate } from "../components/ModalBoardCreate/ModalBoardCreate";
-import { Box, Modal, Pagination, Grid, useMediaQuery } from "@mui/material";
 import { useTheme, Theme } from "@mui/material/styles";
 import { MenuAddBoard } from "../components/MenuAddBoard";
 import { RootState, AppDispatch } from "../redux/store";
+import { Box, Modal, Pagination, Grid, useMediaQuery } from "@mui/material";
 import TaskOperations from "../redux/task/taskOperations";
 
-export const PageTask = () => {
+export const PageTask: React.FC = () => {
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [openFilter, setOpenFilter] = useState<boolean>(false);
   const [page, setPage] = useState<number>(1);
