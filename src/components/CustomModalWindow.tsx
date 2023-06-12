@@ -1,11 +1,11 @@
-import { ReactElement } from "react";
+import { ReactNode } from "react";
 import { useTheme, Theme } from "@mui/material/styles";
 import { Box, Modal, ModalProps } from "@mui/material";
 
 interface CustomModalWindowProps extends Omit<ModalProps, "children"> {
   open: boolean;
   onCloseFunc: (value: boolean) => void;
-  children: ReactElement<any, string | React.JSXElementConstructor<any>>;
+  children: ReactNode;
 }
 export const CustomModalWindow: React.FC<CustomModalWindowProps> = ({
   open,
