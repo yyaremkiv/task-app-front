@@ -14,11 +14,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import DataConfigInformation from "../../data/DataConfigInformation";
 
 type AddCardFunction = (params: { boardId: string; titleCard: string }) => void;
-type HandleRemoveCardFunction = (params: {
-  boardId: string;
-  cardId: string;
-}) => void;
-type HandleOpenFunction = (params: { boardId: string; card: any }) => void;
+
 type handleChangeTitleBoard = (params: {
   boardId: string;
   titleBoard: string;
@@ -32,8 +28,8 @@ interface IBoardItemProp {
   handleChangeColorBoard: (value: any) => void;
   handleRemoveBoard: handleRemoveBoard;
   addCard: AddCardFunction;
-  removeCard: HandleRemoveCardFunction;
-  handleOpen: HandleOpenFunction;
+  removeCard: (params: { boardId: string; cardId: string }) => void;
+  handleOpen: (params: { boardId: string; card: any }) => void;
   isLoading?: boolean;
 }
 
