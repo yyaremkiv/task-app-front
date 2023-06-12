@@ -21,10 +21,9 @@
     "jsx": "react-jsx",
     "baseUrl": "./src",
     "paths": {
-    "@interfaces/*": ["../interfaces/*"]
-  }
+      "@/*": ["./*"]
+    }
   },
-  "include": [
-    "src"
-  ]
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules"]
 }
