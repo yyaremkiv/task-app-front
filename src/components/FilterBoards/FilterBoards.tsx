@@ -1,7 +1,7 @@
 import { useDispatch } from "react-redux";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import { ILabelItemSingle, ILabelsArray } from "../../interfaces/DataTypes";
+import { ILabelItemSingle, ILabelsArray } from "../../Interfaces/dataTypes";
 import { AppDispatch } from "../../redux/store";
 import { IParamsTask } from "../../redux/task/taskOperations";
 import { CustomAutocomplete } from "../CustomAutocomplete";

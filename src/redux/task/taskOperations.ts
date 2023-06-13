@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { IAddBoard, IUpdateBoard } from "../../interfaces/DataTypes";
+import { IAddBoard, IUpdateBoard } from "../../Interfaces/dataTypes";
 import TaskService from "../../services/TaskService";
 
 export interface IParamsTask {

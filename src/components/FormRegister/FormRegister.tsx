@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { FormConfig } from "../../config/form.config";
 import { RootState, AppDispatch } from "../../redux/store";
-import { ISignupArg } from "../../interfaces/DataTypes";
+import { ISignupArg } from "../../Interfaces/dataTypes";
 import { Formik } from "formik";
 import { Box, TextField, Typography, useTheme } from "@mui/material";
 import { FormHelperText } from "@mui/material";
