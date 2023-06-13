@@ -6,7 +6,7 @@ import { CustomAutocompleteSingle } from "../CustomAutocompleteSingle";
 import { ChangeButtons } from "../ChangeButtons";
 import { MenuDashBoard } from "../MenuDashBoard/MenuDashBoard";
 import { FormAddCard } from "../FormAddCard/FormAddCard";
-import { ILabelsArray, IColorSingle } from "src/Interfaces/dataTypes";
+import { ILabelsArray, IColorSingle } from "../../Interfaces/dataTypes";
 import { useTheme, Theme } from "@mui/material/styles";
 import {
   Box,
