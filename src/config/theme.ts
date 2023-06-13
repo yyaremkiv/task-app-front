@@ -1,4 +1,4 @@
-import { PaletteMode } from "@mui/material";
+import { PaletteMode, createTheme } from "@mui/material";
 
 declare module "@mui/material" {
   interface TypeBackground {
@@ -13,59 +13,40 @@ declare module "@mui/material" {
 }
 
 export const themeSettings = (mode: PaletteMode) => {
-  return {
+  return createTheme({
     palette: {
       mode: mode,
-      ...(mode === "dark"
-        ? {
-            primary: {
-              main: "#00838f",
-              light: "#00acc1",
-              dark: "#006064",
-            },
-            secondary: {
-              light: "#ff7961",
-              main: "#ff3d00",
-              dark: "#dd2c00",
-            },
-            background: {
-              default: "#121212",
-              paper: "#121212",
-              light: "#212121",
-              main: "#26a69a",
-              mainHover: "#00796b",
-            },
-            text: {
-              primary: "#fff",
-              light: "#fff",
-              main: "#26a69a",
-            },
-          }
-        : {
-            primary: {
-              main: "#00838f",
-              light: "#00acc1",
-              dark: "#006064",
-              contrastText: "#fff",
-            },
-            secondary: {
-              light: "#ff7961",
-              main: "#ff3d00",
-              dark: "#dd2c00",
-            },
-            background: {
-              default: "#fff",
-              paper: "#fff",
-              light: "#fafafa",
-              main: "#26a69a",
-              mainHover: "#00796b",
-            },
-            text: {
-              primary: "rgba(0, 0, 0, 0.87)",
-              light: "#fff",
-              main: "#26a69a",
-            },
-          }),
+      primary: {
+        main: "#00838f",
+        light: "#00acc1",
+        dark: "#006064",
+      },
+      secondary: {
+        light: "#ff7961",
+        main: "#ff3d00",
+        dark: "#dd2c00",
+      },
+      background: {
+        default: mode === "dark" ? "#121212" : "#fff",
+        paper: mode === "dark" ? "#121212" : "#fff",
+        light: mode === "dark" ? "#212121" : "#fafafa",
+        main: "#26a69a",
+        mainHover: "#00796b",
+      },
+      text: {
+        primary: mode === "dark" ? "#fff" : "rgba(0, 0, 0, 0.87)",
+        light: mode === "dark" ? "#fff" : "#fff",
+        main: mode === "dark" ? "#26a69a" : "#26a69a",
+      },
     },
-  };
+    breakpoints: {
+      values: {
+        xs: 0,
+        sm: 480,
+        md: 600,
+        lg: 1024,
+        xl: 1680,
+      },
+    },
+  });
 };

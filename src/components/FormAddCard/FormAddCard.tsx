@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import { CustomTextField } from "../CustomTextField";
+import { CustomTextFieldFormik } from "../CustomTextFieldFormik";
 import { LoadingButton } from "@mui/lab";
 import { Box, CircularProgress, IconButton } from "@mui/material";
 import { useTheme, Theme } from "@mui/material/styles";
@@ -65,7 +65,7 @@ export const FormAddCard: React.FC<IFormAddCardProps> = ({
               >
                 <Title color="primary" fontSize="large" />
                 <Box sx={{ maxWidth: "60%" }}>
-                  <CustomTextField
+                  <CustomTextFieldFormik
                     label="Title"
                     name="title"
                     formikFunc={{

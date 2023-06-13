@@ -52,24 +52,28 @@ export const Header: React.FC = () => {
       onClick={toggleDrawer(anchor, false)}
       onKeyDown={toggleDrawer(anchor, false)}
     >
-      <ListItem
-        disablePadding
-        sx={{ display: "flex", justifyContent: "center", padding: "1rem" }}
-      >
-        <AvatarUser username={user.username} />
-      </ListItem>
-      <Divider />
-      <List>
-        <ListItem disablePadding onClick={logOut}>
-          <ListItemButton>
-            <ListItemIcon>
-              <LogoutIcon />
-            </ListItemIcon>
-            <ListItemText primary={"Logout"} />
-          </ListItemButton>
-        </ListItem>
-      </List>
-      <Divider />
+      {isLogged && (
+        <>
+          <ListItem
+            disablePadding
+            sx={{ display: "flex", justifyContent: "center", padding: "1rem" }}
+          >
+            <AvatarUser username={user.username} />
+          </ListItem>
+          <Divider />
+          <List>
+            <ListItem disablePadding onClick={logOut}>
+              <ListItemButton>
+                <ListItemIcon>
+                  <LogoutIcon />
+                </ListItemIcon>
+                <ListItemText primary={"Logout"} />
+              </ListItemButton>
+            </ListItem>
+          </List>
+          <Divider />
+        </>
+      )}
       <List>
         <ListItem disablePadding onClick={() => dispatch(setModeTheme())}>
           <ListItemButton>
@@ -91,7 +95,7 @@ export const Header: React.FC = () => {
     <Box
       sx={{ padding: "1rem 0", backgroundColor: theme.palette.background.main }}
     >
-      <Container maxWidth="xl">
+      <Container sx={{ maxWidth: "xl" }}>
         {isNonMobileScreens ? (
           <Box
             sx={{

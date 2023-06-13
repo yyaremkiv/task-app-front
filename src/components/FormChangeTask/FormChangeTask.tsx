@@ -2,7 +2,7 @@ import { Box, CircularProgress, IconButton, Slider } from "@mui/material";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { Title } from "@mui/icons-material";
-import { CustomTextField } from "../CustomTextField";
+import { CustomTextFieldFormik } from "../CustomTextFieldFormik";
 import TimelineIcon from "@mui/icons-material/Timeline";
 import DoneIcon from "@mui/icons-material/Done";
 import CloseIcon from "@mui/icons-material/Close";
@@ -73,7 +73,7 @@ export const FormChangeTask: React.FC<IFormChangeTaskProp> = ({
         >
           <Box sx={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
             <Title color="primary" fontSize="large" />
-            <CustomTextField
+            <CustomTextFieldFormik
               label="Text"
               name="text"
               formikFunc={{

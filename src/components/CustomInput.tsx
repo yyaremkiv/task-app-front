@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { ChangeButtons } from "./ChangeButtons";
-import { CustomTextField } from "./CustomTextField";
+import { CustomTextFieldFormik } from "./CustomTextFieldFormik";
 import { LoadingButton } from "@mui/lab";
 import { Paper, Box } from "@mui/material";
 import { useTheme, Theme } from "@mui/material/styles";
@@ -75,7 +75,7 @@ export const CustomInput: React.FC<CustomInputProps> = ({
               >
                 <Title color="primary" fontSize="large" />
                 <Box sx={{ maxWidth: "60%" }}>
-                  <CustomTextField
+                  <CustomTextFieldFormik
                     label="Title"
                     name="title"
                     formikFunc={{

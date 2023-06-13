@@ -1,7 +1,6 @@
 import { Outlet } from "react-router-dom";
 import { Header } from "../components/Header/Header";
-import { Box, Container } from "@mui/material";
-import { useTheme, Theme } from "@mui/material/styles";
+import { Box, Container, useTheme, Theme } from "@mui/material";
 
 export const Layout = (): JSX.Element => {
   const theme: Theme = useTheme();
@@ -10,6 +9,8 @@ export const Layout = (): JSX.Element => {
     <Box
       sx={{
         position: "relative",
+        display: "flex",
+        flexDirection: "column",
         minHeight: "100vh",
         color: theme.palette.text.primary,
         backgroundColor: theme.palette.background.default,
@@ -17,11 +18,10 @@ export const Layout = (): JSX.Element => {
     >
       <Header />
       <Container
-        maxWidth="xl"
         sx={{
-          border: "1px solid green",
           display: "flex",
           justifyContent: "center",
+          maxWidth: theme.breakpoints.values.xl,
         }}
       >
         <Outlet />

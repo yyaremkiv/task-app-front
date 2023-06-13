@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import dayjs from "dayjs";
-import { CustomTextField } from "../CustomTextField";
+import { CustomTextFieldFormik } from "../CustomTextFieldFormik";
 import { CustomAutocomplete } from "../CustomAutocomplete";
 import { v4 as uuidv4 } from "uuid";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -132,7 +132,7 @@ export const ModalCardUpdate: React.FC<IModalCardUpdate> = ({
           >
             <Box sx={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
               <Title color="primary" fontSize="large" />
-              <CustomTextField
+              <CustomTextFieldFormik
                 label="Title"
                 name="title"
                 formikFunc={{
@@ -148,7 +148,7 @@ export const ModalCardUpdate: React.FC<IModalCardUpdate> = ({
 
             <Box sx={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
               <Description color="primary" fontSize="large" />
-              <CustomTextField
+              <CustomTextFieldFormik
                 label="Description"
                 name="desc"
                 formikFunc={{

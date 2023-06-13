@@ -5,7 +5,7 @@ import { ILabelItemSingle, ILabelsArray } from "../../Interfaces/DataTypes";
 import { AppDispatch } from "../../redux/store";
 import { IParamsTask } from "../../redux/task/taskOperations";
 import { CustomAutocomplete } from "../CustomAutocomplete";
-import { CustomTextField } from "../CustomTextField";
+import { CustomTextFieldFormik } from "../CustomTextFieldFormik";
 import { LoadingButton } from "@mui/lab";
 import { Box } from "@mui/material";
 import TaskOperations from "../../redux/task/taskOperations";
@@ -109,7 +109,7 @@ export const FilterBoards: React.FC<IFilterBoardsProp> = ({
               gap: "0.75rem",
             }}
           >
-            <CustomTextField
+            <CustomTextFieldFormik
               label="Search In Title"
               name="query"
               formikFunc={{ values, errors, touched, handleBlur, handleChange }}

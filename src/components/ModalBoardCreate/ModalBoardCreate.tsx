@@ -3,7 +3,7 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import { IAddBoard, ILabelsArray } from "../../Interfaces/DataTypes";
 import { AppDispatch } from "../../redux/store";
-import { CustomTextField } from "../CustomTextField";
+import { CustomTextFieldFormik } from "../CustomTextFieldFormik";
 import { CustomAutocompleteSingle } from "../CustomAutocompleteSingle";
 import { CustomAutocomplete } from "../CustomAutocomplete";
 import { Box, IconButton, Typography } from "@mui/material";
@@ -95,7 +95,7 @@ export const ModalBoardCreate: React.FC<IModalBoardCreate> = ({
             }}
           >
             <Title color="primary" fontSize="large" />
-            <CustomTextField
+            <CustomTextFieldFormik
               label="Title"
               name="title"
               formikFunc={{ values, errors, touched, handleBlur, handleChange }}

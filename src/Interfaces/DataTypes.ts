@@ -34,3 +34,9 @@ export interface IAddBoard {
   labels: [] | ILabelsArray;
   color: string;
 }
+
+export interface IUser {
+  _id: string;
+  username: string;
+  email: string;
+}
