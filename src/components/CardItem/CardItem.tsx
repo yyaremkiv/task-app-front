@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { ListItemIcon } from "@mui/material";
 import { PlaylistAddCheckSharp, NoteRounded } from "@mui/icons-material";
 import { Box, Paper, Stack, Typography, IconButton, Chip } from "@mui/material";
-import { ILabelItemSingle } from "../../Interfaces/dataTypes";
+import { ILabelItemSingle } from "../../Interfaces/DataTypes";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import MenuIcon from "@mui/icons-material/Menu";

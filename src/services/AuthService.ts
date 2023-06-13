@@ -1,6 +1,6 @@
 import API from "../config/axios.config";
 import { AxiosResponse } from "axios";
-import { ISigninArg, ISignupArg } from "../Interfaces/dataTypes";
+import { ISigninArg, ISignupArg } from "../Interfaces/DataTypes";
 
 interface IAuthResponse {
   data: any;

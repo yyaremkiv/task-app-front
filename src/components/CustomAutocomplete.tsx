@@ -1,4 +1,4 @@
-import { ILabelsArray } from "../Interfaces/dataTypes";
+import { ILabelsArray } from "../Interfaces/DataTypes";
 import { Autocomplete, Box, Chip, TextField, Typography } from "@mui/material";
 
 interface ICustomAutocompleteProps {

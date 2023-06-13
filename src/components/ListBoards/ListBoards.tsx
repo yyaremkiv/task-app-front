@@ -6,7 +6,7 @@ import { AppDispatch } from "../../redux/store";
 import { Box, Grid, Paper } from "@mui/material";
 import BoardHandler from "../../helpers/boardHandler";
 import TaskOperations from "../../redux/task/taskOperations";
-import { ILabelsArray } from "../../Interfaces/dataTypes";
+import { ILabelsArray } from "../../Interfaces/DataTypes";
 import { CustomModalWindow } from "../CustomModalWindow";
 
 interface IListBoardsProp {

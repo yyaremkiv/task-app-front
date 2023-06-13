@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { ISigninArg, ISignupArg } from "../../Interfaces/dataTypes";
+import { ISigninArg, ISignupArg } from "../../Interfaces/DataTypes";
 import AuthService from "../../services/AuthService";
 
 class AuthOperations {

@@ -1,7 +1,7 @@
 import { useDispatch } from "react-redux";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import { IAddBoard, ILabelsArray } from "../../Interfaces/dataTypes";
+import { IAddBoard, ILabelsArray } from "../../Interfaces/DataTypes";
 import { AppDispatch } from "../../redux/store";
 import { CustomTextField } from "../CustomTextField";
 import { CustomAutocompleteSingle } from "../CustomAutocompleteSingle";
