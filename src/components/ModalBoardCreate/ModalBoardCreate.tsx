@@ -1,57 +1,40 @@
 import { useDispatch } from "react-redux";
 import { Formik } from "formik";
-import * as Yup from "yup";
-import { IAddBoard, ILabelsArray } from "../../Interfaces/DataTypes";
+import { IAddBoard } from "../../Interfaces/DataTypes";
 import { AppDispatch } from "../../redux/store";
 import { CustomTextFieldFormik } from "../CustomTextFieldFormik";
 import { CustomAutocompleteSingle } from "../CustomAutocompleteSingle";
 import { CustomAutocomplete } from "../CustomAutocomplete";
-import { Box, IconButton, Typography } from "@mui/material";
-import { Title, BookmarkBorder } from "@mui/icons-material/";
+import { FormConfig, IInitialValuesAddBoard } from "src/config/form.config";
+import { Box, IconButton, Typography, CircularProgress } from "@mui/material";
+import {
+  Title,
+  BookmarkBorder,
+  Done,
+  Close,
+  Palette,
+} from "@mui/icons-material/";
 import TaskOperations from "../../redux/task/taskOperations";
-import DoneIcon from "@mui/icons-material/Done";
-import CloseIcon from "@mui/icons-material/Close";
-import PaletteIcon from "@mui/icons-material/Palette";
 import DataConfigInformation from "../../data/DataConfigInformation";
-import CircularProgress from "@mui/material/CircularProgress";
 
 interface IModalBoardCreate {
-  handleClose: any;
   error: null | string;
+  handleClose: () => void;
   isLoading?: boolean;
 }
 
-interface IInitialValuesBoard {
-  title: string;
-  labels: [] | ILabelsArray;
-  color: any;
-}
-
-const initialValuesBoard: IInitialValuesBoard = {
-  title: "",
-  labels: [],
-  color: {},
-};
-
-const boardSchema = Yup.object().shape({
-  title: Yup.string()
-    .min(6, "Title must be at least 6 characters long.")
-    .max(40, "Title cannot be longer than 40 characters.")
-    .required("Title is required."),
-});
-
-export const ModalBoardCreate: React.FC<IModalBoardCreate> = ({
-  handleClose,
+export const ModalBoardCreate = ({
   error,
+  handleClose,
   isLoading = false,
-}) => {
+}: IModalBoardCreate): JSX.Element => {
   const dispatch: AppDispatch = useDispatch();
 
   const handleSubmitSearch = async ({
     title,
     labels,
     color: { color },
-  }: IInitialValuesBoard) => {
+  }: IInitialValuesAddBoard) => {
     const newBoard: IAddBoard = {
       title,
       labels,
@@ -67,8 +50,8 @@ export const ModalBoardCreate: React.FC<IModalBoardCreate> = ({
   return (
     <Formik
       onSubmit={handleSubmitSearch}
-      initialValues={initialValuesBoard}
-      validationSchema={boardSchema}
+      initialValues={FormConfig.initialValuesAddBoard}
+      validationSchema={FormConfig.boardSchema}
     >
       {({
         values,
@@ -114,7 +97,7 @@ export const ModalBoardCreate: React.FC<IModalBoardCreate> = ({
           </Box>
 
           <Box sx={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-            <PaletteIcon color="primary" fontSize="large" />
+            <Palette color="primary" fontSize="large" />
             <CustomAutocompleteSingle
               label="Set Color Of Border"
               changeFieldName="color"
@@ -128,11 +111,11 @@ export const ModalBoardCreate: React.FC<IModalBoardCreate> = ({
               {isLoading ? (
                 <CircularProgress size={25} />
               ) : (
-                <DoneIcon sx={{ color: "green" }} />
+                <Done sx={{ color: "green" }} />
               )}
             </IconButton>
             <IconButton onClick={handleClose} disabled={isLoading}>
-              <CloseIcon sx={{ color: isLoading ? null : "red" }} />
+              <Close sx={{ color: isLoading ? null : "red" }} />
             </IconButton>
           </Box>
           {error ? <Typography color="red">{error}</Typography> : null}

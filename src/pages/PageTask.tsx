@@ -4,11 +4,19 @@ import { FilterListOption } from "../components/FilterListOption/FilterListOptio
 import { FilterBoards } from "../components/FilterBoards/FilterBoards";
 import { ListBoards } from "../components/ListBoards/ListBoards";
 import { ModalBoardCreate } from "../components/ModalBoardCreate/ModalBoardCreate";
-import { useTheme, Theme } from "@mui/material/styles";
 import { MenuAddBoard } from "../components/MenuAddBoard";
 import { RootState, AppDispatch } from "../redux/store";
-import { Box, Modal, Pagination, Grid, useMediaQuery } from "@mui/material";
+import {
+  Box,
+  Modal,
+  Pagination,
+  Grid,
+  useMediaQuery,
+  useTheme,
+  Theme,
+} from "@mui/material";
 import TaskOperations from "../redux/task/taskOperations";
+import { CustomModalWindow } from "src/components/CustomModalWindow";
 
 export const PageTask: React.FC = () => {
   const [openModal, setOpenModal] = useState<boolean>(false);
@@ -93,28 +101,13 @@ export const PageTask: React.FC = () => {
 
       <MenuAddBoard handleOpen={handleOpen} />
 
-      <Modal open={openModal} onClose={handleClose}>
-        <Box
-          sx={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            maxWidth: "50vw",
-            maxHeight: "85vh",
-            overflowY: "auto",
-            padding: "1rem",
-            backgroundColor: theme.palette.background.light,
-            borderRadius: "0.5rem",
-            transform: "translate(-50%, -50%)",
-          }}
-        >
-          <ModalBoardCreate
-            handleClose={handleClose}
-            isLoading={isLoading}
-            error={error}
-          />
-        </Box>
-      </Modal>
+      <CustomModalWindow open={openModal} onCloseFunc={handleClose}>
+        <ModalBoardCreate
+          handleClose={handleClose}
+          isLoading={isLoading}
+          error={error}
+        />
+      </CustomModalWindow>
     </Box>
   );
 };

@@ -11,11 +11,23 @@ interface IRegisterFormValues {
   password: string;
 }
 
+interface IBoardFormValues {
+  title: string;
+}
+
+export interface IInitialValuesAddBoard {
+  title: string;
+  labels: [];
+  color: any;
+}
+
 interface IFormConfig {
   initialValuesLogin: ILoginFormValues;
   initialValuesRegister: IRegisterFormValues;
+  initialValuesAddBoard: IInitialValuesAddBoard;
   loginSchema: Yup.Schema<ILoginFormValues>;
   registerSchema: Yup.Schema<IRegisterFormValues>;
+  boardSchema: Yup.Schema<IBoardFormValues>;
 }
 
 export const FormConfig: IFormConfig = {
@@ -28,11 +40,16 @@ export const FormConfig: IFormConfig = {
     email: "",
     password: "",
   },
+  initialValuesAddBoard: {
+    title: "",
+    labels: [],
+    color: {},
+  },
   loginSchema: Yup.object().shape({
     email: Yup.string()
       .matches(/^[^\s]+$/, "Enter a value without spaces")
       .email("Please enter a valid email address.")
-      .min(4, "Email must be at least 3 characters long.")
+      .min(4, "Email must be at least 4 characters long.")
       .max(50, "Email cannot be longer than 50 characters.")
       .required("Email is required."),
     password: Yup.string()
@@ -49,7 +66,7 @@ export const FormConfig: IFormConfig = {
     email: Yup.string()
       .matches(/^[^\s]+$/, "Enter a value without spaces")
       .email("Please enter a valid email address.")
-      .min(4, "Email must be at least 3 characters long.")
+      .min(4, "Email must be at least 4 characters long.")
       .max(50, "Email cannot be longer than 50 characters.")
       .required("Email is required."),
     password: Yup.string()
@@ -57,5 +74,11 @@ export const FormConfig: IFormConfig = {
       .min(6, "Password must be at least 6 characters")
       .max(20, "Password must be no more than 20 characters")
       .required("Password is required."),
+  }),
+  boardSchema: Yup.object().shape({
+    title: Yup.string()
+      .min(6, "Title must be at least 6 characters long.")
+      .max(40, "Title cannot be longer than 40 characters.")
+      .required("Title is required."),
   }),
 };

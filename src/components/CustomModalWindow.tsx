@@ -2,16 +2,16 @@ import { ReactNode } from "react";
 import { useTheme, Theme } from "@mui/material/styles";
 import { Box, Modal, ModalProps } from "@mui/material";
 
-interface CustomModalWindowProps extends Omit<ModalProps, "children"> {
+interface ICustomModalWindowProps extends Omit<ModalProps, "children"> {
   open: boolean;
   onCloseFunc: (value: boolean) => void;
   children: ReactNode;
 }
-export const CustomModalWindow: React.FC<CustomModalWindowProps> = ({
+export const CustomModalWindow = ({
   open,
   onCloseFunc,
   children,
-}) => {
+}: ICustomModalWindowProps): JSX.Element => {
   const theme: Theme = useTheme();
 
   const handleClose = () => onCloseFunc(false);
@@ -24,7 +24,14 @@ export const CustomModalWindow: React.FC<CustomModalWindowProps> = ({
             position: "absolute",
             top: "50%",
             left: "50%",
-            maxWidth: "50vw",
+            width: "100%",
+            maxWidth: {
+              xs: "80vw",
+              sm: "80vw",
+              md: "60vw",
+              lg: "50vw",
+              xl: "40vw",
+            },
             maxHeight: "85vh",
             overflowY: "auto",
             padding: "1rem",
