@@ -16,8 +16,7 @@ import {
   Paper,
   Divider,
 } from "@mui/material";
-import NoteRoundedIcon from "@mui/icons-material/NoteRounded";
-import NoteAltRoundedIcon from "@mui/icons-material/NoteAltRounded";
+import { NoteRounded, NoteAltRounded } from "@mui/icons-material";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import DataConfigInformation from "../../data/DataConfigInformation";
 
@@ -88,7 +87,7 @@ export const BoardItem: React.FC<IBoardItemProp> = ({
               gap: 1,
             }}
           >
-            <NoteAltRoundedIcon color="inherit" fontSize="medium" />
+            <NoteAltRounded color="inherit" fontSize="medium" />
 
             {showTitleChange ? (
               <Box
@@ -130,7 +129,7 @@ export const BoardItem: React.FC<IBoardItemProp> = ({
                   <Typography variant="h6">
                     {board?.cards?.length || 0}
                   </Typography>
-                  <NoteRoundedIcon color="inherit" fontSize="medium" />
+                  <NoteRounded color="inherit" fontSize="medium" />
                 </Box>
               </Box>
             )}

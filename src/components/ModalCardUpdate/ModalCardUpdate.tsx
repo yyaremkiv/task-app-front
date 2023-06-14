@@ -1,22 +1,25 @@
 import { useState } from "react";
 import { Formik } from "formik";
+import { v4 as uuidv4 } from "uuid";
 import * as Yup from "yup";
 import dayjs from "dayjs";
 import { CustomTextFieldFormik } from "../CustomTextFieldFormik";
 import { CustomAutocomplete } from "../CustomAutocomplete";
-import { v4 as uuidv4 } from "uuid";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { LoadingButton } from "@mui/lab";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { LoadingButton } from "@mui/lab";
 import { ListTasks } from "../ListTasks/ListTasks";
-import { useTheme, Theme } from "@mui/material/styles";
 import {
   Box,
   TextField,
   FormHelperText,
   Tooltip,
   Typography,
+  Button,
+  IconButton,
+  useTheme,
+  Theme,
 } from "@mui/material";
 import {
   Title,
@@ -24,13 +27,11 @@ import {
   CalendarMonth,
   AssignmentTurnedIn,
   BookmarkBorder,
+  Delete as DeleteIcon,
+  Done as DoneIcon,
+  Close as CloseIcon,
 } from "@mui/icons-material/";
-import Button from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
 import DataConfigInformation from "../../data/DataConfigInformation";
-import DeleteIcon from "@mui/icons-material/Delete";
-import DoneIcon from "@mui/icons-material/Done";
-import CloseIcon from "@mui/icons-material/Close";
 import "dayjs/locale/de";
 
 const cardSchema = Yup.object().shape({
@@ -38,7 +39,7 @@ const cardSchema = Yup.object().shape({
   desc: Yup.string(),
 });
 
-interface IModalCardUpdate {
+interface IModalCardUpdateProps {
   card: any;
   boardId: string;
   updateCard: any;
@@ -55,16 +56,18 @@ interface IInitialValueCard {
   tasks: any;
 }
 
-export const ModalCardUpdate: React.FC<IModalCardUpdate> = ({
+export const ModalCardUpdate = ({
   card,
   boardId,
   updateCard,
   error,
   isLoading = false,
-}) => {
+}: IModalCardUpdateProps): JSX.Element => {
   const [showAddNewTask, setShowAddNewTask] = useState<boolean>(false);
   const [titleTask, setTitleTask] = useState<string>("");
   const theme: Theme = useTheme();
+
+  console.log("card", card);
 
   const initialValuesCard: IInitialValueCard = {
     title: card.title,

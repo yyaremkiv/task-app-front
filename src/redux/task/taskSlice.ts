@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { IBoard } from "src/Interfaces/DataTypes";
 import TaskOperations from "./taskOperations";
 
 export interface ITaskState {
@@ -75,8 +76,13 @@ export const taskSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(TaskOperations.updateBoard.fulfilled, (state, action) => {
-      state.data = action.payload.boards;
-      state.totalBords = action.payload.totalBoards;
+      const updatedBoard = action.payload;
+      const boardIndex = state.data.findIndex(
+        (board: IBoard) => board.id === updatedBoard.id
+      );
+
+      if (boardIndex !== -1) state.data[boardIndex] = updatedBoard;
+
       state.isLoading = false;
     });
     builder.addCase(

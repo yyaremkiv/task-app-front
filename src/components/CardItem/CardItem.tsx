@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { ListItemIcon } from "@mui/material";
 import { PlaylistAddCheckSharp, NoteRounded } from "@mui/icons-material";
 import { Box, Paper, Stack, Typography, IconButton, Chip } from "@mui/material";
-import { ILabelItemSingle } from "../../Interfaces/DataTypes";
+import { ILabel } from "../../Interfaces/DataTypes";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -58,7 +58,7 @@ export const CardItem: React.FC<ICardItemProp> = ({
             padding: "0.45rem 0",
           }}
         >
-          {labels?.map((item: ILabelItemSingle, index: number) => (
+          {labels?.map((item: ILabel, index: number) => (
             <Chip
               key={index}
               label={item.label}

@@ -11,7 +11,6 @@ import {
   Box,
   Typography,
   Container,
-  Button,
   IconButton,
   useTheme,
 } from "@mui/material";
@@ -58,7 +57,7 @@ export const Header: React.FC = () => {
             disablePadding
             sx={{ display: "flex", justifyContent: "center", padding: "1rem" }}
           >
-            <AvatarUser username={user.username} />
+            <AvatarUser username={user.username} showMenu={false} />
           </ListItem>
           <Divider />
           <List>
@@ -138,18 +137,6 @@ export const Header: React.FC = () => {
             </Typography>
 
             <Box sx={{ display: "flex", alignItems: "center", gap: "2rem" }}>
-              {user.username && <AvatarUser username={user.username} />}
-
-              {isLogged ? (
-                <Button
-                  startIcon={<LogoutIcon />}
-                  onClick={logOut}
-                  sx={{ color: theme.palette.text.light }}
-                >
-                  Log out
-                </Button>
-              ) : null}
-
               <IconButton onClick={() => dispatch(setModeTheme())}>
                 {palette.mode === "dark" ? (
                   <DarkMode sx={{ fontSize: "25px" }} />
@@ -157,6 +144,14 @@ export const Header: React.FC = () => {
                   <LightMode sx={{ color: "white", fontSize: "25px" }} />
                 )}
               </IconButton>
+
+              {user.username && isLogged && (
+                <AvatarUser
+                  username={user.username}
+                  showMenu={true}
+                  logoutFunc={logOut}
+                />
+              )}
             </Box>
           </Box>
         )}

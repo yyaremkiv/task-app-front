@@ -1,7 +1,7 @@
 import { useDispatch } from "react-redux";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import { ILabelItemSingle, ILabelsArray } from "../../Interfaces/DataTypes";
+import { ILabel, ILabelsArray } from "../../Interfaces/DataTypes";
 import { AppDispatch } from "../../redux/store";
 import { IParamsTask } from "../../redux/task/taskOperations";
 import { CustomAutocomplete } from "../CustomAutocomplete";
@@ -14,7 +14,7 @@ import DataConfigInformation from "../../data/DataConfigInformation";
 interface IInitialValues {
   query: string;
   labels: [] | ILabelsArray;
-  colors: [] | ILabelItemSingle[];
+  colors: [] | ILabel[];
 }
 
 const initialValues: IInitialValues = {
@@ -47,7 +47,7 @@ interface IFilterBoardsProp {
 interface IHandleSubmitSearch {
   query: string;
   labels: [] | ILabelsArray;
-  colors: [] | ILabelItemSingle[];
+  colors: [] | ILabel[];
 }
 
 export const FilterBoards: React.FC<IFilterBoardsProp> = ({
@@ -66,9 +66,7 @@ export const FilterBoards: React.FC<IFilterBoardsProp> = ({
 
     if (query.trim()) params.query = query.trim();
     if (Array.isArray(labels) && labels.length > 0)
-      params.labels = labels
-        .map((item: ILabelItemSingle) => item.label)
-        .join(",");
+      params.labels = labels.map((item: ILabel) => item.label).join(",");
     if (colors.length > 0)
       params.colors = colors.map((item) => item.color).join(",");
 

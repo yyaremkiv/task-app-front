@@ -1,6 +1,6 @@
 import { Box, SpeedDial, SpeedDialIcon, SpeedDialAction } from "@mui/material";
 import { useTheme, Theme } from "@mui/material/styles";
-import CreateIcon from "@mui/icons-material/Create";
+import AddIcon from "@mui/icons-material/Add";
 
 interface IMenuAddBoardProps {
   handleOpen: () => void;
@@ -12,22 +12,17 @@ export const MenuAddBoard = ({
   const theme: Theme = useTheme();
 
   const actions = [
-    { icon: <CreateIcon />, name: "Add New Board", onclick: handleOpen },
+    { icon: <AddIcon />, name: "Add New Board", onclick: handleOpen },
   ];
 
   return (
-    <Box
-      sx={{
-        transform: "translateZ(0px)",
-        flexGrow: 1,
-      }}
-    >
+    <Box>
       <SpeedDial
         ariaLabel="Add new board"
         sx={{
           position: "absolute",
-          bottom: "1rem",
-          right: "1rem",
+          bottom: "8%",
+          right: "8%",
         }}
         icon={<SpeedDialIcon />}
         FabProps={{ style: { backgroundColor: theme.palette.background.main } }}

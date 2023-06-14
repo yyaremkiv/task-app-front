@@ -14,15 +14,6 @@ export interface IUpdateBoard {
   board: any;
 }
 
-export interface ILabelItemSingle {
-  label: string;
-  color: string;
-}
-
-export interface ILabelsArray {
-  items: ILabelItemSingle[];
-}
-
 export interface IColorSingle {
   label: string;
   color: string;
@@ -39,4 +30,38 @@ export interface IUser {
   _id: string;
   username: string;
   email: string;
+}
+
+export interface ITask {
+  id: string;
+  text: string;
+  completed: boolean;
+  progress: number;
+}
+
+export interface ILabel {
+  label: string;
+  color: string;
+}
+
+export interface ILabelsArray {
+  items: ILabel[];
+}
+
+export interface ICard {
+  id: string;
+  title: string;
+  desc: string;
+  dateStart: string;
+  dateEnd: string;
+  labels: ILabelsArray | [];
+  tasks: ITask[];
+}
+
+export interface IBoard {
+  id: string;
+  title: string;
+  labels: ILabelsArray;
+  color: string;
+  cards: ICard[];
 }

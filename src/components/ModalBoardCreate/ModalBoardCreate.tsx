@@ -17,7 +17,7 @@ import {
 import TaskOperations from "../../redux/task/taskOperations";
 import DataConfigInformation from "../../data/DataConfigInformation";
 
-interface IModalBoardCreate {
+interface IModalBoardCreateProps {
   error: null | string;
   handleClose: () => void;
   isLoading?: boolean;
@@ -27,7 +27,7 @@ export const ModalBoardCreate = ({
   error,
   handleClose,
   isLoading = false,
-}: IModalBoardCreate): JSX.Element => {
+}: IModalBoardCreateProps): JSX.Element => {
   const dispatch: AppDispatch = useDispatch();
 
   const handleSubmitSearch = async ({
