@@ -13,12 +13,12 @@ const DataConfigInformation = {
     { label: "priority: critical", color: "#b60205" },
     { label: "priority: high", color: "#d93f0b" },
     { label: "priority: low", color: "#0e8a16" },
-    { label: "priority: medium", color: "#fbca04" },
+    { label: "priority: medium", color: "#fb8c00" },
     { label: "status: can't reproduce", color: "#fec1c1" },
     { label: "status: confirmed", color: "#215cea" },
-    { label: "status: duplicate", color: "#cfd3d7" },
-    { label: "status: needs information", color: "#fef2c0" },
-    { label: "status: wont do/fix", color: "#eeeeee" },
+    { label: "status: duplicate", color: "#757575" },
+    { label: "status: needs information", color: "#fdd835" },
+    { label: "status: wont do/fix", color: "#80cbc4" },
   ],
   labelCategoriesOfCard: [
     { label: "Bug", color: "#b60205" },
@@ -28,8 +28,8 @@ const DataConfigInformation = {
     { label: "Design", color: "#fec1c1" },
     { label: "Testing", color: "#215cea" },
     { label: "Refactor", color: "#cfd3d7" },
-    { label: "Performance", color: "#fef2c0" },
-    { label: "Other", color: "#eeeeee" },
+    { label: "Performance", color: "#fdd835" },
+    { label: "Other", color: "#757575" },
   ],
 };
 

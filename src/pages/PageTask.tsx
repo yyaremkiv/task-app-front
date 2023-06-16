@@ -72,8 +72,6 @@ export const PageTask: React.FC = () => {
         <Grid item xs={openFilter ? (isNonMobileScreens ? 9 : 12) : 12}>
           <ListBoards
             boards={boards}
-            page={page}
-            limit={limit}
             view={view}
             error={error}
             isLoading={isLoading}

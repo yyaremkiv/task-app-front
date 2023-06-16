@@ -28,6 +28,8 @@ interface IFormConfig {
   loginSchema: Yup.Schema<ILoginFormValues>;
   registerSchema: Yup.Schema<IRegisterFormValues>;
   boardSchema: Yup.Schema<IBoardFormValues>;
+  cardSchema: Yup.Schema<any>;
+  taskSchema: Yup.Schema<any>;
 }
 
 export const FormConfig: IFormConfig = {
@@ -80,5 +82,24 @@ export const FormConfig: IFormConfig = {
       .min(6, "Title must be at least 6 characters long.")
       .max(40, "Title cannot be longer than 40 characters.")
       .required("Title is required."),
+  }),
+  cardSchema: Yup.object().shape({
+    title: Yup.string()
+      .min(6, "Title must be at least 6 characters long.")
+      .max(40, "Title cannot be longer than 40 characters.")
+      .required("Title is required."),
+    desc: Yup.string()
+      .min(6, "Description must be at least 6 characters long.")
+      .max(200, "Description cannot be longer than 200 characters."),
+  }),
+  taskSchema: Yup.object().shape({
+    text: Yup.string()
+      .min(6, "Text must be at least 6 characters long.")
+      .max(100, "Text cannot be longer than 100 characters.")
+      .required("Text is required."),
+    progress: Yup.number()
+      .min(0, "Progress cannot be less than 0.")
+      .max(100, "Progress cannot be greater than 100.")
+      .required("Progress is required."),
   }),
 };

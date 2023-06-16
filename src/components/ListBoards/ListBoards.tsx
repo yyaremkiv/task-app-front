@@ -4,34 +4,48 @@ import { BoardItem } from "../BoardItem/BoardItem";
 import { ModalCardUpdate } from "../ModalCardUpdate/ModalCardUpdate";
 import { AppDispatch } from "../../redux/store";
 import { Box, Grid, Paper } from "@mui/material";
+import { ILabelsArray, IBoard, ICard } from "../../Interfaces/DataTypes";
+import { CustomModalWindow } from "../CustomModalWindow";
 import BoardHandler from "../../helpers/boardHandler";
 import TaskOperations from "../../redux/task/taskOperations";
-import { ILabelsArray } from "../../Interfaces/DataTypes";
-import { CustomModalWindow } from "../CustomModalWindow";
 
-interface IListBoardsProp {
-  boards: any;
-  page: number;
-  limit: number;
+interface IListBoardsProps {
+  boards: IBoard[];
   view: number;
-  error: null | string;
+  error: string | null;
   isLoading?: boolean;
 }
 
-export const ListBoards: React.FC<IListBoardsProp> = ({
+interface IPayloadUpdateBoard {
+  title?: string;
+  labels?: ILabelsArray;
+  color?: string;
+}
+
+interface IHandleBoardUpdate {
+  boards: IBoard[];
+  boardId: string;
+  payload: IPayloadUpdateBoard;
+}
+
+interface IHandleUpdateCard {
+  boardId: string;
+  cardId: string;
+  updatedCard: ICard;
+}
+
+export const ListBoards = ({
   boards,
-  page,
-  limit,
   view,
   error,
   isLoading = false,
-}) => {
+}: IListBoardsProps): JSX.Element => {
   const [openModal, setOpenModal] = useState<boolean>(false);
-  const [currentBoardId, setCurrentBoardId] = useState<any>(null);
-  const [currentCard, setCurrentCard] = useState<null | any>(null);
+  const [currentBoardId, setCurrentBoardId] = useState<string | null>(null);
+  const [currentCard, setCurrentCard] = useState<ICard | null>(null);
   const dispatch: AppDispatch = useDispatch();
 
-  const handleOpen = ({ boardId, card }: { boardId: string; card: any }) => {
+  const handleOpen = ({ boardId, card }: { boardId: string; card: ICard }) => {
     setCurrentBoardId(boardId);
     setCurrentCard(card);
     setOpenModal(true);
@@ -44,11 +58,7 @@ export const ListBoards: React.FC<IListBoardsProp> = ({
     boards,
     boardId,
     payload,
-  }: {
-    boards: any;
-    boardId: any;
-    payload: any;
-  }) => {
+  }: IHandleBoardUpdate): void => {
     const updatedBoard = BoardHandler.updateBoard({
       boards,
       boardId,
@@ -64,7 +74,7 @@ export const ListBoards: React.FC<IListBoardsProp> = ({
   }: {
     boardId: string;
     titleBoard: string;
-  }) => {
+  }): void => {
     handleBoardUpdate({ boards, boardId, payload: { title: titleBoard } });
   };
 
@@ -93,7 +103,7 @@ export const ListBoards: React.FC<IListBoardsProp> = ({
   }: {
     boardId: string;
     titleCard: string;
-  }) => {
+  }): void => {
     const updatedBoard = BoardHandler.addCard({ boards, boardId, titleCard });
     if (!updatedBoard) return;
     dispatch(TaskOperations.updateBoard({ boardId, board: updatedBoard }));
@@ -103,11 +113,7 @@ export const ListBoards: React.FC<IListBoardsProp> = ({
     boardId,
     cardId,
     updatedCard,
-  }: {
-    boardId: string;
-    cardId: string;
-    updatedCard: any;
-  }) => {
+  }: IHandleUpdateCard) => {
     const updatedBoard = BoardHandler.updateCard({
       boards,
       boardId,
@@ -129,7 +135,7 @@ export const ListBoards: React.FC<IListBoardsProp> = ({
   }: {
     boardId: string;
     cardId: string;
-  }) => {
+  }): void => {
     const updatedBoard = BoardHandler.removeCard({ boards, boardId, cardId });
     if (!updatedBoard) return;
     dispatch(TaskOperations.updateBoard({ boardId, board: updatedBoard }));
@@ -169,15 +175,17 @@ export const ListBoards: React.FC<IListBoardsProp> = ({
         ))}
       </Grid>
 
-      <CustomModalWindow open={openModal} onCloseFunc={handleClose}>
-        <ModalCardUpdate
-          card={currentCard}
-          boardId={currentBoardId}
-          updateCard={handleUpdateCard}
-          error={error}
-          isLoading={isLoading}
-        />
-      </CustomModalWindow>
+      {currentBoardId && currentCard && (
+        <CustomModalWindow open={openModal} onCloseFunc={handleClose}>
+          <ModalCardUpdate
+            card={currentCard}
+            boardId={currentBoardId}
+            updateCard={handleUpdateCard}
+            error={error}
+            isLoading={isLoading}
+          />
+        </CustomModalWindow>
+      )}
     </Box>
   );
 };

@@ -1,18 +1,17 @@
 import { useState } from "react";
 import { Formik } from "formik";
 import { v4 as uuidv4 } from "uuid";
-import * as Yup from "yup";
-import dayjs from "dayjs";
 import { CustomTextFieldFormik } from "../CustomTextFieldFormik";
 import { CustomAutocomplete } from "../CustomAutocomplete";
+import { ICard, ILabelsArray, ITask } from "src/Interfaces/DataTypes";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LoadingButton } from "@mui/lab";
 import { ListTasks } from "../ListTasks/ListTasks";
+import { FormConfig } from "src/config/form.config";
 import {
   Box,
-  TextField,
   FormHelperText,
   Tooltip,
   Typography,
@@ -20,30 +19,41 @@ import {
   IconButton,
   useTheme,
   Theme,
+  useMediaQuery,
+  Slider,
+  FormControlLabel,
+  CircularProgress,
+  Checkbox,
 } from "@mui/material";
 import {
   Title,
   Description,
   CalendarMonth,
-  AssignmentTurnedIn,
   BookmarkBorder,
   Delete as DeleteIcon,
   Done as DoneIcon,
   Close as CloseIcon,
+  AddBox as AddBoxIcon,
 } from "@mui/icons-material/";
 import DataConfigInformation from "../../data/DataConfigInformation";
+import dayjs from "dayjs";
 import "dayjs/locale/de";
+import { CustomNumberField } from "../CustomNumberField";
 
-const cardSchema = Yup.object().shape({
-  title: Yup.string(),
-  desc: Yup.string(),
-});
+import {
+  Timeline as TimelineIcon,
+  TaskAlt as TaskAltIcon,
+} from "@mui/icons-material/";
 
 interface IModalCardUpdateProps {
-  card: any;
+  card: ICard;
   boardId: string;
-  updateCard: any;
-  error: null | string;
+  updateCard: (data: {
+    boardId: string;
+    cardId: string;
+    updatedCard: ICard;
+  }) => void;
+  error: string | null;
   isLoading?: boolean;
 }
 
@@ -52,8 +62,11 @@ interface IInitialValueCard {
   desc: string;
   dateStart: any;
   dateEnd: any;
-  labels: any;
-  tasks: any;
+  labels: ILabelsArray | [];
+  tasks: ITask[];
+  text: string;
+  progress: number;
+  completed: boolean;
 }
 
 export const ModalCardUpdate = ({
@@ -64,38 +77,64 @@ export const ModalCardUpdate = ({
   isLoading = false,
 }: IModalCardUpdateProps): JSX.Element => {
   const [showAddNewTask, setShowAddNewTask] = useState<boolean>(false);
-  const [titleTask, setTitleTask] = useState<string>("");
   const theme: Theme = useTheme();
-
-  console.log("card", card);
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const initialValuesCard: IInitialValueCard = {
     title: card.title,
     desc: card.desc || "",
     dateStart: card.dateStart ? dayjs(card.dateStart) : null,
     dateEnd: card.dateEnd ? dayjs(card.dateEnd) : null,
-    labels: card.labels || [],
+    labels: card.labels,
     tasks: card.tasks,
+    text: "",
+    progress: 0,
+    completed: false,
   };
 
   const handleShowAddNewTask = () => setShowAddNewTask(!showAddNewTask);
 
-  const handleAddNewTask = ({
-    tasks,
+  const handleAddNewTask = async ({
+    values,
     setFieldValue,
+    setFieldError,
   }: {
-    tasks: any;
-    setFieldValue: any;
+    values: any;
+    setFieldValue: (
+      field: string,
+      value: ITask[] | string | number | boolean
+    ) => void;
+    setFieldError: any;
   }) => {
-    setFieldValue("tasks", [
-      ...tasks,
-      { id: uuidv4(), text: titleTask, completed: false, progress: 0 },
-    ]);
-    setTitleTask("");
+    try {
+      await FormConfig.taskSchema.validate(
+        { text: values.text, progress: values.progress },
+        { abortEarly: false }
+      );
+
+      setFieldValue("tasks", [
+        ...values.tasks,
+        {
+          id: uuidv4(),
+          text: values.text,
+          completed: values.completed,
+          progress: values.progress,
+        },
+      ]);
+      setFieldValue("text", "");
+      setFieldValue("progress", 0);
+      setFieldValue("completed", false);
+    } catch (err: any) {
+      if (err.name === "ValidationError") {
+        err.inner.forEach((validationError: any) => {
+          setFieldError(validationError.path, validationError.message);
+        });
+      } else return;
+    }
   };
 
-  const handleUpdateCard = (dataCard: any) => {
-    const updatedCard = { id: card.id, ...dataCard };
+  const handleUpdateCard = (dataCard: ICard) => {
+    const updatedCard = { ...card, ...dataCard };
     updateCard({ boardId, cardId: card.id, updatedCard });
   };
 
@@ -118,7 +157,7 @@ export const ModalCardUpdate = ({
           });
         }}
         initialValues={initialValuesCard}
-        validationSchema={cardSchema}
+        validationSchema={FormConfig.cardSchema}
       >
         {({
           values,
@@ -128,6 +167,7 @@ export const ModalCardUpdate = ({
           handleChange,
           handleSubmit,
           setFieldValue,
+          setFieldError,
         }) => (
           <form
             onSubmit={handleSubmit}
@@ -171,27 +211,36 @@ export const ModalCardUpdate = ({
                 dateAdapter={AdapterDayjs}
                 adapterLocale="de"
               >
-                <Box sx={{ display: "flex", gap: "1rem" }}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexWrap: isMobile ? "wrap" : "nowrap",
+                    gap: "2rem",
+                    width: "100%",
+                  }}
+                >
                   <Box
                     sx={{
                       display: "flex",
                       alignItems: "center",
                       gap: "0.25rem",
+                      width: isMobile ? "100%" : "50%",
                     }}
                   >
                     <DatePicker
-                      //@ts-ignore
-                      fullWidth
                       label="Date Start"
                       value={values.dateStart}
                       disabled={isLoading}
                       onChange={(date) => setFieldValue("dateStart", date)}
                       className={!values.dateStart ? "no-date-selected" : ""}
+                      sx={{ width: "100%" }}
                     />
                     <FormHelperText
                       error={Boolean(touched.dateStart && errors.dateStart)}
                     >
-                      {/* {touched.dateStart && errors.dateStart} */}
+                      {touched.dateStart &&
+                        errors.dateStart &&
+                        String(touched.dateStart && errors.dateStart)}
                     </FormHelperText>
                     <Tooltip title="Delete the start date" placement="top">
                       <IconButton
@@ -208,20 +257,22 @@ export const ModalCardUpdate = ({
                       display: "flex",
                       alignItems: "center",
                       gap: "0.25rem",
+                      width: isMobile ? "100%" : "50%",
                     }}
                   >
                     <DatePicker
-                      //@ts-ignore
-                      fullWidth
                       label="Date End"
                       value={values.dateEnd}
                       disabled={isLoading}
                       onChange={(date) => setFieldValue("dateEnd", date)}
+                      sx={{ width: "100%" }}
                     />
                     <FormHelperText
                       error={Boolean(touched.dateEnd && errors.dateEnd)}
                     >
-                      {/* {touched.dateEnd && errors.dateEnd} */}
+                      {touched.dateEnd &&
+                        errors.dateEnd &&
+                        String(touched.dateEnd && errors.dateEnd)}
                     </FormHelperText>
                     <Tooltip title="Delete the end date" placement="top">
                       <IconButton
@@ -248,38 +299,127 @@ export const ModalCardUpdate = ({
               />
             </Box>
 
-            <AssignmentTurnedIn color="primary" fontSize="large" />
+            <Box sx={{ display: "flex", justifyContent: "right" }}>
+              <Button
+                startIcon={<AddBoxIcon />}
+                onClick={handleShowAddNewTask}
+                sx={{ textTransform: "none", fontSize: "1.2rem" }}
+              >
+                Add New Task
+              </Button>
+            </Box>
 
             {showAddNewTask && (
               <Box
                 sx={{
                   display: "flex",
-                  alignItems: "center",
+                  flexDirection: "column",
                   gap: "0.5rem",
                   border: "1px solid green",
+                  padding: "0.5rem",
                 }}
               >
-                <TextField
-                  label="Add New Task"
-                  value={titleTask}
-                  onChange={(e) => setTitleTask(e.target.value)}
-                  style={{ height: "60px", width: "100%" }}
-                />
-                <IconButton
-                  onClick={() =>
-                    handleAddNewTask({ tasks: values.tasks, setFieldValue })
-                  }
+                <Box
+                  sx={{ display: "flex", alignItems: "center", gap: "0.5rem" }}
                 >
-                  <DoneIcon />
-                </IconButton>
-                <IconButton onClick={handleShowAddNewTask}>
-                  <CloseIcon />
-                </IconButton>
+                  <Title color="primary" fontSize="large" />
+                  <CustomTextFieldFormik
+                    label="Text"
+                    name="text"
+                    formikFunc={{
+                      values,
+                      errors,
+                      touched,
+                      handleBlur,
+                      handleChange,
+                    }}
+                    isLoading={isLoading}
+                  />
+                </Box>
+
+                <Box
+                  sx={{ display: "flex", alignItems: "center", gap: "0.5rem" }}
+                >
+                  <TimelineIcon color="primary" fontSize="large" />
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      width: "100%",
+                    }}
+                  >
+                    <CustomNumberField
+                      label="Progress"
+                      name="progress"
+                      minValue={0}
+                      maxValue={100}
+                      formikFunc={{
+                        values,
+                        errors,
+                        touched,
+                        handleBlur,
+                        handleChange,
+                      }}
+                    />
+                  </Box>
+                </Box>
+
+                <Box sx={{ padding: "0 0 0 2.8rem" }}>
+                  <Slider
+                    valueLabelDisplay="auto"
+                    value={values.progress}
+                    onChange={(e: any) => {
+                      setFieldValue("progress", e.target.value);
+                    }}
+                  />
+                </Box>
+
+                <Box
+                  sx={{ display: "flex", alignItems: "center", gap: "0.5rem" }}
+                >
+                  <TaskAltIcon color="primary" fontSize="large" />
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={values.completed}
+                        onChange={() => {
+                          setFieldValue("completed", !values.completed);
+                        }}
+                        disabled={isLoading}
+                      />
+                    }
+                    label="Task completed"
+                  />
+                </Box>
+
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    gap: "1rem",
+                  }}
+                >
+                  <IconButton
+                    disabled={isLoading}
+                    onClick={() =>
+                      handleAddNewTask({ values, setFieldValue, setFieldError })
+                    }
+                  >
+                    {isLoading ? (
+                      <CircularProgress size={25} />
+                    ) : (
+                      <DoneIcon sx={{ color: "green" }} />
+                    )}
+                  </IconButton>
+                  <IconButton
+                    onClick={handleShowAddNewTask}
+                    disabled={isLoading}
+                  >
+                    <CloseIcon sx={{ color: isLoading ? null : "red" }} />
+                  </IconButton>
+                </Box>
               </Box>
             )}
-            <Box>
-              <Button onClick={handleShowAddNewTask}>Add New Task</Button>
-            </Box>
 
             <ListTasks
               values={values}
@@ -305,6 +445,7 @@ export const ModalCardUpdate = ({
           </form>
         )}
       </Formik>
+
       {error && <Typography style={{ color: "red" }}>{error}</Typography>}
     </Box>
   );
